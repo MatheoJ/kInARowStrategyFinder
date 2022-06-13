@@ -14,6 +14,9 @@ Boundarie word : {0,1,2,3}
         sfml 
         ou svg 
 
+SFML (horizontale, verticale)
+
+
 
 BoundWord to shape -> on part du point à gauche le plus en bas possible, puis on suit les directions on incrémente et désincrémente le x et y enfonction des directions 
                         Et suivatn la direction qui veint d'^tre prise on on rajoute une unité en [x-1][y] ou [x][y]
