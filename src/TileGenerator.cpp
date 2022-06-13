@@ -21,8 +21,12 @@ const int MINHALFPERIMETER = 4;
 
 //----------------------------------------------------- Méthodes publiques
 
-vector<BoundaryWord> TileGenerator::getTileWordVect(){
+vector<BoundaryWord> TileGenerator::getTileWordVect()const{
     return this->tileWordVect;
+}
+
+vector<Tile> TileGenerator::getTileVect()const{
+    return this->tileVect;
 }
 
 void TileGenerator::generateBoundWord(int maxHAlfPerimeter, vector<char>& currentHalfWord)
@@ -92,8 +96,9 @@ void TileGenerator::generateFullWord(vector<char>& firstHalf){
 }//----- Fin de Méthode
 
 void TileGenerator::generateTile(){
-    for(int i=0; i<tileWordVect.size(); i++){
+    for(int i=0; i<(int)tileWordVect.size(); i++){
         Tile t(&tileWordVect[i]);
+        this->tileVect.push_back(t);
     }
 }
 

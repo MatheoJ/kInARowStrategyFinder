@@ -43,7 +43,7 @@ bool BoundaryWord::isSelfAvoiding(){
     int verticalPos=0, maxV=0, minV=0;
     bool res = true;
     pathHaveBeenHere[make_pair(horizontalPos,verticalPos)]=true;
-    for(int i=0; i<this->word.size()-1;i++){
+    for(int i=0; i<(int)this->word.size()-1;i++){
         switch (this->word[i])
         {
         case 0:

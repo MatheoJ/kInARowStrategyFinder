@@ -40,6 +40,15 @@ public:
 
     void setBoundaryWord( BoundaryWord *boundWord);
 
+    int getSize();
+
+    Unit** getBasicShape();
+
+    BoundaryWord * getBoundWord();
+
+    
+
+
 
 //-------------------------------------------- Constructeurs - destructeur
     

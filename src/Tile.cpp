@@ -26,7 +26,7 @@ using namespace std;
 ostream &operator<<(ostream &stream, const Tile &t)
 {
     stream<<"This is the tile of size :"<< t.size<<endl;
-    stream<<"MinVertical ="<<t.boundWord->getMinVertical()<<" MaxVertical ="<<t.boundWord->getMaxVertical()<<" |MinHorizontal ="<<t.boundWord->getMinHorizontal()<<" MaxHorizontal ="<<t.boundWord->getMaxHorizontal()<<endl;
+    //stream<<"MinVertical ="<<t.boundWord->getMinVertical()<<" MaxVertical ="<<t.boundWord->getMaxVertical()<<" |MinHorizontal ="<<t.boundWord->getMinHorizontal()<<" MaxHorizontal ="<<t.boundWord->getMaxHorizontal()<<endl;
     
    stream<<*(t.boundWord);
    for (int i = 0; i < t.size; i++)
@@ -58,7 +58,7 @@ void Tile::BuildTile ()
 
     
 
-    for(int i=0; i<this->boundWord->word.size();i++){
+    for(int i=0; i<(int)this->boundWord->word.size();i++){
         if(horizontalPos==this->boundWord->minHorizontal && minVerticalStart>verticalPos){
             minVerticalStart=verticalPos; 
             startIndex =i;
@@ -99,7 +99,7 @@ void Tile::BuildTile ()
     //If the browsing way is not the natural way, we inverse the direction in the word
     if(browsingWay==-1){
         startIndex--;
-        for (int i = 0; i <this->boundWord->word.size() ; i++)
+        for (int i = 0; i <(int)this->boundWord->word.size() ; i++)
         {
             this->boundWord->word[i]=(this->boundWord->word[i]+2)%4;
         }
@@ -115,7 +115,7 @@ void Tile::BuildTile ()
     //cout<<"startIndex = "<<startIndex<<" |browsingWay ="<<browsingWay<<" |Minvertical ="<<minVerticalStart<<endl;
     int countUnit=0;
     //We iterate through the word from the start point to the end or the begining depending on the way of brosing
-    for(int i=(startIndex); (i!=-1 && i!=this->boundWord->word.size()); i+=browsingWay){
+    for(int i=(startIndex); (i!=-1 && i!=(int)this->boundWord->word.size()); i+=browsingWay){
         //cout<<" x="<<x<<" y="<<y<<endl;
         switch (this->boundWord->word[i])
         {
@@ -156,10 +156,10 @@ void Tile::BuildTile ()
     int i=0;
     //if the Browsing way is the not natural way, we begin at the end
     if(browsingWay ==-1){
-        i=this->boundWord->word.size()-1;
+        i=(int)this->boundWord->word.size()-1;
     }
 
-    for(i;i!=startIndex;i+=browsingWay){
+    for( ;i!=startIndex;i+=browsingWay){
         //cout<<" x="<<x<<" y="<<y<<endl;
        switch (this->boundWord->word[i])
         {
@@ -201,6 +201,18 @@ void Tile::BuildTile ()
 
 void Tile::setBoundaryWord( BoundaryWord *boundWord){
     this->boundWord=boundWord;
+}
+
+int Tile::getSize(){
+    return this->size;
+}
+
+Unit** Tile::getBasicShape(){
+    return this->basicShape;
+}
+
+BoundaryWord * Tile::getBoundWord(){
+    return this->getBoundWord();
 }
 
 
@@ -289,7 +301,6 @@ void Tile::fillTile(int countUnit){
                     countUnit ++;
                 }                
             }
-            cout<<" i= "<<i<<" j= "<<j<<" inTile= "<<inTile<<endl;
         }        
     }
 }

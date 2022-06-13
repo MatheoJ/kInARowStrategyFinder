@@ -22,16 +22,26 @@ OBJS = $(patsubst $(SRC)/%.cpp, $(OBJ)/%.o, $(SRCS))
 # Repertoire et Nom pour l'exécutable
 DISTDIR = dist
 EXENAME = prog
+GUIINCLUDE =
 
 # Regroupement du Repertoire et du Nom de l'exécutable
 # dans une seule variable pour plus de commodité
 DIST = $(DISTDIR)/$(EXENAME)
 
 
-# Creation de l'exécutable en mode Production
-all: SRCS := $(filter-out %mainTest.cpp, $(SRCS))
+# Creation de l'exécutable en mode console
+all: SRCS := $(filter-out %mainGUI.cpp, $(SRCS))
 all: initobj initdist clean
 all: $(DIST)
+
+# Creation de l'exécutable en mode gui
+gui: SRCS := $(filter-out %main.cpp, $(SRCS))
+gui: initobj initdist clean
+gui: GUIINCLUDE := -lsfml-graphics -lsfml-window -lsfml-system
+gui: EXENAME := progGUI
+gui: DIST:= $(DISTDIR)/$(EXENAME)
+gui: $(DIST)
+
 
 # Creation de l'exécutable en mode Debug
 release: CFLAGS = -g -ansi -pedantic -Wall -std=c++11 -D MAP
@@ -40,11 +50,11 @@ release: $(DIST)
 
 # Commande d'édition des liens
 $(DIST): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $@
+	$(CC) $(CFLAGS) $(OBJS) -o $(DIST) $(GUIINCLUDE)
 
 # Commande d'assemblage (réalise également le traitement par le préprocesseur et la compilation)
 $(OBJ)/%.o : $(SRC)/%.cpp
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ 
 
 # Commande de nettoyage (destruction de l'exécutable et des fichiers assemblés)
 clean:
