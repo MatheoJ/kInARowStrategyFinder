@@ -1,0 +1,21 @@
+Boundarie word : {0,1,2,3}
+
+        1
+        ^
+        |
+        |
+2<------------>0   y
+        |
+        |
+        v
+        3
+        x
+
+        sfml 
+        ou svg 
+
+
+BoundWord to shape -> on part du point à gauche le plus en bas possible, puis on suit les directions on incrémente et désincrémente le x et y enfonction des directions 
+                        Et suivatn la direction qui veint d'^tre prise on on rajoute une unité en [x-1][y] ou [x][y]
+
+                        ATTENTION x et y corresponde aux coordonées du point en bas à droite des cases de la shape.
