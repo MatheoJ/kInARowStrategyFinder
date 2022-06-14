@@ -33,7 +33,7 @@ public:
 //----------------------------------------------------- Méthodes publiques
     friend ostream &operator<<(ostream &stream, const Tile &t);
 
-    void BuildTile();
+    bool BuildTile();
     // Mode d'emploi :
     //Buile the basic shape of the tile with the boundary word
 

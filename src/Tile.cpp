@@ -47,7 +47,7 @@ ostream &operator<<(ostream &stream, const Tile &t)
     return stream;
 }
 
-void Tile::BuildTile ()
+bool Tile::BuildTile ()
 // Algorithme :
 //
 {
@@ -196,6 +196,13 @@ void Tile::BuildTile ()
     }
     
     this->fillTile(countUnit);
+
+    bool res = true;
+    if(browsingWay ==-1){
+        res = false;
+    }
+    
+    return res;
     
 } //----- Fin de Méthode
 
@@ -228,7 +235,6 @@ Tile::Tile (BoundaryWord *boundWord )
     for(int i=0; i<this->size; i++){
         this->basicShape[i]= new Unit[this->size];
     }
-    this->BuildTile();
 #ifdef MAP
     cout << "Appel au constructeur de <Tile>" << endl;
 #endif

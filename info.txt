@@ -9,6 +9,7 @@ Boundarie word : {0,1,2,3}
         |
         v
         3
+
         x
 
         sfml 
@@ -22,3 +23,8 @@ BoundWord to shape -> on part du point à gauche le plus en bas possible, puis o
                         Et suivatn la direction qui veint d'^tre prise on on rajoute une unité en [x-1][y] ou [x][y]
 
                         ATTENTION x et y corresponde aux coordonées du point en bas à droite des cases de la shape.
+
+https://coolors.co/palette/ccd5ae-e9edc9-fefae0-faedcd-d4a373
+
+Problème: énormément de doublons -> comment les diférentier
+quel boundary word prendre ? 

@@ -38,7 +38,8 @@ void TileGenerator::generateBoundWord(int maxHAlfPerimeter, vector<char>& curren
     static int lgthWord = 0;
     for (int i = 0; i < 4; i++)
     {
-        if(lgthWord==0 || i!=currentHalfWord.back()){
+        //If it is not the first letter of the word : check that letter to add is not the inverse off the last letter
+        if(lgthWord==0 || i!=((currentHalfWord.back()+2)%4)){
             currentHalfWord.push_back(i);
             
             lgthWord++;
@@ -98,7 +99,9 @@ void TileGenerator::generateFullWord(vector<char>& firstHalf){
 void TileGenerator::generateTile(){
     for(int i=0; i<(int)tileWordVect.size(); i++){
         Tile t(&tileWordVect[i]);
-        this->tileVect.push_back(t);
+        if(t.BuildTile()){
+            this->tileVect.push_back(t);
+        }        
     }
 }
 
