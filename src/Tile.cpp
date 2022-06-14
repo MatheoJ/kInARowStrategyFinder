@@ -206,6 +206,57 @@ bool Tile::BuildTile ()
     
 } //----- Fin de Méthode
 
+void Tile::buildPlanningShape(int kSize){
+
+    this->planingShapeSize = this->size+kSize;
+
+    this->planingShape = new Unit* [ this->planingShapeSize];
+    for(int i=0; i<this->planingShapeSize; i++){
+        this->planingShape[i]= new Unit[this->planingShapeSize];
+    }
+
+    //coppy the basics shape into planning shape;
+    for(int i=0;i<this->size;i++)
+    {
+        for (int j = 0; j < this->size; j++)
+        {
+            
+        }
+    }
+
+    //find the two vector for planning
+
+    pair<int,int> vect1 = make_pair(2,3);
+    pair<int,int> vect2 = make_pair(-1,-2);
+
+    //Move the basics shape trhought the plan with first vector until every unit is of the gridd
+    //Then move once with the second vector and repeate the first step
+
+    for(int i=0;i<this->size;i++)
+    {
+        for (int j = 0; j < this->size; j++)
+        {
+            int x = i;
+            int y = j;
+            int numTile=0;
+            while(x<this->planingShapeSize && y<this->planingShapeSize){
+                
+                int x2 =x ;
+                int y2 =y ;
+                while(x2<this->planingShapeSize && y2<this->planingShapeSize){
+                    
+                    x2+=vect2.first;
+                    y2+=vect2.second;
+                }
+                x+=vect1.first;
+                y+=vect1.second;
+            }
+        }
+    }
+
+    
+}
+
 void Tile::setBoundaryWord( BoundaryWord *boundWord){
     this->boundWord=boundWord;
 }

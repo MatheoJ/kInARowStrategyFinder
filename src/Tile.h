@@ -37,6 +37,8 @@ public:
     // Mode d'emploi :
     //Buile the basic shape of the tile with the boundary word
 
+    void buildPlanningShape(int kSize);
+
 
     void setBoundaryWord( BoundaryWord *boundWord);
 
@@ -76,6 +78,7 @@ protected:
     int size;
     Unit**  basicShape;
     Unit** planingShape;
+    int planingShapeSize;
 
 };
 
