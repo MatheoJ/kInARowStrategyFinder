@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <cstdlib>
 #include "TileGenerator.h"
 
 using namespace sf;
@@ -12,10 +13,15 @@ const int SIZE_SQUARE =WIN_WIDTH/NB_SQUARE_ROW;
 const int NB_SQUAR_COLUMN = 4;
 const int WIN_HEIGHT = SIZE_SQUARE*NB_SQUAR_COLUMN;
 
+const int WIN_OPTION_SIZE=220;
+const int SIZE_SQUARE_OPTION = 200;
 
-void InputHandler(Event& event, RenderWindow& window,vector<Tile>& tVect,int& numPage,int& numPageMax,vector<sf::RectangleShape> & shapeTile );
+
+
+void InputHandler(Event& event, RenderWindow& window,RenderWindow& window2,vector<Tile>& tVect,int& numPage,int& numPageMax,vector<sf::RectangleShape> & shapeTile,vector<sf::RectangleShape>& shapePlaning  );
 void drawTile(RenderWindow& window,Tile tile, int x, int y, int sizeForTile,vector<sf::RectangleShape> & shapeTile );
 void drawLine(RenderWindow& window, int sizeSquare, vector<sf::RectangleShape> & shapeLine );
+void drawTilingShape(Tile tile, int sizeForTile, vector<sf::RectangleShape> & shapePlaning);
 void loadFont();
 
 
@@ -31,6 +37,7 @@ sf::Font font;
 int main()
 {
     RenderWindow window(VideoMode(WIN_WIDTH , WIN_HEIGHT+30), "Tile viewer");
+    RenderWindow window2(VideoMode(WIN_OPTION_SIZE , WIN_OPTION_SIZE), "More option");
 
     TileGenerator tg;
     vector<char> vect;
@@ -39,6 +46,7 @@ int main()
     vector<Tile> tVect = tg.getTileVect();
 
     vector<sf::RectangleShape> shapeTile;
+    vector<sf::RectangleShape> shapePlaning;
     vector<sf::RectangleShape> shapeLine;
 
     drawLine(window, SIZE_SQUARE,shapeLine);
@@ -61,7 +69,8 @@ int main()
     text.setPosition(0,WIN_HEIGHT);
 
 
-   
+   sf::CircleShape shape(100.f);
+    shape.setFillColor(sf::Color::Green);
 
 
     while (window.isOpen())
@@ -71,10 +80,11 @@ int main()
         {
 
             //input gestion or event 
-            InputHandler(event, window, tVect, numPage, numPageMax,shapeTile);
+            InputHandler(event, window, window2, tVect, numPage, numPageMax,shapeTile,shapePlaning);
         }
-
+        
         window.clear(colBack);
+        window2.clear(colBack);
 
         for(sf::RectangleShape s: shapeLine ){
             window.draw(s);
@@ -84,17 +94,25 @@ int main()
             window.draw(s);
         }
 
+        for(sf::RectangleShape s: shapePlaning ){            
+            window2.draw(s);
+        }
+        //window2.draw(shape);
+
+
         text.setString("Page "+std::to_string(numPage)+"/"+std::to_string(numPageMax));
         window.draw(text);
         
+        window2.display();
         window.display();
+        
     }
 
     return 0;
 }
 
 
-void InputHandler(Event& event, RenderWindow& window,vector<Tile>& tVect,int& numPage,int& numPageMax,vector<sf::RectangleShape> & shapeTile){
+void InputHandler(Event& event, RenderWindow& window, RenderWindow& window2,vector<Tile>& tVect,int& numPage,int& numPageMax,vector<sf::RectangleShape> & shapeTile, vector<sf::RectangleShape>& shapePlaning){
 
     static int lastTileClicked =-1;
 
@@ -103,15 +121,21 @@ void InputHandler(Event& event, RenderWindow& window,vector<Tile>& tVect,int& nu
                 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
+        
         sf::Vector2i localPosition = sf::Mouse::getPosition(window);
         int x=localPosition.x/SIZE_SQUARE;
         int y=localPosition.y/SIZE_SQUARE;   
         int numTilePerPage= NB_SQUARE_ROW*NB_SQUAR_COLUMN;    
         int num = y*NB_SQUARE_ROW+x+numTilePerPage*numPage;
         if (num != lastTileClicked && num<<tVect.size()){
+            shapePlaning.clear();
             std::cout<<tVect[num];
             std::cout<<"x = "<<x<< " y= "<<y<<endl;
             lastTileClicked = num;
+            
+            drawTilingShape(tVect[num], SIZE_SQUARE_OPTION, shapePlaning);
+            
+            
         }       
         
     }
@@ -181,6 +205,52 @@ void drawTile(RenderWindow& window,Tile tile, int x, int y, int sizeForTile, vec
                 u.setOutlineColor(colEdge);
                 u.setOutlineThickness(1);
                 shapeTile.push_back(u);
+            }
+        }
+    }
+}
+
+void drawTilingShape(Tile tile, int sizeForTile, vector<sf::RectangleShape> & shapePlaning){
+    
+    int numTile;
+     
+
+    map<int, sf::Color> colorOfTile;
+    colorOfTile[0]=sf::Color::Green;
+    sf::Color color;
+
+    tile.buildPlanningShape(7);
+
+    Unit** shape = tile.getPlaningShape();
+    tile.printPlanningShape();
+    int size = tile.getPlaningShapeSize();
+    int sizeUnit = sizeForTile/size;
+
+    cout<<"size unit ="<<sizeUnit<<endl;
+
+    for(int i =0; i<size; i++){
+        for (int  j =0; j<size; j++){
+            numTile = shape[i][j].getTileNumber();
+            if(numTile!=-1){
+               if (colorOfTile.count(numTile)){
+                    color = colorOfTile[numTile];
+                }
+                else{
+                    colorOfTile[numTile]=sf::Color(std::rand() % 256, std::rand() % 256, std::rand() % 256);
+                    color = colorOfTile[numTile];
+                } 
+                sf::RectangleShape u(sf::Vector2f(sizeUnit-1, sizeUnit-1));
+                u.setPosition(j*sizeUnit+10,i*sizeUnit+10);
+                u.setFillColor(color);                
+                if(numTile==0){
+                    u.setOutlineColor(sf::Color::Black);
+                    u.setOutlineThickness(3);
+                }
+                else{
+                    u.setOutlineColor(colEdge);
+                    u.setOutlineThickness(1);
+                }                
+                shapePlaning.push_back(u);
             }
         }
     }

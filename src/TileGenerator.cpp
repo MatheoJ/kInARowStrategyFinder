@@ -21,11 +21,11 @@ const int MINHALFPERIMETER = 4;
 
 //----------------------------------------------------- Méthodes publiques
 
-vector<BoundaryWord> TileGenerator::getTileWordVect()const{
+vector<BoundaryWord>& TileGenerator::getTileWordVect(){
     return this->tileWordVect;
 }
 
-vector<Tile> TileGenerator::getTileVect()const{
+vector<Tile>& TileGenerator::getTileVect(){
     return this->tileVect;
 }
 

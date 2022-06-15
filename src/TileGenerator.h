@@ -32,9 +32,9 @@ class TileGenerator
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    vector<BoundaryWord> getTileWordVect() const;
+    vector<BoundaryWord>& getTileWordVect();
 
-    vector<Tile> getTileVect() const;
+    vector<Tile>& getTileVect();
 
     void generateBoundWord(int maxHalfPerimeter, vector<char>& currentHalfWord);
     // Mode d'emploi :

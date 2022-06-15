@@ -13,6 +13,7 @@
 #include "BoundaryWord.h"
 #include "Unit.h"
 #include <algorithm>
+#include <map>
 #include <set>
 
 //------------------------------------------------------------- Constantes
@@ -43,10 +44,16 @@ public:
     void setBoundaryWord( BoundaryWord *boundWord);
 
     int getSize();
+    int getPlaningShapeSize();
 
     Unit** getBasicShape();
+    Unit** getPlaningShape();
 
     BoundaryWord * getBoundWord();
+
+    void printPlanningShape();
+
+    
 
     
 
@@ -72,13 +79,21 @@ protected:
 //----------------------------------------------------- Méthodes protégées
     void fillTile(int countUnit);
     bool dfsFillTile(int i,int j,vector<Unit*> group, set<Unit*>checkedUnits );
+    void moveUnitAlongSecondVector(int x, int y,int numUnit,int& countNumTile, int k1, pair<int, int>vect2, map<pair<int,int>,int>& k1k2NumTile, int sens);
+    pair<int,int> getVector1();
+    pair<int,int> getVector2();
+
+    void moveUnitAlongVector(int x,int y,int numUnit,int& countNumTile,map<pair<int,int>,int>& k1k2NumTile,int k1,int k2,pair<int, int>& vect1,pair<int, int>&vect2);
+
+   
 
 //----------------------------------------------------- Attributs protégés
     BoundaryWord *boundWord;
     int size;
+    int planingShapeSize;
     Unit**  basicShape;
     Unit** planingShape;
-    int planingShapeSize;
+    
 
 };
 
