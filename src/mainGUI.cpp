@@ -18,7 +18,7 @@ const int SIZE_SQUARE_OPTION = 200;
 
 
 
-void InputHandler(Event& event, RenderWindow& window,RenderWindow& window2,vector<Tile>& tVect,int& numPage,int& numPageMax,vector<sf::RectangleShape> & shapeTile,vector<sf::RectangleShape>& shapePlaning  );
+void InputHandler(Event& event, RenderWindow& window,RenderWindow& window2,vector<Tile>& tVect,int& numPage,int& numPageMax,vector<sf::RectangleShape> & shapeTile,vector<sf::RectangleShape>& shapePlaning,bool& isTileSelected,sf::RectangleShape& selctedTile  );
 void drawTile(RenderWindow& window,Tile tile, int x, int y, int sizeForTile,vector<sf::RectangleShape> & shapeTile );
 void drawLine(RenderWindow& window, int sizeSquare, vector<sf::RectangleShape> & shapeLine );
 void drawTilingShape(Tile tile, int sizeForTile, vector<sf::RectangleShape> & shapePlaning);
@@ -28,6 +28,7 @@ void loadFont();
 sf::Color colBack(254, 250, 224);
 sf::Color colTile(250, 237, 205);
 sf::Color colLine(233, 237, 201);
+sf::Color colSelect(233, 237, 201,150);
 sf::Color colText(204, 213, 174);
 sf::Color colEdge(212, 163, 115);
 
@@ -49,6 +50,10 @@ int main()
     vector<sf::RectangleShape> shapePlaning;
     vector<sf::RectangleShape> shapeLine;
 
+    bool isTileSelected = false;
+    sf::RectangleShape selectedTile(sf::Vector2f(SIZE_SQUARE, SIZE_SQUARE));
+    selectedTile.setFillColor(colSelect);
+
     drawLine(window, SIZE_SQUARE,shapeLine);
     for (int i=0; i<NB_SQUAR_COLUMN;i++){
         for(int j =0; j<NB_SQUARE_ROW; j++){
@@ -64,7 +69,6 @@ int main()
     loadFont();   
     text.setFont(font);
     text.setCharacterSize(24);
-    //text.setStyle(sf::Text::Bold);
     text.setFillColor(colText);
     text.setPosition(0,WIN_HEIGHT);
 
@@ -80,7 +84,7 @@ int main()
         {
 
             //input gestion or event 
-            InputHandler(event, window, window2, tVect, numPage, numPageMax,shapeTile,shapePlaning);
+            InputHandler(event, window, window2, tVect, numPage, numPageMax,shapeTile,shapePlaning,isTileSelected,selectedTile);
         }
         
         window.clear(colBack);
@@ -97,6 +101,10 @@ int main()
         for(sf::RectangleShape s: shapePlaning ){            
             window2.draw(s);
         }
+
+        if(isTileSelected){
+            window.draw(selectedTile);
+        }
         //window2.draw(shape);
 
 
@@ -112,7 +120,7 @@ int main()
 }
 
 
-void InputHandler(Event& event, RenderWindow& window, RenderWindow& window2,vector<Tile>& tVect,int& numPage,int& numPageMax,vector<sf::RectangleShape> & shapeTile, vector<sf::RectangleShape>& shapePlaning){
+void InputHandler(Event& event, RenderWindow& window, RenderWindow& window2,vector<Tile>& tVect,int& numPage,int& numPageMax,vector<sf::RectangleShape> & shapeTile, vector<sf::RectangleShape>& shapePlaning,bool& isTileSelected,sf::RectangleShape& selectedTile ){
 
     static int lastTileClicked =-1;
 
@@ -130,10 +138,11 @@ void InputHandler(Event& event, RenderWindow& window, RenderWindow& window2,vect
         if (num != lastTileClicked && num<<tVect.size()){
             shapePlaning.clear();
             std::cout<<tVect[num];
-            std::cout<<"x = "<<x<< " y= "<<y<<endl;
             lastTileClicked = num;
             
             drawTilingShape(tVect[num], SIZE_SQUARE_OPTION, shapePlaning);
+            selectedTile.setPosition(x*SIZE_SQUARE,y*SIZE_SQUARE);
+            isTileSelected = true;
             
             
         }       
@@ -150,6 +159,7 @@ void InputHandler(Event& event, RenderWindow& window, RenderWindow& window2,vect
                     drawTile(window, tVect[i*NB_SQUARE_ROW+j+numTilePerPage*numPage],j*SIZE_SQUARE,i*SIZE_SQUARE,SIZE_SQUARE,shapeTile);
                 }
             }
+            isTileSelected = false;
         }
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
@@ -166,6 +176,7 @@ void InputHandler(Event& event, RenderWindow& window, RenderWindow& window2,vect
                     }                    
                 }
             }
+            isTileSelected = false;
         }
     }
 }
@@ -222,11 +233,9 @@ void drawTilingShape(Tile tile, int sizeForTile, vector<sf::RectangleShape> & sh
     tile.buildPlanningShape(7);
 
     Unit** shape = tile.getPlaningShape();
-    tile.printPlanningShape();
     int size = tile.getPlaningShapeSize();
     int sizeUnit = sizeForTile/size;
 
-    cout<<"size unit ="<<sizeUnit<<endl;
 
     for(int i =0; i<size; i++){
         for (int  j =0; j<size; j++){

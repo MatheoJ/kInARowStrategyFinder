@@ -34,7 +34,7 @@ ostream &operator<<(ostream &stream, const Tile &t)
         for (int j = 0; j < t.size; j++)
         {
             if(t.basicShape[i][j].getTileNumber()!=-1){
-                stream<<"█";
+                stream<<t.basicShape[i][j].getUnitNumber()<<"|";
             }
             else{
                 stream<<" ";
@@ -80,7 +80,7 @@ bool Tile::BuildTile ()
             minVerticalStart=verticalPos; 
             startIndex =i;
         } 
-        //cout<<"horizontalPos =:"<<horizontalPos<<" |verticalPos = "<<verticalPos<<endl;
+        
         switch (this->boundWord->word[i])
         {
         case 0:
@@ -177,7 +177,6 @@ bool Tile::BuildTile ()
     }
 
     for( ;i!=startIndex;i+=browsingWay){
-        //cout<<" x="<<x<<" y="<<y<<endl;
        switch (this->boundWord->word[i])
         {
         case 0:
@@ -236,6 +235,7 @@ void Tile::buildPlanningShape(int kSize){
 
     pair<int,int> vect1 = this->getVector1();
     pair<int,int> vect2 = this->getVector2();
+    pair<int,int> vect3 = this->getVector3(vect1,vect2);
 
     //cout<<"vect 1 : x="<<vect1.first<<", y="<<vect1.second<<endl;
     //cout<<"vect 2 : x="<<vect2.first<<", y="<<vect2.second<<endl;
@@ -263,7 +263,7 @@ void Tile::buildPlanningShape(int kSize){
                 int k2=0;
                 this->planingShape[x][y]=Unit(0, numUnit);
 
-                this->moveUnitAlongVector(x,y,numUnit,countNumTile,k1k2NumTile, k1,k2, vect1, vect2);
+                this->moveUnitAlongVector(x,y,numUnit,countNumTile,k1k2NumTile, k1,k2, vect1, vect2,vect3);
                 
 /* 
                 
@@ -350,7 +350,7 @@ Tile::~Tile ( )
 
 //----------------------------------------------------- Méthodes protégées
 
-bool Tile::dfsFillTile(int i,int j,vector<Unit*> group, set<Unit*>checkedUnits ){
+bool Tile::dfsFillTile(int i,int j,vector<Unit*>& group, set<Unit*>& checkedUnits ){
     bool inTile = true;
 
     // If we are at a nonFile Tile in the border it means that the all group does not belong to the tile
@@ -402,6 +402,7 @@ void Tile::fillTile(int countUnit){
                     countUnit ++;
                 }                
             }
+            
         }        
     }
 }
@@ -485,8 +486,13 @@ pair<int,int>  Tile::getVector2(){
     return make_pair(-x,-y);
 }
 
+pair<int,int>  Tile::getVector3(pair<int,int> vect1, pair<int,int> vect2){
+ 
+    return make_pair(vect1.first-vect2.first,vect1.second-vect2.second);
+}
 
-void Tile::moveUnitAlongVector(int x, int y, int numUnit, int& countNumTile, map<pair<int,int>,int>& k1k2NumTile, int k1, int k2, pair<int, int>& vect1, pair<int, int>&vect2){
+
+void Tile::moveUnitAlongVector(int x, int y, int numUnit, int& countNumTile, map<pair<int,int>,int>& k1k2NumTile, int k1, int k2, pair<int, int>& vect1, pair<int, int>&vect2,pair<int, int>&vect3){
     int x2,y2,numTile,newk1, newk2;
     x2=x+vect1.first;
     y2=y+vect1.second;
@@ -505,7 +511,7 @@ void Tile::moveUnitAlongVector(int x, int y, int numUnit, int& countNumTile, map
                 //cout<<"countNumTile : "<<countNumTile<< " |k1: "<<k1<<" |k2: "<<k2<< " |sens :"<<sens<<endl;
             }
             this->planingShape[x2][y2]=Unit(numTile, numUnit);
-            this->moveUnitAlongVector(x2,y2,numUnit,countNumTile,k1k2NumTile,newk1,k2,vect1,vect2);
+            this->moveUnitAlongVector(x2,y2,numUnit,countNumTile,k1k2NumTile,newk1,k2,vect1,vect2,vect3);
         }
     }
     x2=x-vect1.first;
@@ -525,7 +531,7 @@ void Tile::moveUnitAlongVector(int x, int y, int numUnit, int& countNumTile, map
                 //cout<<"countNumTile : "<<countNumTile<< " |k1: "<<k1<<" |k2: "<<k2<< " |sens :"<<sens<<endl;
             }
             this->planingShape[x2][y2]=Unit(numTile, numUnit);
-            this->moveUnitAlongVector(x2,y2,numUnit,countNumTile,k1k2NumTile,newk1,k2,vect1,vect2);
+            this->moveUnitAlongVector(x2,y2,numUnit,countNumTile,k1k2NumTile,newk1,k2,vect1,vect2,vect3);
         }
     }
     x2=x-vect2.first;
@@ -546,7 +552,7 @@ void Tile::moveUnitAlongVector(int x, int y, int numUnit, int& countNumTile, map
                 //cout<<"countNumTile : "<<countNumTile<< " |k1: "<<k1<<" |k2: "<<k2<< " |sens :"<<sens<<endl;
             }
             this->planingShape[x2][y2]=Unit(numTile, numUnit);
-            this->moveUnitAlongVector(x2,y2,numUnit,countNumTile,k1k2NumTile,k1,newk2,vect1,vect2);
+            this->moveUnitAlongVector(x2,y2,numUnit,countNumTile,k1k2NumTile,k1,newk2,vect1,vect2,vect3);
         }
     }
     x2=x+vect2.first;
@@ -567,8 +573,54 @@ void Tile::moveUnitAlongVector(int x, int y, int numUnit, int& countNumTile, map
                 //cout<<"countNumTile : "<<countNumTile<< " |k1: "<<k1<<" |k2: "<<k2<< " |sens :"<<sens<<endl;
             }
             this->planingShape[x2][y2]=Unit(numTile, numUnit);
-            this->moveUnitAlongVector(x2,y2,numUnit,countNumTile,k1k2NumTile,k1,newk2,vect1,vect2);
+            this->moveUnitAlongVector(x2,y2,numUnit,countNumTile,k1k2NumTile,k1,newk2,vect1,vect2,vect3);
         }
     }
+    x2=x-vect3.first;
+    y2=y-vect3.second;
+    newk2 = k2+1;
+    newk1 = k1-1;
+    
+    if(x2<this->planingShapeSize && x2>=0 && y2<this->planingShapeSize && y2>=0){
+        if(this->planingShape[x2][y2].getTileNumber()==-1){
+            pair<int,int> xyPair= make_pair(newk1,newk2);
+            //If the pair of vector factor as not been asigned a number of tile
+            if (k1k2NumTile.count(xyPair)){
+                numTile = k1k2NumTile[xyPair];
+            }
+            else{
+                numTile = countNumTile;
+                k1k2NumTile[xyPair]= countNumTile;
+                countNumTile++;
+                //cout<<"countNumTile : "<<countNumTile<< " |k1: "<<k1<<" |k2: "<<k2<< " |sens :"<<sens<<endl;
+            }
+            this->planingShape[x2][y2]=Unit(numTile, numUnit);
+            this->moveUnitAlongVector(x2,y2,numUnit,countNumTile,k1k2NumTile,newk1,newk2,vect1,vect2,vect3);
+        }
+    }
+
+    x2=x+vect3.first;
+    y2=y+vect3.second;
+    newk2 = k2-1;
+    newk1 = k1+1;
+    
+    if(x2<this->planingShapeSize && x2>=0 && y2<this->planingShapeSize && y2>=0){
+        if(this->planingShape[x2][y2].getTileNumber()==-1){
+            pair<int,int> xyPair= make_pair(newk1,newk2);
+            //If the pair of vector factor as not been asigned a number of tile
+            if (k1k2NumTile.count(xyPair)){
+                numTile = k1k2NumTile[xyPair];
+            }
+            else{
+                numTile = countNumTile;
+                k1k2NumTile[xyPair]= countNumTile;
+                countNumTile++;
+                //cout<<"countNumTile : "<<countNumTile<< " |k1: "<<k1<<" |k2: "<<k2<< " |sens :"<<sens<<endl;
+            }
+            this->planingShape[x2][y2]=Unit(numTile, numUnit);
+            this->moveUnitAlongVector(x2,y2,numUnit,countNumTile,k1k2NumTile,newk1,newk2,vect1,vect2,vect3);
+        }
+    }
+    
 }
 

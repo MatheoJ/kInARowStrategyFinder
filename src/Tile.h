@@ -53,6 +53,7 @@ public:
 
     void printPlanningShape();
 
+    void fillTile(int countUnit);
     
 
     
@@ -77,13 +78,14 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-    void fillTile(int countUnit);
-    bool dfsFillTile(int i,int j,vector<Unit*> group, set<Unit*>checkedUnits );
+    
+    bool dfsFillTile(int i,int j,vector<Unit*>& group, set<Unit*>&checkedUnits );
     void moveUnitAlongSecondVector(int x, int y,int numUnit,int& countNumTile, int k1, pair<int, int>vect2, map<pair<int,int>,int>& k1k2NumTile, int sens);
     pair<int,int> getVector1();
     pair<int,int> getVector2();
+    pair<int,int> getVector3(pair<int,int> vect1, pair<int,int> vect2);
 
-    void moveUnitAlongVector(int x,int y,int numUnit,int& countNumTile,map<pair<int,int>,int>& k1k2NumTile,int k1,int k2,pair<int, int>& vect1,pair<int, int>&vect2);
+    void moveUnitAlongVector(int x,int y,int numUnit,int& countNumTile,map<pair<int,int>,int>& k1k2k3NumTile,int k1,int k2,pair<int, int>& vect1,pair<int, int>&vect2,pair<int, int>&vect3);
 
    
 
