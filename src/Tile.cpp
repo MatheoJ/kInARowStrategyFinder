@@ -244,7 +244,7 @@ void Tile::buildPlanningShape(int kSize){
     //Then move once with the second vector and repeate the first step
 
     map<pair<int,int>,int> k1k2NumTile;
-    int x, y, k1, numUnit, numTile, countNumTile;
+    int x, y, k1, numUnit, countNumTile;
     countNumTile=1;
 
     k1k2NumTile[make_pair(0,0)]=0;
@@ -263,29 +263,7 @@ void Tile::buildPlanningShape(int kSize){
                 int k2=0;
                 this->planingShape[x][y]=Unit(0, numUnit);
 
-                this->moveUnitAlongVector(x,y,numUnit,countNumTile,k1k2NumTile, k1,k2, vect1, vect2,vect3);
-                
-/* 
-                
-                while(x<this->planingShapeSize && x>=0 && y<this->planingShapeSize && y>=0){
-
-                    moveUnitAlongSecondVector(x,y,numUnit,countNumTile, k1, vect2, k1k2NumTile, 1 );
-                    moveUnitAlongSecondVector(x,y,numUnit,countNumTile, k1, vect2, k1k2NumTile,-1 );
-                    x+=vect1.first;
-                    y+=vect1.second;
-                    k1++;
-                }
-                x = i;
-                y = j;
-                k1=0;
-                while(x<this->planingShapeSize && x>=0 && y<this->planingShapeSize && y>=0){
-                    
-                    moveUnitAlongSecondVector(x,y,numUnit,countNumTile, k1, vect2, k1k2NumTile, 1 );
-                    moveUnitAlongSecondVector(x,y,numUnit,countNumTile, k1, vect2, k1k2NumTile,-1 );
-                    x-=vect1.first;
-                    y-=vect1.second;
-                    k1--;
-                } */
+                this->moveUnitAlongVector(x,y,numUnit,countNumTile,k1k2NumTile, k1,k2, vect1, vect2,vect3);                
             }       
         }
     }   
@@ -465,7 +443,7 @@ pair<int,int>  Tile::getVector1(){
 pair<int,int>  Tile::getVector2(){
     int y=0, x=0;
     int startindex = this->boundWord->word.size()-(this->boundWord->zSize+this->boundWord->ySize);
-    for(int i=startindex; i<this->boundWord->word.size();i++){
+    for(int i=startindex; i<(int)this->boundWord->word.size();i++){
         
         switch (this->boundWord->word[i])
         {

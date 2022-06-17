@@ -27,7 +27,6 @@ class TileAnalyzer
 
 
 public:
-    friend class Tile;
 //----------------------------------------------------- Méthodes publiques 
     void  analyzeTileVect(vector<Tile>& vectTile);   
     

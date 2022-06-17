@@ -33,6 +33,7 @@ class Tile
 public:
 //----------------------------------------------------- Méthodes publiques
     friend ostream &operator<<(ostream &stream, const Tile &t);
+    friend class TileAlignment;
 
     bool BuildTile();
     // Mode d'emploi :

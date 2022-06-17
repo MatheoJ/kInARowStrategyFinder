@@ -27,7 +27,10 @@ using namespace std;
 //{
 //} //----- Fin de Méthode
 void TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile){
-    
+    for(int i =0; i<(int)vectTile.size(); i++){
+        TileAlignment ta(&vectTile[i], sizeAlignment);
+        vectTileAlignment.push_back(ta);        
+    }
 }
 
 //-------------------------------------------- Constructeurs - destructeur

@@ -36,13 +36,15 @@ public:
 
     vector<Tile>& getTileVect();
 
-    void generateBoundWord(int maxHalfPerimeter, vector<char>& currentHalfWord);
+    void generateBoundWord(int minHalfPerimeter, int maxHalfPerimeter, vector<char>& currentHalfWord);
     // Mode d'emploi :
     // Appeler cette methode pour remplir l'attribut tileWordVect avec de polyomino qui plannent le plan
 
     void generateTile();
     // Mode d'emploi :
     // Appeler cette methode pour remplir l'attribut tileVect
+
+    void generateTilingShape(int kSize);
 
 
 

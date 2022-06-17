@@ -42,7 +42,7 @@ int main()
 
     TileGenerator tg;
     vector<char> vect;
-    tg.generateBoundWord(6, vect);
+    tg.generateBoundWord(4,6, vect);
     tg.generateTile();
     vector<Tile> tVect = tg.getTileVect();
 
@@ -135,7 +135,7 @@ void InputHandler(Event& event, RenderWindow& window, RenderWindow& window2,vect
         int y=localPosition.y/SIZE_SQUARE;   
         int numTilePerPage= NB_SQUARE_ROW*NB_SQUAR_COLUMN;    
         int num = y*NB_SQUARE_ROW+x+numTilePerPage*numPage;
-        if (num != lastTileClicked && num<<tVect.size()){
+        if (num != lastTileClicked && num<(int)tVect.size()){
             shapePlaning.clear();
             std::cout<<tVect[num];
             lastTileClicked = num;
@@ -171,7 +171,7 @@ void InputHandler(Event& event, RenderWindow& window, RenderWindow& window2,vect
             for (int i=0; i<NB_SQUAR_COLUMN;i++){
                 for(int j =0; j<NB_SQUARE_ROW; j++){
                     int index =i*NB_SQUARE_ROW+j+numTilePerPage*numPage; 
-                    if(index<tVect.size()){
+                    if(index<(int)tVect.size()){
                         drawTile(window, tVect[index],j*SIZE_SQUARE,i*SIZE_SQUARE,SIZE_SQUARE,shapeTile);
                     }                    
                 }

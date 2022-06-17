@@ -15,7 +15,7 @@
 //------------------------------------------------------ Include personnel
 #include "TileGenerator.h"
 //------------------------------------------------------------- Constantes
-const int MINHALFPERIMETER = 4;
+
 
 //----------------------------------------------------------------- PUBLIC
 
@@ -29,7 +29,7 @@ vector<Tile>& TileGenerator::getTileVect(){
     return this->tileVect;
 }
 
-void TileGenerator::generateBoundWord(int maxHAlfPerimeter, vector<char>& currentHalfWord)
+void TileGenerator::generateBoundWord(int minHalfPerimeter,int maxHAlfPerimeter, vector<char>& currentHalfWord)
 // Algorithme :
 // La méthode s'appel récursivement pour faire toute les combinaisons possible de chiffre pour la première moitier du mot, 
 // Puis quand la longueur du mot est comprise entre 4 et le demi prérimètre max on appel generateOtherHalf pour générer toutes
@@ -43,17 +43,55 @@ void TileGenerator::generateBoundWord(int maxHAlfPerimeter, vector<char>& curren
             currentHalfWord.push_back(i);
             
             lgthWord++;
-            if (lgthWord>=MINHALFPERIMETER){
+            if (lgthWord>=minHalfPerimeter){
                 generateFullWord(currentHalfWord);
             }
             if (lgthWord<=maxHAlfPerimeter){
-                generateBoundWord(maxHAlfPerimeter,currentHalfWord);
+                generateBoundWord(minHalfPerimeter,maxHAlfPerimeter,currentHalfWord);
             }
             currentHalfWord.pop_back();
             lgthWord--;
         }      
     }    
 } //----- Fin de Méthode
+
+
+void TileGenerator::generateTile(){
+    for(int i=0; i<(int)tileWordVect.size(); i++){
+        Tile t(&tileWordVect[i]);
+        if(t.BuildTile()){
+            this->tileVect.push_back(t);
+        }        
+    }
+}
+
+void TileGenerator::generateTilingShape(int kSize){
+    for(int i=0; i<(int)this->tileVect.size(); i++){
+        this->tileVect[i].buildPlanningShape(kSize);
+    }
+}
+
+
+//-------------------------------------------- Constructeurs - destructeur
+
+TileGenerator::TileGenerator ( )
+{
+#ifdef MAP
+    cout << "Appel au constructeur de <TileGenerator>" << endl;
+#endif
+} //----- Fin de TileGenerator
+
+
+TileGenerator::~TileGenerator ( )
+{
+#ifdef MAP
+    cout << "Appel au destructeur de <TileGenerator>" << endl;
+#endif
+} //----- Fin de ~TileGenerator
+
+//------------------------------------------------------------------ PRIVE
+
+//----------------------------------------------------- Méthodes protégées
 
 void TileGenerator::buildOtherHalf(vector<char>& firstHalf,vector<char>& otherHalf,int xSize,int ySize,int zSize){
     for(char i : firstHalf){
@@ -95,35 +133,3 @@ void TileGenerator::generateFullWord(vector<char>& firstHalf){
         }       
     }    
 }//----- Fin de Méthode
-
-void TileGenerator::generateTile(){
-    for(int i=0; i<(int)tileWordVect.size(); i++){
-        Tile t(&tileWordVect[i]);
-        if(t.BuildTile()){
-            this->tileVect.push_back(t);
-        }        
-    }
-}
-
-
-//-------------------------------------------- Constructeurs - destructeur
-
-TileGenerator::TileGenerator ( )
-{
-#ifdef MAP
-    cout << "Appel au constructeur de <TileGenerator>" << endl;
-#endif
-} //----- Fin de TileGenerator
-
-
-TileGenerator::~TileGenerator ( )
-{
-#ifdef MAP
-    cout << "Appel au destructeur de <TileGenerator>" << endl;
-#endif
-} //----- Fin de ~TileGenerator
-
-//------------------------------------------------------------------ PRIVE
-
-//----------------------------------------------------- Méthodes protégées
-

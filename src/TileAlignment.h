@@ -15,7 +15,7 @@
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
-using Alignement = vector<set<int>>;
+using Alignment = vector<set<int>>;
 
 
 //------------------------------------------------------------------------
@@ -30,13 +30,15 @@ class TileAlignment
 
 
 public:
-    friend class Tile;
+
+    friend ostream &operator<<(ostream &stream, const TileAlignment &ta);
+    friend class TileAnalyzer;
 //----------------------------------------------------- Méthodes publiques    
     
 //-------------------------------------------- Constructeurs - destructeur
     
     TileAlignment ();
-    TileAlignment ();
+    TileAlignment (Tile * t, int sizeAlignment);
     
 
     virtual ~TileAlignment ( );
@@ -49,10 +51,12 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-
+    void buildAlignments(int sizeAlignment);
 //----------------------------------------------------- Attributs protégés
     Tile* tile;
-    vector<Alignement> alignementVect;
+    vector<Alignment> alignementVect;
+
+
 
 };
 
