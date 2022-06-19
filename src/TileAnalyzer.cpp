@@ -33,6 +33,10 @@ void TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile){
     }
 }
 
+vector<TileAlignment>& TileAnalyzer::getVectTileAlignment(){
+    return this->vectTileAlignment;
+}
+
 //-------------------------------------------- Constructeurs - destructeur
 
 

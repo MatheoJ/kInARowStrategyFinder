@@ -28,7 +28,9 @@ class TileAnalyzer
 
 public:
 //----------------------------------------------------- Méthodes publiques 
-    void  analyzeTileVect(vector<Tile>& vectTile);   
+    void  analyzeTileVect(vector<Tile>& vectTile);
+    vector<TileAlignment>& getVectTileAlignment();  
+    
     
 //-------------------------------------------- Constructeurs - destructeur
     

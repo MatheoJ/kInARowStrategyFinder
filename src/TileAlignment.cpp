@@ -92,7 +92,7 @@ void TileAlignment::buildAlignments(int sizeAlignment){
             
             if(tile->planingShape[i][j].getTileNumber()==0){
                 
-                //horizontal
+                //vertical
                 numTileIndex.clear();
                 Alignment a;
                 for(int k=0; k<sizeAlignment; k++){
@@ -109,7 +109,7 @@ void TileAlignment::buildAlignments(int sizeAlignment){
                 }
                 alignementVect.push_back(a);
 
-                //vertical
+                //horizontal
                 numTileIndex.clear();
                 a.clear();
                 for(int k=0; k<sizeAlignment; k++){
@@ -167,29 +167,4 @@ void TileAlignment::buildAlignments(int sizeAlignment){
         }
     }
 
-    
-    for (int i=tile->size-1; i>tile->size-(sizeAlignment+1); i--){
-        for (int j=tile->size-1; j>tile->size-(sizeAlignment+1); j--){
-            
-            if(!unitChecked.contains(tile->planingShape[i][j].getUnitNumber())){
-                unitChecked.insert(tile->planingShape[i][j].getUnitNumber());
-                //antiDiagonal    
-                numTileIndex.clear();
-                Alignment a;
-                for(int k=0; k<sizeAlignment; k++){
-                    if(numTileIndex.count(tile->planingShape[i+k][j].getTileNumber())){
-                        indexSet = numTileIndex[tile->planingShape[i+k][j].getTileNumber()];                        
-                    }
-                    else{
-                        numTileIndex[tile->planingShape[i+k][j].getTileNumber()]=a.size();
-                        indexSet = a.size();
-                        set<int> s;
-                        a.push_back(s);
-                    }
-                    a[indexSet].insert(tile->planingShape[i+k][j].getUnitNumber());
-                }
-                alignementVect.push_back(a);                
-            }
-        }
-    }
 }
