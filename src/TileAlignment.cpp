@@ -12,6 +12,7 @@
 //-------------------------------------------------------- Include système
 using namespace std;
 #include <iostream>
+#include <queue>
 
 //------------------------------------------------------ Include personnel
 
@@ -34,11 +35,10 @@ ostream &operator<<(ostream &stream, const TileAlignment &ta)
    {
         for (int j = 0; j <  (int)ta.alignementVect[i].size(); j++)
         {
-            set<int>::iterator itr;   
-            // Displaying set elements
-            for (itr = ta.alignementVect[i][j].begin();itr != ta.alignementVect[i][j].end(); itr++)
-            {
-                stream << *itr << " ";
+              
+            // Displaying set elements   
+            for(int i :ta.alignementVect[i][j]){
+                stream << i << " ";
             }
             stream<<" ||";
         }
@@ -52,9 +52,8 @@ ostream &operator<<(ostream &stream, const TileAlignment &ta)
 
 //-------------------------------------------- Constructeurs - destructeur
 
-TileAlignment::TileAlignment (Tile* t, int sizeAlignment){
+TileAlignment::TileAlignment (Tile* t){
     this->tile = t;  
-    buildAlignments(sizeAlignment);
 }
 
 
@@ -79,15 +78,28 @@ TileAlignment::~TileAlignment ()
 } //----- Fin de ~TileAlignment
 
 
+bool checkAlignment(Alignment& a){
+    for(int i =0; i<(int)a.size(); i++){
+        if(a[i].size()==1)
+            return false;
+    }
+    return true;
+
+}
+
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
 
-void TileAlignment::buildAlignments(int sizeAlignment){
+bool TileAlignment::buildAlignments(int sizeAlignment){
     map<int, int> numTileIndex;
     set<int> unitChecked; 
     int indexSet;
+   
+
+
     for (int i=0; i<tile->size; i++){
+
         for (int j=0; j<tile->size; j++){
             
             if(tile->planingShape[i][j].getTileNumber()==0){
@@ -96,75 +108,92 @@ void TileAlignment::buildAlignments(int sizeAlignment){
                 numTileIndex.clear();
                 Alignment a;
                 for(int k=0; k<sizeAlignment; k++){
-                    if(numTileIndex.count(tile->planingShape[i+k][j].getTileNumber())){
+                    if(numTileIndex.contains(tile->planingShape[i+k][j].getTileNumber())){
                         indexSet = numTileIndex[tile->planingShape[i+k][j].getTileNumber()];                        
                     }
                     else{
                         numTileIndex[tile->planingShape[i+k][j].getTileNumber()]=a.size();
                         indexSet = a.size();
-                        set<int> s;
+                        vector<int> s;
                         a.push_back(s);
                     }
-                    a[indexSet].insert(tile->planingShape[i+k][j].getUnitNumber());
+                    a[indexSet].push_back(tile->planingShape[i+k][j].getUnitNumber());
                 }
+                if(!checkAlignment(a))
+                    return false;
+                
                 alignementVect.push_back(a);
 
                 //horizontal
                 numTileIndex.clear();
                 a.clear();
                 for(int k=0; k<sizeAlignment; k++){
-                    if(numTileIndex.count(tile->planingShape[i][j+k].getTileNumber())){
+                    if(numTileIndex.contains(tile->planingShape[i][j+k].getTileNumber())){
                         indexSet = numTileIndex[tile->planingShape[i+k][j+k].getTileNumber()];                        
                     }
                     else{
                         numTileIndex[tile->planingShape[i][j+k].getTileNumber()]=a.size();
                         indexSet = a.size();
-                        set<int> s;
+                        vector<int> s;
                         a.push_back(s);
                     }
-                    a[indexSet].insert(tile->planingShape[i][j+k].getUnitNumber());
+                    a[indexSet].push_back(tile->planingShape[i][j+k].getUnitNumber());
                 }
+                if(!checkAlignment(a))
+                    return false;
                 alignementVect.push_back(a);
+                
 
                 //diagonal
                 numTileIndex.clear();
                 a.clear();
                 for(int k=0; k<sizeAlignment; k++){
-                    if(numTileIndex.count(tile->planingShape[i+k][j+k].getTileNumber())){
+                    if(numTileIndex.contains(tile->planingShape[i+k][j+k].getTileNumber())){
                         indexSet = numTileIndex[tile->planingShape[i+k][j+k].getTileNumber()];                        
                     }
                     else{
                         numTileIndex[tile->planingShape[i+k][j+k].getTileNumber()]=a.size();
                         indexSet = a.size();
-                        set<int> s;
+                        vector<int> s;
                         a.push_back(s);
                     }
-                    a[indexSet].insert(tile->planingShape[i+k][j+k].getUnitNumber());
+                    a[indexSet].push_back(tile->planingShape[i+k][j+k].getUnitNumber());
                 }
+                if(!checkAlignment(a))
+                    return false;
                 alignementVect.push_back(a);
                
-            }
+            }    
+
 
             //antiDiagonal  
             if(!unitChecked.contains(tile->planingShape[i+sizeAlignment][j].getUnitNumber())){
                 unitChecked.insert(tile->planingShape[i+sizeAlignment][j].getUnitNumber());  
                 numTileIndex.clear();
                 Alignment a;
+                
                 for(int k=0; k<sizeAlignment; k++){
-                    if(numTileIndex.count(tile->planingShape[i+k][j-k].getTileNumber())){
+                    if(numTileIndex.contains(tile->planingShape[i+k][j-k].getTileNumber())){
                         indexSet = numTileIndex[tile->planingShape[i+k][j-k].getTileNumber()];                        
                     }
                     else{
                         numTileIndex[tile->planingShape[i+k][j-k].getTileNumber()]=a.size();
                         indexSet = a.size();
-                        set<int> s;
+                        vector<int> s;
+
                         a.push_back(s);
                     }
-                    a[indexSet].insert(tile->planingShape[i+k][j-k].getUnitNumber());
+                    a[indexSet].push_back(tile->planingShape[i+k][j-k].getUnitNumber());
                 }
+                if(!checkAlignment(a))
+                    return false;
                 alignementVect.push_back(a);                
             }
         }
+
     }
 
-}
+    //If the function get's here it means: it hasn't encontered a wrong alignment
+    return true;
+
+} 

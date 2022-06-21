@@ -73,6 +73,8 @@ bool Tile::BuildTile ()
     int minVerticalStart=9999;
     int horizontalPos=0, verticalPos=0;
 
+    bool res = true;
+
     
 
     for(int i=0; i<(int)this->boundWord->word.size();i++){
@@ -115,107 +117,103 @@ bool Tile::BuildTile ()
     }
     //If the browsing way is not the natural way, we inverse the direction in the word
     if(browsingWay==-1){
-        startIndex--;
-        for (int i = 0; i <(int)this->boundWord->word.size() ; i++)
-        {
-            this->boundWord->word[i]=(this->boundWord->word[i]+2)%4;
+        res = false;        
+    }
+    else{
+        //We place the tile on the bottom left of the grid
+        //We konw that we start at the left
+        int y = 0;
+        //We find at wath y is the start
+        int x = (this->size-1-abs(this->boundWord->minVertical-minVerticalStart));
+        //cout<<"startIndex = "<<startIndex<<" |browsingWay ="<<browsingWay<<" |Minvertical ="<<minVerticalStart<<endl;
+        int countUnit=0;
+        //We iterate through the word from the start point to the end or the begining depending on the way of brosing
+        for(int i=(startIndex); (i<(int)this->boundWord->word.size()); i++){
+            //cout<<" x="<<x<<" y="<<y<<endl;
+            switch (this->boundWord->word[i])
+            {
+            case 0:
+                y++;
+                if(this->basicShape[x][y-1].tileNumber==-1){
+                    this->basicShape[x][y-1]= Unit(0,countUnit);
+                    countUnit++;
+                    coordBasicUnits.push_back(make_pair(x,y-1));
+                }
+                break;
+            case 1:
+                x--;
+                if(this->basicShape[x+1][y-1].tileNumber==-1){
+                    this->basicShape[x+1][y-1]= Unit(0,countUnit);
+                    countUnit++;
+                    coordBasicUnits.push_back(make_pair(x+1,y-1));
+                }
+                
+                break;
+            case 2:
+                y--;
+                if(this->basicShape[x+1][y].tileNumber==-1){
+                    this->basicShape[x+1][y]= Unit(0,countUnit);
+                    countUnit++;
+                    coordBasicUnits.push_back(make_pair(x+1,y));
+                }
+                break;
+            case 3:
+                x++;
+                if(this->basicShape[x][y].tileNumber==-1){
+                    this->basicShape[x][y]= Unit(0,countUnit);
+                    countUnit++;
+                    coordBasicUnits.push_back(make_pair(x,y));
+                }            
+                break;       
+            }
+        }
+
+        //Then we iterate through the word from the end or the begining depending on the way of brosing to the start point  
+        
+        
+        //if the Browsing way is the not natural way, we begin at the end
+       
+
+        for(int i=0 ;i!=startIndex;i++){
+        switch (this->boundWord->word[i])
+            {
+            case 0:
+                y++;
+                if(this->basicShape[x][y-1].tileNumber==-1){
+                    this->basicShape[x][y-1]= Unit(0,countUnit);
+                    countUnit++;
+                    coordBasicUnits.push_back(make_pair(x,y-1));
+                }
+                break;
+            case 1:
+                x--;
+                if(this->basicShape[x+1][y-1].tileNumber==-1){
+                    this->basicShape[x+1][y-1]= Unit(0,countUnit);
+                    countUnit++;
+                    coordBasicUnits.push_back(make_pair(x+1,y-1));
+                }
+                
+                break;
+            case 2:
+                y--;
+                if(this->basicShape[x+1][y].tileNumber==-1){
+                    this->basicShape[x+1][y]= Unit(0,countUnit);
+                    countUnit++;
+                    coordBasicUnits.push_back(make_pair(x+1,y));
+                }
+                break;
+            case 3:
+                x++;
+                if(this->basicShape[x][y].tileNumber==-1){
+                    this->basicShape[x][y]= Unit(0,countUnit);
+                    countUnit++;
+                    coordBasicUnits.push_back(make_pair(x,y));
+                }            
+                break;       
+            }
         }
         
-    }
-
-   
-    //We place the tile on the bottom left of the grid
-    //We konw that we start at the left
-    int y = 0;
-    //We find at wath y is the start
-    int x = (this->size-1-abs(this->boundWord->minVertical-minVerticalStart));
-    //cout<<"startIndex = "<<startIndex<<" |browsingWay ="<<browsingWay<<" |Minvertical ="<<minVerticalStart<<endl;
-    int countUnit=0;
-    //We iterate through the word from the start point to the end or the begining depending on the way of brosing
-    for(int i=(startIndex); (i!=-1 && i!=(int)this->boundWord->word.size()); i+=browsingWay){
-        //cout<<" x="<<x<<" y="<<y<<endl;
-        switch (this->boundWord->word[i])
-        {
-        case 0:
-            y++;
-            if(this->basicShape[x][y-1].tileNumber==-1){
-                this->basicShape[x][y-1]= Unit(0,countUnit);
-                countUnit++;
-            }
-            break;
-        case 1:
-            x--;
-            if(this->basicShape[x+1][y-1].tileNumber==-1){
-                this->basicShape[x+1][y-1]= Unit(0,countUnit);
-                countUnit++;
-            }
-            
-            break;
-        case 2:
-            y--;
-            if(this->basicShape[x+1][y].tileNumber==-1){
-                this->basicShape[x+1][y]= Unit(0,countUnit);
-                countUnit++;
-            }
-            break;
-        case 3:
-            x++;
-            if(this->basicShape[x][y].tileNumber==-1){
-                this->basicShape[x][y]= Unit(0,countUnit);
-                countUnit++;
-            }            
-            break;       
-        }
-    }
-
-    //Then we iterate through the word from the end or the begining depending on the way of brosing to the start point  
-    
-    int i=0;
-    //if the Browsing way is the not natural way, we begin at the end
-    if(browsingWay ==-1){
-        i=(int)this->boundWord->word.size()-1;
-    }
-
-    for( ;i!=startIndex;i+=browsingWay){
-       switch (this->boundWord->word[i])
-        {
-        case 0:
-            y++;
-            if(this->basicShape[x][y-1].tileNumber==-1){
-                this->basicShape[x][y-1]= Unit(0,countUnit);
-                countUnit++;
-            }
-            break;
-        case 1:
-            x--;
-            if(this->basicShape[x+1][y-1].tileNumber==-1){
-                this->basicShape[x+1][y-1]= Unit(0,countUnit);
-                countUnit++;
-            }
-            
-            break;
-        case 2:
-            y--;
-            if(this->basicShape[x+1][y].tileNumber==-1){
-                this->basicShape[x+1][y]= Unit(0,countUnit);
-                countUnit++;
-            }
-            break;
-        case 3:
-            x++;
-            if(this->basicShape[x][y].tileNumber==-1){
-                this->basicShape[x][y]= Unit(0,countUnit);
-                countUnit++;
-            }            
-            break;       
-        }
-    }
-    
-    this->fillTile(countUnit);
-
-    bool res = true;
-    if(browsingWay ==-1){
-        res = false;
+        this->fillTile(countUnit);
     }
     
     return res;
@@ -328,7 +326,7 @@ Tile::~Tile ( )
 
 //----------------------------------------------------- Méthodes protégées
 
-bool Tile::dfsFillTile(int i,int j,vector<Unit*>& group, set<Unit*>& checkedUnits ){
+bool Tile::dfsFillTile(int i,int j,vector<Unit*>& group, set<Unit*>& checkedUnits,vector<pair<int,int>>& coordGroup ){
     bool inTile = true;
 
     // If we are at a nonFile Tile in the border it means that the all group does not belong to the tile
@@ -339,23 +337,27 @@ bool Tile::dfsFillTile(int i,int j,vector<Unit*>& group, set<Unit*>& checkedUnit
     else{
         if(this->basicShape[i+1][j].getTileNumber()==-1 && !checkedUnits.contains(&(this->basicShape[i+1][j]))){
             group.push_back(&(this->basicShape[i+1][j]));
+            coordGroup.push_back(make_pair(i+1,j));
             checkedUnits.insert(&(this->basicShape[i+1][j]));
-            inTile = inTile && dfsFillTile(i+1,j,group,checkedUnits);
+            inTile = inTile && dfsFillTile(i+1,j,group,checkedUnits,coordGroup);
         }
         if(this->basicShape[i-1][j].getTileNumber()==-1 && !checkedUnits.contains(&(this->basicShape[i-1][j]))){
             group.push_back(&(this->basicShape[i-1][j]));
+            coordGroup.push_back(make_pair(i-1,j));
             checkedUnits.insert(&(this->basicShape[i-1][j]));
-            inTile = inTile && dfsFillTile(i-1,j,group,checkedUnits);
+            inTile = inTile && dfsFillTile(i-1,j,group,checkedUnits,coordGroup);
         }
         if(this->basicShape[i][j+1].getTileNumber()==-1 && !checkedUnits.contains(&(this->basicShape[i][j+1]))){
             group.push_back(&(this->basicShape[i][j+1]));
+            coordGroup.push_back(make_pair(i,j+1));
             checkedUnits.insert(&(this->basicShape[i][j+1]));
-            inTile = inTile && dfsFillTile(i,j+1,group,checkedUnits);
+            inTile = inTile && dfsFillTile(i,j+1,group,checkedUnits,coordGroup);
         }
         if(this->basicShape[i][j-1].getTileNumber()==-1 && !checkedUnits.contains(&(this->basicShape[i][j-1]))){
             group.push_back(&(this->basicShape[i][j-1]));
+            coordGroup.push_back(make_pair(i,j-1));
             checkedUnits.insert(&(this->basicShape[i][j-1]));
-            inTile = inTile && dfsFillTile(i,j-1,group,checkedUnits);
+            inTile = inTile && dfsFillTile(i,j-1,group,checkedUnits,coordGroup);
         }        
     }
     return inTile;    
@@ -368,53 +370,27 @@ void Tile::fillTile(int countUnit){
         for (int j = 1; j < this->size-1; j++)
         {
             vector<Unit*> group;
+            vector<pair<int,int>> coordGroup; 
             bool inTile=false;
             if(this->basicShape[i][j].getTileNumber()==-1 && !checkedUnits.contains(&(this->basicShape[i][j]))){           
                 group.push_back(&(this->basicShape[i][j]));
                 checkedUnits.insert(&(this->basicShape[i][j]));
-                inTile = dfsFillTile(i,j,group,checkedUnits);
-            } 
-            if(inTile){
-                for(Unit* u:group){
-                    *u=Unit(0,countUnit);
-                    countUnit ++;
-                }                
-            }
-            
+                inTile = dfsFillTile(i,j,group,checkedUnits,coordGroup);
+
+                if(inTile){
+                    for(Unit* u:group){
+                        *u=Unit(0,countUnit);
+                        countUnit ++;
+                    } 
+                    for(pair<int,int> coord: coordGroup) {
+                        coordBasicUnits.push_back(coord);
+                    }              
+                }
+            }   
         }        
     }
 }
 
-
-void Tile::moveUnitAlongSecondVector(int x, int y,int numUnit,int& countNumTile, int k1, pair<int, int>vect2, map<pair<int,int>,int>& k1k2NumTile, int sens){
-    int numTile;
-    int x2,y2,k2;
-    x2 =x ;
-    y2 =y ;
-    k2 =0 ;
-    while(x2<this->planingShapeSize && x2>=0 && y2<this->planingShapeSize && y2>=0){
-        
-        if(planingShape[x2][y2].getTileNumber()==-1){
-            pair<int,int> xyPair= make_pair(k1,k2);
-            //If the pair of vector factor as not been asigned a number of tile
-            if (k1k2NumTile.count(xyPair)){
-                numTile = k1k2NumTile[xyPair];
-            }
-            else{
-                numTile = countNumTile;
-                k1k2NumTile[xyPair]= countNumTile;
-                countNumTile++;
-                //cout<<"countNumTile : "<<countNumTile<< " |k1: "<<k1<<" |k2: "<<k2<< " |sens :"<<sens<<endl;
-            }
-            if (numTile==0)
-                cout<< " |x2: "<<x2<<" |y2: "<<y2<< " |k1: "<<k1<<" |k2: "<<k2<< " |sens :"<<sens<<endl;
-            this->planingShape[x2][y2]=Unit(numTile, numUnit);                        
-        }
-        x2+=sens*vect2.first;
-        y2+=sens*vect2.second;
-        k2+=sens;
-    }    
-}
 
 pair<int,int>  Tile::getVector1(){
 

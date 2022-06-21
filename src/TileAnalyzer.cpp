@@ -26,11 +26,17 @@ using namespace std;
 //
 //{
 //} //----- Fin de Méthode
-void TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile){
+int TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile){
+    int count =0;
     for(int i =0; i<(int)vectTile.size(); i++){
-        TileAlignment ta(&vectTile[i], sizeAlignment);
-        vectTileAlignment.push_back(ta);        
+        TileAlignment ta(&vectTile[i]);
+        if(ta.buildAlignments(sizeAlignment)){
+            count++;
+            vectTileAlignment.push_back(ta);     
+        }
+               
     }
+    return count;    
 }
 
 vector<TileAlignment>& TileAnalyzer::getVectTileAlignment(){

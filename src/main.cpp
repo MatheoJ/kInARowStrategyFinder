@@ -46,15 +46,16 @@ int main(int argc, char** argv){
 
     start = high_resolution_clock::now();
     TileAnalyzer ta(KSIZE);
-    ta.analyzeTileVect(tg.getTileVect());
+    int count = ta.analyzeTileVect(tg.getTileVect());
     stop = high_resolution_clock::now();
     duration = duration_cast<microseconds>(stop - start);
     cout<<"Génération des alignements :"<<duration.count()<<" ms"<<endl;
     cout<<endl;
     cout<<"Nombre pavages traités: "<<nb<<endl;
+    cout<<"Nombre de pavages gardés aprés analyse de leurs traces: "<<count<<endl;
     cout<<"________________________________________________________"<<endl;
 
-    //cout<<tg.getTileVect()[0];
-    //cout<<ta.getVectTileAlignment()[0];
+    cout<<tg.getTileVect()[0];
+    cout<<ta.getVectTileAlignment()[0];
     
 }

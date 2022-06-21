@@ -28,7 +28,7 @@ class TileAnalyzer
 
 public:
 //----------------------------------------------------- Méthodes publiques 
-    void  analyzeTileVect(vector<Tile>& vectTile);
+    int  analyzeTileVect(vector<Tile>& vectTile);
     vector<TileAlignment>& getVectTileAlignment();  
     
     

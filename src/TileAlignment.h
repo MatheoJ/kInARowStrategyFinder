@@ -11,11 +11,12 @@
 
 //--------------------------------------------------- Interfaces utilisées
 #include "Tile.h"
-#include "vector"
+#include <vector>
+#include <queue>
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
-using Alignment = vector<set<int>>;
+using Alignment = std::vector< std::vector<int> >;
 
 
 //------------------------------------------------------------------------
@@ -34,11 +35,12 @@ public:
     friend ostream &operator<<(ostream &stream, const TileAlignment &ta);
     friend class TileAnalyzer;
 //----------------------------------------------------- Méthodes publiques    
+bool buildAlignments(int sizeAlignment);
     
 //-------------------------------------------- Constructeurs - destructeur
     
     TileAlignment ();
-    TileAlignment (Tile * t, int sizeAlignment);
+    TileAlignment (Tile * t);
     
 
     virtual ~TileAlignment ( );
@@ -51,10 +53,10 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-    void buildAlignments(int sizeAlignment);
+    
 //----------------------------------------------------- Attributs protégés
     Tile* tile;
-    vector<Alignment> alignementVect;
+    vector< Alignment > alignementVect;
 
 
 

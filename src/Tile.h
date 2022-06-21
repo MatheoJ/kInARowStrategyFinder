@@ -80,8 +80,7 @@ public:
 protected:
 //----------------------------------------------------- Méthodes protégées
     
-    bool dfsFillTile(int i,int j,vector<Unit*>& group, set<Unit*>&checkedUnits );
-    void moveUnitAlongSecondVector(int x, int y,int numUnit,int& countNumTile, int k1, pair<int, int>vect2, map<pair<int,int>,int>& k1k2NumTile, int sens);
+    bool dfsFillTile(int i,int j,vector<Unit*>& group, set<Unit*>&checkedUnits,vector<pair<int,int>>& coordGroup );
     pair<int,int> getVector1();
     pair<int,int> getVector2();
     pair<int,int> getVector3(pair<int,int> vect1, pair<int,int> vect2);
@@ -95,6 +94,7 @@ protected:
     int size;
     int planingShapeSize;
     Unit**  basicShape;
+    vector< pair<int,int> > coordBasicUnits; 
     Unit** planingShape;
     
 
