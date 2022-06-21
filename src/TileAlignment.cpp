@@ -31,20 +31,67 @@ using namespace std;
 ostream &operator<<(ostream &stream, const TileAlignment &ta)
 {
     
-   for (int i = 0; i < (int)ta.alignementVect.size(); i++)
-   {
-        for (int j = 0; j <  (int)ta.alignementVect[i].size(); j++)
+    stream<<"Ensemble traces Horizontale :"<<endl;
+    for (int i = 0; i < (int)ta.alignementVectHorizontal.size(); i++)
+    {
+        for (int j = 0; j <  (int)ta.alignementVectHorizontal[i].size(); j++)
         {
-              
+                
             // Displaying set elements   
-            for(int i :ta.alignementVect[i][j]){
+            
+            for(int i :ta.alignementVectHorizontal[i][j]){
                 stream << i << " ";
             }
             stream<<" ||";
         }
         stream<<endl;        
-   }
-   stream<<"--------------------\n";
+    }
+    stream<<"Ensemble traces Vertical :"<<endl;
+    for (int i = 0; i < (int)ta.alignementVectVertical.size(); i++)
+    {
+        for (int j = 0; j <  (int)ta.alignementVectVertical[i].size(); j++)
+        {
+                
+            // Displaying set elements   
+            
+            for(int i :ta.alignementVectVertical[i][j]){
+                stream << i << " ";
+            }
+            stream<<" ||";
+        }
+        stream<<endl;        
+    }
+    stream<<"Ensemble traces Diagonale :"<<endl;
+    for (int i = 0; i < (int)ta.alignementVectDiag.size(); i++)
+    {
+        for (int j = 0; j <  (int)ta.alignementVectDiag[i].size(); j++)
+        {
+                
+            // Displaying set elements   
+            
+            for(int i :ta.alignementVectDiag[i][j]){
+                stream << i << " ";
+            }
+            stream<<" ||";
+        }
+        stream<<endl;        
+    }
+    stream<<"Ensemble traces Anti-Diagonale :"<<endl;
+    for (int i = 0; i < (int)ta.alignementVectAntiDiag.size(); i++)
+    {
+        for (int j = 0; j <  (int)ta.alignementVectAntiDiag[i].size(); j++)
+        {
+                
+            // Displaying set elements   
+            
+            for(int i :ta.alignementVectAntiDiag[i][j]){
+                stream << i << " ";
+            }
+            stream<<" ||";
+        }
+        stream<<endl;        
+    }
+    stream<<"--------------------\n";
    
     return stream;
 }
@@ -79,12 +126,48 @@ TileAlignment::~TileAlignment ()
 
 
 bool checkAlignment(Alignment& a){
-    for(int i =0; i<(int)a.size(); i++){
-        if(a[i].size()==1)
-            return false;
+    auto it = a.begin();
+    while (it != a.end())
+    {
+        // remove odd numbers
+        if (it->size()==1)
+        {
+            // `erase()` invalidates the iterator, use returned iterator
+            it = a.erase(it);
+        }
+        // Notice that the iterator is incremented only on the else part (why?)
+        else {
+            ++it;
+        }
     }
+
+    if(a.size()==0)
+        return false;
     return true;
 
+}
+
+void eraseDouble(vector<vector<int>>& a){
+    auto it = a.begin();
+    while (it != a.end()-1)
+    {
+        // remove odd numbers
+        if (*it==*(it+1))
+        {
+            // `erase()` invalidates the iterator, use returned iterator
+            it = a.erase(it);
+        }
+        // Notice that the iterator is incremented only on the else part (why?)
+        else {
+            ++it;
+        }
+    }
+}
+
+void addElementToSet(set<int> & vectToEdit,vector<int> & vectTarget ){
+    for(int i: vectTarget){
+        vectToEdit.insert(i);
+    }
 }
 
 //------------------------------------------------------------------ PRIVE
@@ -119,17 +202,15 @@ bool TileAlignment::buildAlignments(int sizeAlignment){
                     }
                     a[indexSet].push_back(tile->planingShape[i+k][j].getUnitNumber());
                 }
-                if(!checkAlignment(a))
-                    return false;
-                
-                alignementVect.push_back(a);
+                if(checkAlignment(a))
+                    alignementVectVertical.push_back(a);
 
                 //horizontal
                 numTileIndex.clear();
                 a.clear();
                 for(int k=0; k<sizeAlignment; k++){
                     if(numTileIndex.contains(tile->planingShape[i][j+k].getTileNumber())){
-                        indexSet = numTileIndex[tile->planingShape[i+k][j+k].getTileNumber()];                        
+                        indexSet = numTileIndex[tile->planingShape[i][j+k].getTileNumber()];                        
                     }
                     else{
                         numTileIndex[tile->planingShape[i][j+k].getTileNumber()]=a.size();
@@ -138,10 +219,11 @@ bool TileAlignment::buildAlignments(int sizeAlignment){
                         a.push_back(s);
                     }
                     a[indexSet].push_back(tile->planingShape[i][j+k].getUnitNumber());
-                }
-                if(!checkAlignment(a))
-                    return false;
-                alignementVect.push_back(a);
+                } 
+
+                if(checkAlignment(a))
+                    alignementVectHorizontal.push_back(a);
+                
                 
 
                 //diagonal
@@ -159,9 +241,8 @@ bool TileAlignment::buildAlignments(int sizeAlignment){
                     }
                     a[indexSet].push_back(tile->planingShape[i+k][j+k].getUnitNumber());
                 }
-                if(!checkAlignment(a))
-                    return false;
-                alignementVect.push_back(a);
+                if(checkAlignment(a))
+                    alignementVectDiag.push_back(a);
                
             }    
 
@@ -185,15 +266,43 @@ bool TileAlignment::buildAlignments(int sizeAlignment){
                     }
                     a[indexSet].push_back(tile->planingShape[i+k][j-k].getUnitNumber());
                 }
-                if(!checkAlignment(a))
-                    return false;
-                alignementVect.push_back(a);                
+                if(checkAlignment(a))
+                    alignementVectAntiDiag.push_back(a);              
             }
         }
 
     }
 
+
+    if(!checkTileAlignment()){
+        return false;
+    }
+        
+
     //If the function get's here it means: it hasn't encontered a wrong alignment
     return true;
 
-} 
+}
+
+
+bool TileAlignment::checkTileAlignment(){
+    if(alignementVectVertical.size()==0 ||alignementVectHorizontal.size()==0 ||alignementVectDiag.size()==0 ||alignementVectAntiDiag.size()==0  ){
+        return false;
+    }
+
+    /* set<int> unitTaken;
+    //We take every unit wich belong to alignment of two set 
+    for(int i; i<alignementVectHorizontal.size(); i++){
+        eraseDouble(alignementVectHorizontal[i]);
+        if(alignementVectHorizontal[i].size()==1 && alignementVectHorizontal[i][0].size()==2){
+            addElementToSet(unitTaken,alignementVectHorizontal[i][0]);
+        }       
+    } */
+
+
+
+
+
+
+    return true;
+}

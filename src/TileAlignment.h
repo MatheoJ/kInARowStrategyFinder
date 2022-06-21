@@ -35,7 +35,7 @@ public:
     friend ostream &operator<<(ostream &stream, const TileAlignment &ta);
     friend class TileAnalyzer;
 //----------------------------------------------------- Méthodes publiques    
-bool buildAlignments(int sizeAlignment);
+    bool buildAlignments(int sizeAlignment);
     
 //-------------------------------------------- Constructeurs - destructeur
     
@@ -53,10 +53,14 @@ bool buildAlignments(int sizeAlignment);
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-    
+    bool checkTileAlignment();
 //----------------------------------------------------- Attributs protégés
     Tile* tile;
-    vector< Alignment > alignementVect;
+    vector< Alignment > alignementVectVertical;
+    vector< Alignment > alignementVectHorizontal;
+    vector< Alignment > alignementVectDiag;
+    vector< Alignment > alignementVectAntiDiag;
+
 
 
 

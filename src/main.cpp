@@ -55,7 +55,10 @@ int main(int argc, char** argv){
     cout<<"Nombre de pavages gardés aprés analyse de leurs traces: "<<count<<endl;
     cout<<"________________________________________________________"<<endl;
 
-    cout<<tg.getTileVect()[0];
-    cout<<ta.getVectTileAlignment()[0];
+    
+    /* cout<<tg.getTileVect()[37];
+    TileAlignment t(&tg.getTileVect()[37]);
+    t.buildAlignments(7);
+    cout<<t; */
     
 }

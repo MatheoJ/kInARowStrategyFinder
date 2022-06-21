@@ -27,16 +27,13 @@ using namespace std;
 //{
 //} //----- Fin de Méthode
 int TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile){
-    int count =0;
     for(int i =0; i<(int)vectTile.size(); i++){
         TileAlignment ta(&vectTile[i]);
         if(ta.buildAlignments(sizeAlignment)){
-            count++;
-            vectTileAlignment.push_back(ta);     
+            vectTileAlignment.push_back(ta); 
         }
-               
     }
-    return count;    
+    return vectTileAlignment.size();    
 }
 
 vector<TileAlignment>& TileAnalyzer::getVectTileAlignment(){

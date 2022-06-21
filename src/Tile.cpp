@@ -37,7 +37,7 @@ ostream &operator<<(ostream &stream, const Tile &t)
                 stream<<t.basicShape[i][j].getUnitNumber()<<"|";
             }
             else{
-                stream<<" ";
+                stream<<" |";
             }
         }
         stream<<endl;        
