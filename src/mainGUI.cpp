@@ -80,7 +80,7 @@ int main()
     while (window.isOpen())
     {
         Event event;
-        while (window.pollEvent(event))
+        while (window.waitEvent(event))
         {
 
             //input gestion or event 
@@ -127,7 +127,7 @@ void InputHandler(Event& event, RenderWindow& window, RenderWindow& window2,vect
     if (event.type == Event::Closed)
                 window.close();
                 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    else if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
         
         sf::Vector2i localPosition = sf::Mouse::getPosition(window);
@@ -148,7 +148,7 @@ void InputHandler(Event& event, RenderWindow& window, RenderWindow& window2,vect
         }       
         
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
         if(numPage!=0){
             numPage--;
@@ -162,7 +162,7 @@ void InputHandler(Event& event, RenderWindow& window, RenderWindow& window2,vect
             isTileSelected = false;
         }
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
         if(numPage!=numPageMax){
             shapeTile.clear();

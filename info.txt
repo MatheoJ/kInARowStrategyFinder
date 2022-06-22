@@ -28,3 +28,33 @@ https://coolors.co/palette/ccd5ae-e9edc9-fefae0-faedcd-d4a373
 
 Problème: énormément de doublons -> comment les diférentier
 quel boundary word prendre ? 
+
+
+index of wich
+
+
+
+direction:
+ensemble de trace : trace||trace||trace||
+ensemble de trace : trace||trace||trace||
+ensemble de trace : trace||trace||trace||
+
+Premier check:
+- si une trace est de taille 1 on l'enlève.
+- si un ensemble pour un direction est vide on enlève
+- si pour une direction y a un ensemble d'une trace de taille 2 on le prend pour cette direction OBLIGATOIRMENT
+
+- 1ere règles :on enlève les traces de taille deux des autres directions qui contienne un ou deux éléments de traces précedemment prise;
+- 2eme règles :soit A une direction, si il y a deux éléments pris par d'autre directions, et que ces deux élément sont contenu dans une trace de taille trois, alors on enlève cette trace.
+
+- un ensemble de traces est invalidé si toutes ses trace sont enlevés.
+- on élimine la tuile si ca bloque tous les traces des autres directions
+
+
+QUESTION: si pour une direction il existe un ensemble composé de taille 1, la direction est invalidé ? 
+
+
+
+avec une tuile prise par une direction bloque les traces qui sont 
+
+quand on prend un esemble de deux on bloque tout les uatres ensemble de 2 dasn les autres direction qui l'inersecte

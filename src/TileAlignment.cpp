@@ -125,7 +125,7 @@ TileAlignment::~TileAlignment ()
 } //----- Fin de ~TileAlignment
 
 
-bool checkAlignment(Alignment& a){
+bool cleanAlignment(Alignment& a){
     auto it = a.begin();
     while (it != a.end())
     {
@@ -143,32 +143,54 @@ bool checkAlignment(Alignment& a){
 
     if(a.size()==0)
         return false;
+    for(vector<int>& v : a)
+        sort(v.begin(),v.end());
     return true;
 
 }
 
-void eraseDouble(vector<vector<int>>& a){
-    auto it = a.begin();
-    while (it != a.end()-1)
+template <typename T>
+void eraseDuplicates(std::vector<T> & vecOfElements)
+{
+    std::map<T, bool> countMap;
+   
+    // Remove the elements from Map which has 1 frequency count
+    for (auto it = vecOfElements.begin() ; it != vecOfElements.end() ;)
     {
-        // remove odd numbers
-        if (*it==*(it+1))
-        {
-            // `erase()` invalidates the iterator, use returned iterator
-            it = a.erase(it);
+        if (countMap.contains(*it))
+            it = vecOfElements.erase(it);
+        else{
+            countMap[*it]=true;
+            it++;
         }
-        // Notice that the iterator is incremented only on the else part (why?)
-        else {
-            ++it;
-        }
+            
     }
-}
+} 
 
 void addElementToSet(set<int> & vectToEdit,vector<int> & vectTarget ){
     for(int i: vectTarget){
         vectToEdit.insert(i);
     }
 }
+
+void eraseElementTakenByOtherDirection(Alignment& a,set<int>& s1,set<int>& s2,set<int>& s3){
+    auto it = a.begin();
+    while (it != a.end())
+    {
+        // remove odd numbers
+
+        if (it->size()==1)
+        {
+            // `erase()` invalidates the iterator, use returned iterator
+            it = a.erase(it);
+        }
+        // Notice that the iterator is incremented only on the else part (why?)
+        else {            
+            ++it;
+        }
+    }
+}   
+
 
 //------------------------------------------------------------------ PRIVE
 
@@ -202,8 +224,11 @@ bool TileAlignment::buildAlignments(int sizeAlignment){
                     }
                     a[indexSet].push_back(tile->planingShape[i+k][j].getUnitNumber());
                 }
-                if(checkAlignment(a))
+                if(cleanAlignment(a)){
+                    eraseDuplicates(a);
                     alignementVectVertical.push_back(a);
+                }
+                    
 
                 //horizontal
                 numTileIndex.clear();
@@ -221,9 +246,10 @@ bool TileAlignment::buildAlignments(int sizeAlignment){
                     a[indexSet].push_back(tile->planingShape[i][j+k].getUnitNumber());
                 } 
 
-                if(checkAlignment(a))
+                if(cleanAlignment(a)){
+                    eraseDuplicates(a);
                     alignementVectHorizontal.push_back(a);
-                
+                }
                 
 
                 //diagonal
@@ -241,33 +267,37 @@ bool TileAlignment::buildAlignments(int sizeAlignment){
                     }
                     a[indexSet].push_back(tile->planingShape[i+k][j+k].getUnitNumber());
                 }
-                if(checkAlignment(a))
+                if(cleanAlignment(a)){
+                    eraseDuplicates(a);
                     alignementVectDiag.push_back(a);
+                }
                
             }    
 
 
             //antiDiagonal  
-            if(!unitChecked.contains(tile->planingShape[i+sizeAlignment][j].getUnitNumber())){
-                unitChecked.insert(tile->planingShape[i+sizeAlignment][j].getUnitNumber());  
+            if(!unitChecked.contains(tile->planingShape[i][j+sizeAlignment].getUnitNumber())){
+                unitChecked.insert(tile->planingShape[i][j+sizeAlignment].getUnitNumber());  
                 numTileIndex.clear();
                 Alignment a;
                 
                 for(int k=0; k<sizeAlignment; k++){
-                    if(numTileIndex.contains(tile->planingShape[i+k][j-k].getTileNumber())){
-                        indexSet = numTileIndex[tile->planingShape[i+k][j-k].getTileNumber()];                        
+                    if(numTileIndex.contains(tile->planingShape[i+k][j+sizeAlignment-k].getTileNumber())){
+                        indexSet = numTileIndex[tile->planingShape[i+k][j+sizeAlignment-k].getTileNumber()];                        
                     }
                     else{
-                        numTileIndex[tile->planingShape[i+k][j-k].getTileNumber()]=a.size();
+                        numTileIndex[tile->planingShape[i+k][j+sizeAlignment-k].getTileNumber()]=a.size();
                         indexSet = a.size();
                         vector<int> s;
 
                         a.push_back(s);
                     }
-                    a[indexSet].push_back(tile->planingShape[i+k][j-k].getUnitNumber());
+                    a[indexSet].push_back(tile->planingShape[i+k][j+sizeAlignment-k].getUnitNumber());
                 }
-                if(checkAlignment(a))
-                    alignementVectAntiDiag.push_back(a);              
+                if(cleanAlignment(a)){
+                    eraseDuplicates(a);
+                    alignementVectAntiDiag.push_back(a);
+                }            
             }
         }
 
@@ -277,7 +307,11 @@ bool TileAlignment::buildAlignments(int sizeAlignment){
     if(!checkTileAlignment()){
         return false;
     }
-        
+
+    eraseDuplicates(alignementVectAntiDiag);
+    eraseDuplicates(alignementVectDiag);
+    eraseDuplicates(alignementVectHorizontal);
+    eraseDuplicates(alignementVectVertical);
 
     //If the function get's here it means: it hasn't encontered a wrong alignment
     return true;
@@ -290,19 +324,59 @@ bool TileAlignment::checkTileAlignment(){
         return false;
     }
 
-    /* set<int> unitTaken;
-    //We take every unit wich belong to alignment of two set 
-    for(int i; i<alignementVectHorizontal.size(); i++){
-        eraseDouble(alignementVectHorizontal[i]);
-        if(alignementVectHorizontal[i].size()==1 && alignementVectHorizontal[i][0].size()==2){
-            addElementToSet(unitTaken,alignementVectHorizontal[i][0]);
-        }       
-    } */
+    set<int> unitTakenByHorizontal, unitTakenByVertical, unitTakenByDiag, unitTakenByAntiDiag;
+    bool unitTaken = true;
 
 
-
-
-
-
+    while (unitTaken)
+    {
+        unitTaken = false;
+        //We take every unit wich belong to alignment of two set 
+        //horizontal
+        for(Alignment& a: alignementVectHorizontal){
+            eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByDiag,unitTakenByAntiDiag);
+            if(a.size()==0){
+                return false;
+            }
+            if(a.size()==1 && a[0].size()==2){
+                addElementToSet(unitTakenByHorizontal,a[0]);
+                unitTaken = true;
+            } 
+        }
+        //Vertical
+        for(Alignment& a: alignementVectVertical){
+            eraseElementTakenByOtherDirection(a,unitTakenByHorizontal,unitTakenByDiag,unitTakenByAntiDiag);
+            if(a.size()==0){
+                return false;
+            }
+            if(a.size()==1 && a[0].size()==2){
+                addElementToSet(unitTakenByVertical,a[0]);
+                unitTaken = true;
+            } 
+        }
+        //Diagonal
+        for(Alignment& a: alignementVectDiag){
+            eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByHorizontal,unitTakenByAntiDiag);
+            if(a.size()==0){
+                return false;
+            }
+            if(a.size()==1 && a[0].size()==2){
+                addElementToSet(unitTakenByDiag,a[0]);
+                unitTaken = true;
+            } 
+        }
+        //AntiDiagonal
+        for(Alignment& a: alignementVectAntiDiag){
+            eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByDiag,unitTakenByHorizontal);
+            if(a.size()==0){
+                return false;
+            }
+            if(a.size()==1 && a[0].size()==2){
+                addElementToSet(unitTakenByAntiDiag,a[0]);
+                unitTaken = true;
+            } 
+        }
+    }
+    
     return true;
 }
