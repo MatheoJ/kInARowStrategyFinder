@@ -175,16 +175,18 @@ void addElementToSet(set<int> & vectToEdit,vector<int> & vectTarget ){
 
 void eraseElementTakenByOtherDirection(Alignment& a,set<int>& s1,set<int>& s2,set<int>& s3){
     auto it = a.begin();
+    bool toBeDeleted = false;
     while (it != a.end())
-    {
-        // remove odd numbers
-
-        if (it->size()==1)
+    {   
+        toBeDeleted = false;
+        for(int& i : *it)
         {
-            // `erase()` invalidates the iterator, use returned iterator
-            it = a.erase(it);
+            if(s1.contains(i)||s2.contains(i)||s3.contains(i))
+                toBeDeleted=true;
         }
-        // Notice that the iterator is incremented only on the else part (why?)
+        if(toBeDeleted){
+            it = a.erase(it);
+        } 
         else {            
             ++it;
         }
@@ -327,7 +329,6 @@ bool TileAlignment::checkTileAlignment(){
     set<int> unitTakenByHorizontal, unitTakenByVertical, unitTakenByDiag, unitTakenByAntiDiag;
     bool unitTaken = true;
 
-
     while (unitTaken)
     {
         unitTaken = false;
@@ -377,6 +378,5 @@ bool TileAlignment::checkTileAlignment(){
             } 
         }
     }
-    
     return true;
 }
