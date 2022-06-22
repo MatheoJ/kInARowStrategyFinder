@@ -179,9 +179,21 @@ void eraseElementTakenByOtherDirection(Alignment& a,set<int>& s1,set<int>& s2,se
     while (it != a.end())
     {   
         toBeDeleted = false;
-        for(int& i : *it)
-        {
-            if(s1.contains(i)||s2.contains(i)||s3.contains(i))
+        if((*it).size()==2){
+            for(int& i : *it)
+            {
+                if(s1.contains(i)||s2.contains(i)||s3.contains(i))
+                    toBeDeleted=true;
+            }
+        }
+        if((*it).size()==3){
+            int count =0;
+            for(int& i : *it)
+            {
+                if(s1.contains(i)||s2.contains(i)||s3.contains(i))
+                    count++;
+            }
+            if (count>=2)
                 toBeDeleted=true;
         }
         if(toBeDeleted){
@@ -305,6 +317,7 @@ bool TileAlignment::buildAlignments(int sizeAlignment){
 
     }
 
+    
 
     if(!checkTileAlignment()){
         return false;
@@ -315,6 +328,8 @@ bool TileAlignment::buildAlignments(int sizeAlignment){
     eraseDuplicates(alignementVectHorizontal);
     eraseDuplicates(alignementVectVertical);
 
+    
+
     //If the function get's here it means: it hasn't encontered a wrong alignment
     return true;
 
@@ -322,12 +337,16 @@ bool TileAlignment::buildAlignments(int sizeAlignment){
 
 
 bool TileAlignment::checkTileAlignment(){
+    static int countUseOfFunf =0;
+    countUseOfFunf++;
+
     if(alignementVectVertical.size()==0 ||alignementVectHorizontal.size()==0 ||alignementVectDiag.size()==0 ||alignementVectAntiDiag.size()==0  ){
         return false;
     }
 
     set<int> unitTakenByHorizontal, unitTakenByVertical, unitTakenByDiag, unitTakenByAntiDiag;
     bool unitTaken = true;
+    int count =0;
 
     while (unitTaken)
     {
@@ -340,8 +359,10 @@ bool TileAlignment::checkTileAlignment(){
                 return false;
             }
             if(a.size()==1 && a[0].size()==2){
-                addElementToSet(unitTakenByHorizontal,a[0]);
-                unitTaken = true;
+                if(!unitTakenByHorizontal.contains(a[0][0])||!unitTakenByHorizontal.contains(a[0][1])){
+                    addElementToSet(unitTakenByHorizontal,a[0]);
+                    unitTaken = true;
+                }
             } 
         }
         //Vertical
@@ -351,8 +372,10 @@ bool TileAlignment::checkTileAlignment(){
                 return false;
             }
             if(a.size()==1 && a[0].size()==2){
-                addElementToSet(unitTakenByVertical,a[0]);
-                unitTaken = true;
+                if(!unitTakenByVertical.contains(a[0][0])||!unitTakenByVertical.contains(a[0][1])){
+                    addElementToSet(unitTakenByVertical,a[0]);
+                    unitTaken = true;
+                }
             } 
         }
         //Diagonal
@@ -362,8 +385,10 @@ bool TileAlignment::checkTileAlignment(){
                 return false;
             }
             if(a.size()==1 && a[0].size()==2){
-                addElementToSet(unitTakenByDiag,a[0]);
-                unitTaken = true;
+                if(!unitTakenByDiag.contains(a[0][0])||!unitTakenByDiag.contains(a[0][1])){
+                    addElementToSet(unitTakenByDiag,a[0]);
+                    unitTaken = true;
+                }
             } 
         }
         //AntiDiagonal
@@ -373,10 +398,19 @@ bool TileAlignment::checkTileAlignment(){
                 return false;
             }
             if(a.size()==1 && a[0].size()==2){
-                addElementToSet(unitTakenByAntiDiag,a[0]);
-                unitTaken = true;
+                if(!unitTakenByAntiDiag.contains(a[0][0])||!unitTakenByAntiDiag.contains(a[0][1])){
+                    addElementToSet(unitTakenByAntiDiag,a[0]);
+                    unitTaken = true;
+                }                
             } 
         }
+        if (unitTaken)
+            count++;            
     }
+    /*if(count>0){
+        cout<<*(this->tile)<<endl;
+        cout<<*this<<endl;
+    }*/
+
     return true;
 }
