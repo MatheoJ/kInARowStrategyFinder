@@ -31,8 +31,8 @@ int TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile){
         TileAlignment ta(&vectTile[i]);
         if(ta.buildAlignments(sizeAlignment)){
             vectTileAlignment.push_back(ta); 
-            //cout<<vectTile[i];
-            //cout<<ta;
+            /* cout<<vectTile[i];
+            cout<<ta; */
         }
     }
     return vectTileAlignment.size();    

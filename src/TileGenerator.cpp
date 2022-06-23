@@ -127,8 +127,7 @@ void TileGenerator::generateFullWord(vector<char>& firstHalf){
             BoundaryWord bw(firstHalf, otherHalf, xSize, ySize, zSize); 
 
             if(bw.isSelfAvoiding()){
-                this->tileWordVect.push_back(bw); 
-                //cout<<bw;
+                this->tileWordVect.push_back(bw);                 
             }                               
         }       
     }    

@@ -56,9 +56,5 @@ int main(int argc, char** argv){
     cout<<"________________________________________________________"<<endl;
 
     
-    /* cout<<tg.getTileVect()[37];
-    TileAlignment t(&tg.getTileVect()[37]);
-    t.buildAlignments(7);
-    cout<<t;  */
     
 }

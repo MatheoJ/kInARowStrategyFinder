@@ -173,7 +173,10 @@ void addElementToSet(set<int> & vectToEdit,vector<int> & vectTarget ){
     }
 }
 
-void eraseElementTakenByOtherDirection(Alignment& a,set<int>& s1,set<int>& s2,set<int>& s3){
+void eraseElementTakenByOtherDirection(Alignment& a,set<int>& s1,set<int>& s2,set<int>& s3, map<int, int> pairOfElementTaken){
+    
+    set<int> elementOfPairAlreadyCheck; 
+    
     auto it = a.begin();
     bool toBeDeleted = false;
     while (it != a.end())
@@ -188,14 +191,19 @@ void eraseElementTakenByOtherDirection(Alignment& a,set<int>& s1,set<int>& s2,se
         }
         if((*it).size()==3){
             int count =0;
+            elementOfPairAlreadyCheck.clear();
             for(int& i : *it)
             {
-                if(s1.contains(i)||s2.contains(i)||s3.contains(i))
+                if((s1.contains(i)||s2.contains(i)||s3.contains(i))&& !elementOfPairAlreadyCheck.contains(i)){
                     count++;
+                    elementOfPairAlreadyCheck.insert(pairOfElementTaken[i]);
+                }                    
             }
             if (count>=2)
                 toBeDeleted=true;
         }
+
+
         if(toBeDeleted){
             it = a.erase(it);
         } 
@@ -345,6 +353,7 @@ bool TileAlignment::checkTileAlignment(){
     }
 
     set<int> unitTakenByHorizontal, unitTakenByVertical, unitTakenByDiag, unitTakenByAntiDiag;
+    map<int, int> pairOfElementTaken;
     bool unitTaken = true;
     int count =0;
 
@@ -354,52 +363,60 @@ bool TileAlignment::checkTileAlignment(){
         //We take every unit wich belong to alignment of two set 
         //horizontal
         for(Alignment& a: alignementVectHorizontal){
-            eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByDiag,unitTakenByAntiDiag);
+            eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByDiag,unitTakenByAntiDiag, pairOfElementTaken);
             if(a.size()==0){
                 return false;
             }
             if(a.size()==1 && a[0].size()==2){
                 if(!unitTakenByHorizontal.contains(a[0][0])||!unitTakenByHorizontal.contains(a[0][1])){
                     addElementToSet(unitTakenByHorizontal,a[0]);
+                    pairOfElementTaken[a[0][0]]=a[0][1];
+                    pairOfElementTaken[a[0][1]]=a[0][0];
                     unitTaken = true;
                 }
             } 
         }
         //Vertical
         for(Alignment& a: alignementVectVertical){
-            eraseElementTakenByOtherDirection(a,unitTakenByHorizontal,unitTakenByDiag,unitTakenByAntiDiag);
+            eraseElementTakenByOtherDirection(a,unitTakenByHorizontal,unitTakenByDiag,unitTakenByAntiDiag, pairOfElementTaken);
             if(a.size()==0){
                 return false;
             }
             if(a.size()==1 && a[0].size()==2){
                 if(!unitTakenByVertical.contains(a[0][0])||!unitTakenByVertical.contains(a[0][1])){
                     addElementToSet(unitTakenByVertical,a[0]);
+                    pairOfElementTaken[a[0][0]]=a[0][1];
+                    pairOfElementTaken[a[0][1]]=a[0][0];
                     unitTaken = true;
                 }
             } 
         }
         //Diagonal
         for(Alignment& a: alignementVectDiag){
-            eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByHorizontal,unitTakenByAntiDiag);
+            eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByHorizontal,unitTakenByAntiDiag, pairOfElementTaken);
             if(a.size()==0){
                 return false;
             }
             if(a.size()==1 && a[0].size()==2){
                 if(!unitTakenByDiag.contains(a[0][0])||!unitTakenByDiag.contains(a[0][1])){
                     addElementToSet(unitTakenByDiag,a[0]);
+                    pairOfElementTaken[a[0][0]]=a[0][1];
+                    pairOfElementTaken[a[0][1]]=a[0][0];
                     unitTaken = true;
                 }
             } 
         }
         //AntiDiagonal
         for(Alignment& a: alignementVectAntiDiag){
-            eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByDiag,unitTakenByHorizontal);
+            eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByDiag,unitTakenByHorizontal, pairOfElementTaken);
             if(a.size()==0){
                 return false;
             }
             if(a.size()==1 && a[0].size()==2){
                 if(!unitTakenByAntiDiag.contains(a[0][0])||!unitTakenByAntiDiag.contains(a[0][1])){
                     addElementToSet(unitTakenByAntiDiag,a[0]);
+                    pairOfElementTaken[a[0][0]]=a[0][1];
+                    pairOfElementTaken[a[0][1]]=a[0][0];
                     unitTaken = true;
                 }                
             } 
