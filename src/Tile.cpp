@@ -25,7 +25,7 @@ using namespace std;
 
 ostream &operator<<(ostream &stream, const Tile &t)
 {
-    stream<<"This is the tile of size :"<< t.size<<endl;
+    stream<<"This is the tile : #"<< t.id<<endl;
     //stream<<"MinVertical ="<<t.boundWord->getMinVertical()<<" MaxVertical ="<<t.boundWord->getMaxVertical()<<" |MinHorizontal ="<<t.boundWord->getMinHorizontal()<<" MaxHorizontal ="<<t.boundWord->getMaxHorizontal()<<endl;
     
    stream<<*(t.boundWord);
@@ -275,6 +275,10 @@ int Tile::getSize(){
     return this->size;
 }
 
+int Tile::getId(){
+    return this->id;
+}
+
 int Tile::getPlaningShapeSize(){
     return this->planingShapeSize;
 }
@@ -299,6 +303,10 @@ Tile::Tile (BoundaryWord *boundWord )
 // Algorithme :
 //
 {
+    static int countId = 0;
+    id = countId;
+    countId++;
+
     this->boundWord=boundWord;
     this->size= max((boundWord->maxHorizontal-boundWord->minHorizontal),(boundWord->maxVertical-boundWord->minVertical));
     this->basicShape = new Unit* [this->size];

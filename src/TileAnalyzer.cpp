@@ -26,14 +26,24 @@ using namespace std;
 //
 //{
 //} //----- Fin de Méthode
-int TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile){
+int TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile ){
     for(int i =0; i<(int)vectTile.size(); i++){
         TileAlignment ta(&vectTile[i]);
-        if(ta.buildAlignments(sizeAlignment)){
-            vectTileAlignment.push_back(ta); 
-            /* cout<<vectTile[i];
-            cout<<ta; */
+        if(ta.buildAlignments(sizeAlignment)){            
+            ta.eraseDuplicatesInAllDirection();
+            ta.eraseSubsetAlignment();
+            ta.eraseDuplicatesInAllDirection();
+            vectTileAlignment.push_back(ta);     
+
+
+            if(vectTile[i].getId()==2263){
+                cout<<vectTile[i]<<endl;
+                cout<<ta<<endl;
+            }
+            
         }
+        
+
     }
     return vectTileAlignment.size();    
 }

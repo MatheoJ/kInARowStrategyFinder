@@ -35,7 +35,12 @@ public:
     friend ostream &operator<<(ostream &stream, const TileAlignment &ta);
     friend class TileAnalyzer;
 //----------------------------------------------------- Méthodes publiques    
-    bool buildAlignments(int sizeAlignment);
+    bool buildAlignments(int sizeAlignment);    
+    void eraseSubsetAlignment();
+    void eraseDuplicatesInAllDirection();
+    bool checkTileAlignment();
+
+    Tile * getTile();
     
 //-------------------------------------------- Constructeurs - destructeur
     
@@ -53,7 +58,10 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-    bool checkTileAlignment();
+    
+    template <typename T>
+    void eraseDuplicates(std::vector<std::vector<T>> & vecOfElements);
+    void eraseElementTakenByOtherDirection(Alignment& a,set<int>& s1,set<int>& s2,set<int>& s3, map<int, int> pairOfElementTaken);
 //----------------------------------------------------- Attributs protégés
     Tile* tile;
     vector< Alignment > alignementVectVertical;

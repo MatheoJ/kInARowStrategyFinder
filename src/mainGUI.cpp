@@ -1,7 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cstdlib>
+#include <cstring>
 #include "TileGenerator.h"
+#include "TileAnalyzer.h"
 
 using namespace sf;
 
@@ -18,7 +20,7 @@ const int SIZE_SQUARE_OPTION = 200;
 
 
 
-void InputHandler(Event& event, RenderWindow& window,RenderWindow& window2,vector<Tile>& tVect,int& numPage,int& numPageMax,vector<sf::RectangleShape> & shapeTile,vector<sf::RectangleShape>& shapePlaning,bool& isTileSelected,sf::RectangleShape& selctedTile  );
+bool InputHandler(Event& event, RenderWindow& window,RenderWindow& window2,vector<Tile>& tVect,int& numPage,int& numPageMax,vector<sf::RectangleShape> & shapeTile,vector<sf::RectangleShape>& shapePlaning,bool& isTileSelected,sf::RectangleShape& selctedTile  );
 void drawTile(RenderWindow& window,Tile tile, int x, int y, int sizeForTile,vector<sf::RectangleShape> & shapeTile );
 void drawLine(RenderWindow& window, int sizeSquare, vector<sf::RectangleShape> & shapeLine );
 void drawTilingShape(Tile tile, int sizeForTile, vector<sf::RectangleShape> & shapePlaning);
@@ -35,16 +37,19 @@ sf::Color colEdge(212, 163, 115);
 sf::Font font;
 
 
-int main()
+int main(int argc, char** argv)
 {
     RenderWindow window(VideoMode(WIN_WIDTH , WIN_HEIGHT+30), "Tile viewer");
     RenderWindow window2(VideoMode(WIN_OPTION_SIZE , WIN_OPTION_SIZE), "More option");
 
     TileGenerator tg;
+    TileAnalyzer ta(9);
     vector<char> vect;
-    tg.generateBoundWord(4,6, vect);
-    tg.generateTile();
-    vector<Tile> tVect = tg.getTileVect();
+    vector<Tile> tVect;
+    int minHPer,maxHPer;
+    
+     int numPage = 0;
+    
 
     vector<sf::RectangleShape> shapeTile;
     vector<sf::RectangleShape> shapePlaning;
@@ -54,15 +59,90 @@ int main()
     sf::RectangleShape selectedTile(sf::Vector2f(SIZE_SQUARE, SIZE_SQUARE));
     selectedTile.setFillColor(colSelect);
 
+    if(argc>1){
+        
+        if(strcmp(argv[1], "-a") == 0){
+            minHPer=5;
+            maxHPer= 7;
+            if(argc==3){
+                minHPer=atoi(argv[2]);
+                maxHPer= minHPer;
+            }
+            tg.generateBoundWord(minHPer,maxHPer, vect);
+            tg.generateTile();
+            tg.generateTilingShape(9);
+            ta.analyzeTileVect(tg.getTileVect());
+            for(TileAlignment& tal: ta.getVectTileAlignment()){
+                tVect.push_back(*(tal.getTile()));
+            }
+        }
+        else if(strcmp(argv[1], "-p") == 0 && argc==4){            
+            minHPer=atoi(argv[2]);
+            maxHPer= minHPer;
+
+            int  id = atoi(argv[3]);               
+            
+            tg.generateBoundWord(minHPer,maxHPer, vect);
+            tg.generateTile();
+            tg.generateTilingShape(7);
+            ta.analyzeTileVect(tg.getTileVect());
+            for(TileAlignment& tal: ta.getVectTileAlignment()){
+                tVect.push_back(*(tal.getTile()));
+            }
+            int i=0;
+            for(; i< tVect.size(); i++){
+                if(tVect[i].getId()==id){
+                    break;
+                }
+            }
+
+            int numTilePerPage= NB_SQUARE_ROW*NB_SQUAR_COLUMN;
+            numPage = i/numTilePerPage;
+            for (int i=0; i<NB_SQUAR_COLUMN;i++){
+                for(int j =0; j<NB_SQUARE_ROW; j++){
+                    drawTile(window, tVect[i*NB_SQUARE_ROW+j+numTilePerPage*numPage],j*SIZE_SQUARE,i*SIZE_SQUARE,SIZE_SQUARE,shapeTile);
+                }
+            }
+
+            std::cout<<tVect[i];
+
+            int y = (i-numPage*numTilePerPage)/NB_SQUARE_ROW;
+            int x = (i-numPage*numTilePerPage)%NB_SQUARE_ROW;
+
+            
+            drawTilingShape(tVect[i], SIZE_SQUARE_OPTION, shapePlaning);
+            selectedTile.setPosition(x*SIZE_SQUARE,y*SIZE_SQUARE);
+            isTileSelected = true;
+
+
+
+        }
+        else{
+            minHPer=atoi(argv[1]);
+            maxHPer= minHPer;
+            tg.generateBoundWord(minHPer,maxHPer, vect);
+            tg.generateTile();
+            tVect = tg.getTileVect();
+        }
+        
+    }
+    else{
+        tg.generateBoundWord(5,7, vect);
+        tg.generateTile();
+        tVect = tg.getTileVect();
+    }
+
+    int numPageMax = tVect.size()/(NB_SQUARE_ROW*NB_SQUAR_COLUMN);
+    int numTilePerPage= NB_SQUARE_ROW*NB_SQUAR_COLUMN;
+
     drawLine(window, SIZE_SQUARE,shapeLine);
     for (int i=0; i<NB_SQUAR_COLUMN;i++){
         for(int j =0; j<NB_SQUARE_ROW; j++){
-            drawTile(window, tVect[i*NB_SQUARE_ROW+j],j*SIZE_SQUARE,i*SIZE_SQUARE,SIZE_SQUARE,shapeTile);
+            drawTile(window, tVect[i*NB_SQUARE_ROW+j+numTilePerPage*numPage],j*SIZE_SQUARE,i*SIZE_SQUARE,SIZE_SQUARE,shapeTile);
         }
     }
 
-    int numPage = 0;
-    int numPageMax = tVect.size()/(NB_SQUARE_ROW*NB_SQUAR_COLUMN);
+   
 
     
     sf::Text text; 
@@ -73,8 +153,7 @@ int main()
     text.setPosition(0,WIN_HEIGHT);
 
 
-   sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+  
 
 
     while (window.isOpen())
@@ -82,37 +161,44 @@ int main()
         Event event;
         while (window.waitEvent(event))
         {
+            
+            if (event.type == Event::Closed){
+                break;
+            }
 
             //input gestion or event 
-            InputHandler(event, window, window2, tVect, numPage, numPageMax,shapeTile,shapePlaning,isTileSelected,selectedTile);
-        }
+            if(!InputHandler(event, window, window2, tVect, numPage, numPageMax,shapeTile,shapePlaning,isTileSelected,selectedTile))
+                break;
+            window.clear(colBack);
+            window2.clear(colBack);
+
+            for(sf::RectangleShape s: shapeLine ){
+                window.draw(s);
+            }
+            
+            for(sf::RectangleShape s: shapeTile ){
+                window.draw(s);
+            }
+
+            for(sf::RectangleShape s: shapePlaning ){            
+                window2.draw(s);
+            }
+
+            if(isTileSelected){
+                window.draw(selectedTile);
+            }
+            //window2.draw(shape);
+
+
+            text.setString("Page "+std::to_string(numPage)+"/"+std::to_string(numPageMax));
+            window.draw(text);
+            
+            window2.display();
+            window.display();
         
-        window.clear(colBack);
-        window2.clear(colBack);
-
-        for(sf::RectangleShape s: shapeLine ){
-            window.draw(s);
         }
+        window.close();
         
-        for(sf::RectangleShape s: shapeTile ){
-            window.draw(s);
-        }
-
-        for(sf::RectangleShape s: shapePlaning ){            
-            window2.draw(s);
-        }
-
-        if(isTileSelected){
-            window.draw(selectedTile);
-        }
-        //window2.draw(shape);
-
-
-        text.setString("Page "+std::to_string(numPage)+"/"+std::to_string(numPageMax));
-        window.draw(text);
-        
-        window2.display();
-        window.display();
         
     }
 
@@ -120,12 +206,15 @@ int main()
 }
 
 
-void InputHandler(Event& event, RenderWindow& window, RenderWindow& window2,vector<Tile>& tVect,int& numPage,int& numPageMax,vector<sf::RectangleShape> & shapeTile, vector<sf::RectangleShape>& shapePlaning,bool& isTileSelected,sf::RectangleShape& selectedTile ){
+bool InputHandler(Event& event, RenderWindow& window, RenderWindow& window2,vector<Tile>& tVect,int& numPage,int& numPageMax,vector<sf::RectangleShape> & shapeTile, vector<sf::RectangleShape>& shapePlaning,bool& isTileSelected,sf::RectangleShape& selectedTile ){
 
     static int lastTileClicked =-1;
 
-    if (event.type == Event::Closed)
-                window.close();
+    if (event.type == Event::Closed){
+        window.close();
+        return false;
+    }
+                
                 
     else if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
@@ -179,6 +268,8 @@ void InputHandler(Event& event, RenderWindow& window, RenderWindow& window2,vect
             isTileSelected = false;
         }
     }
+
+    return true;
 }
 
 void drawLine(RenderWindow& window, int sizeSquare, vector<sf::RectangleShape> & shapeLine){

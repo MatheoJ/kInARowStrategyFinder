@@ -43,7 +43,7 @@ void TileGenerator::generateBoundWord(int minHalfPerimeter,int maxHAlfPerimeter,
             currentHalfWord.push_back(i);
             
             lgthWord++;
-            if (lgthWord>=minHalfPerimeter){
+            if (lgthWord>=minHalfPerimeter && lgthWord<=maxHAlfPerimeter){
                 generateFullWord(currentHalfWord);
             }
             if (lgthWord<=maxHAlfPerimeter){

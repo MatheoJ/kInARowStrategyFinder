@@ -20,13 +20,36 @@ using namespace std;
 //------------------------------------------------------------- Constantes
 
 //----------------------------------------------------------------- PUBLIC
+bool cleanAlignment(Alignment& a){
+    auto it = a.begin();
+    while (it != a.end())
+    {
+        // remove odd numbers
+        if (it->size()==1)
+        {
+            // `erase()` invalidates the iterator, use returned iterator
+            it = a.erase(it);
+        }
+        // Notice that the iterator is incremented only on the else part (why?)
+        else {
+            ++it;
+        }
+    }
 
+    if(a.size()==0)
+        return false;
+
+    return true;
+
+}
+
+void addElementToSet(set<int> & vectToEdit,vector<int> & vectTarget ){
+    for(int i: vectTarget){
+        vectToEdit.insert(i);
+    }
+}
 //----------------------------------------------------- Méthodes publiques
-// type Xxx::Méthode ( liste des paramètres )
-// Algorithme :
-//
-//{
-//} //----- Fin de Méthode
+
 
 ostream &operator<<(ostream &stream, const TileAlignment &ta)
 {
@@ -96,6 +119,144 @@ ostream &operator<<(ostream &stream, const TileAlignment &ta)
     return stream;
 }
 
+void TileAlignment::eraseDuplicatesInAllDirection(){
+    eraseDuplicates(alignementVectAntiDiag);
+    eraseDuplicates(alignementVectDiag);
+    eraseDuplicates(alignementVectHorizontal);
+    eraseDuplicates(alignementVectVertical);
+}
+
+Tile * TileAlignment::getTile(){
+    return this->tile;
+}
+
+
+bool TileAlignment::buildAlignments(int sizeAlignment){
+    map<int, int> numTileIndex;
+    set<int> unitChecked; 
+    int indexSet;
+   
+
+
+    for (int i=0; i<tile->size; i++){
+
+        for (int j=0; j<tile->size; j++){
+            
+            if(tile->planingShape[i][j].getTileNumber()==0){
+                
+                //vertical
+                numTileIndex.clear();
+                Alignment a;
+                for(int k=0; k<sizeAlignment; k++){
+                    if(numTileIndex.contains(tile->planingShape[i+k][j].getTileNumber())){
+                        indexSet = numTileIndex[tile->planingShape[i+k][j].getTileNumber()];                        
+                    }
+                    else{
+                        numTileIndex[tile->planingShape[i+k][j].getTileNumber()]=a.size();
+                        indexSet = a.size();
+                        a.emplace_back();
+                    }
+                    a[indexSet].push_back(tile->planingShape[i+k][j].getUnitNumber());
+                }
+                if(cleanAlignment(a)){
+                    eraseDuplicates(a);
+                    alignementVectVertical.push_back(a);
+                }
+                else{
+                    return false;
+                }
+                    
+
+                //horizontal
+                numTileIndex.clear();
+                a.clear();
+                for(int k=0; k<sizeAlignment; k++){
+                    if(numTileIndex.contains(tile->planingShape[i][j+k].getTileNumber())){
+                        indexSet = numTileIndex[tile->planingShape[i][j+k].getTileNumber()];                        
+                    }
+                    else{
+                        numTileIndex[tile->planingShape[i][j+k].getTileNumber()]=a.size();
+                        indexSet = a.size();
+                        a.emplace_back();
+                    }
+                    a[indexSet].push_back(tile->planingShape[i][j+k].getUnitNumber());
+                } 
+
+                if(cleanAlignment(a)){
+                    eraseDuplicates(a);
+                    alignementVectHorizontal.push_back(a);
+                }
+                else{
+                    return false;
+                }
+                
+
+                //diagonal
+                numTileIndex.clear();
+                a.clear();
+                for(int k=0; k<sizeAlignment; k++){
+                    if(numTileIndex.contains(tile->planingShape[i+k][j+k].getTileNumber())){
+                        indexSet = numTileIndex[tile->planingShape[i+k][j+k].getTileNumber()];                        
+                    }
+                    else{
+                        numTileIndex[tile->planingShape[i+k][j+k].getTileNumber()]=a.size();
+                        indexSet = a.size();
+                        a.emplace_back();
+                    }
+                    a[indexSet].push_back(tile->planingShape[i+k][j+k].getUnitNumber());
+                }
+                if(cleanAlignment(a)){
+                    eraseDuplicates(a);
+                    alignementVectDiag.push_back(a);
+                }
+                else{
+                    return false;
+                }
+               
+            }    
+
+
+            //antiDiagonal  
+            if(!unitChecked.contains(tile->planingShape[i][j+sizeAlignment].getUnitNumber())){
+                unitChecked.insert(tile->planingShape[i][j+sizeAlignment].getUnitNumber());  
+                numTileIndex.clear();
+                Alignment a;
+                
+                for(int k=0; k<sizeAlignment; k++){
+                    if(numTileIndex.contains(tile->planingShape[i+k][j+sizeAlignment-k].getTileNumber())){
+                        indexSet = numTileIndex[tile->planingShape[i+k][j+sizeAlignment-k].getTileNumber()];                        
+                    }
+                    else{
+                        numTileIndex[tile->planingShape[i+k][j+sizeAlignment-k].getTileNumber()]=a.size();
+                        indexSet = a.size();
+                        a.emplace_back();
+                    }
+                    a[indexSet].push_back(tile->planingShape[i+k][j+sizeAlignment-k].getUnitNumber());
+                }
+                if(cleanAlignment(a)){
+                    eraseDuplicates(a);
+                    alignementVectAntiDiag.push_back(a);
+                }
+                else{
+                    return false;
+                }            
+            }
+        }
+
+    }
+
+    
+
+    if(!checkTileAlignment()){
+        return false;
+    }
+   
+
+    //If the function get's here it means: it hasn't encontered a wrong alignment
+    return true;
+
+}
+
 
 //-------------------------------------------- Constructeurs - destructeur
 
@@ -125,38 +286,17 @@ TileAlignment::~TileAlignment ()
 } //----- Fin de ~TileAlignment
 
 
-bool cleanAlignment(Alignment& a){
-    auto it = a.begin();
-    while (it != a.end())
-    {
-        // remove odd numbers
-        if (it->size()==1)
-        {
-            // `erase()` invalidates the iterator, use returned iterator
-            it = a.erase(it);
-        }
-        // Notice that the iterator is incremented only on the else part (why?)
-        else {
-            ++it;
-        }
-    }
 
-    if(a.size()==0)
-        return false;
-    for(vector<int>& v : a)
-        sort(v.begin(),v.end());
-    return true;
-
-}
 
 template <typename T>
-void eraseDuplicates(std::vector<T> & vecOfElements)
+void TileAlignment::eraseDuplicates(std::vector<std::vector<T>> & vecOfElements)
 {
-    std::map<T, bool> countMap;
+    std::map<std::vector<T>, bool> countMap;
    
     // Remove the elements from Map which has 1 frequency count
     for (auto it = vecOfElements.begin() ; it != vecOfElements.end() ;)
     {
+        sort((*it).begin(),(*it).end());
         if (countMap.contains(*it))
             it = vecOfElements.erase(it);
         else{
@@ -165,15 +305,12 @@ void eraseDuplicates(std::vector<T> & vecOfElements)
         }
             
     }
+
 } 
 
-void addElementToSet(set<int> & vectToEdit,vector<int> & vectTarget ){
-    for(int i: vectTarget){
-        vectToEdit.insert(i);
-    }
-}
 
-void eraseElementTakenByOtherDirection(Alignment& a,set<int>& s1,set<int>& s2,set<int>& s3, map<int, int> pairOfElementTaken){
+
+void TileAlignment::eraseElementTakenByOtherDirection(Alignment& a,set<int>& s1,set<int>& s2,set<int>& s3, map<int, int> pairOfElementTaken){
     
     set<int> elementOfPairAlreadyCheck; 
     
@@ -218,135 +355,9 @@ void eraseElementTakenByOtherDirection(Alignment& a,set<int>& s1,set<int>& s2,se
 
 //----------------------------------------------------- Méthodes protégées
 
-bool TileAlignment::buildAlignments(int sizeAlignment){
-    map<int, int> numTileIndex;
-    set<int> unitChecked; 
-    int indexSet;
-   
-
-
-    for (int i=0; i<tile->size; i++){
-
-        for (int j=0; j<tile->size; j++){
-            
-            if(tile->planingShape[i][j].getTileNumber()==0){
-                
-                //vertical
-                numTileIndex.clear();
-                Alignment a;
-                for(int k=0; k<sizeAlignment; k++){
-                    if(numTileIndex.contains(tile->planingShape[i+k][j].getTileNumber())){
-                        indexSet = numTileIndex[tile->planingShape[i+k][j].getTileNumber()];                        
-                    }
-                    else{
-                        numTileIndex[tile->planingShape[i+k][j].getTileNumber()]=a.size();
-                        indexSet = a.size();
-                        vector<int> s;
-                        a.push_back(s);
-                    }
-                    a[indexSet].push_back(tile->planingShape[i+k][j].getUnitNumber());
-                }
-                if(cleanAlignment(a)){
-                    eraseDuplicates(a);
-                    alignementVectVertical.push_back(a);
-                }
-                    
-
-                //horizontal
-                numTileIndex.clear();
-                a.clear();
-                for(int k=0; k<sizeAlignment; k++){
-                    if(numTileIndex.contains(tile->planingShape[i][j+k].getTileNumber())){
-                        indexSet = numTileIndex[tile->planingShape[i][j+k].getTileNumber()];                        
-                    }
-                    else{
-                        numTileIndex[tile->planingShape[i][j+k].getTileNumber()]=a.size();
-                        indexSet = a.size();
-                        vector<int> s;
-                        a.push_back(s);
-                    }
-                    a[indexSet].push_back(tile->planingShape[i][j+k].getUnitNumber());
-                } 
-
-                if(cleanAlignment(a)){
-                    eraseDuplicates(a);
-                    alignementVectHorizontal.push_back(a);
-                }
-                
-
-                //diagonal
-                numTileIndex.clear();
-                a.clear();
-                for(int k=0; k<sizeAlignment; k++){
-                    if(numTileIndex.contains(tile->planingShape[i+k][j+k].getTileNumber())){
-                        indexSet = numTileIndex[tile->planingShape[i+k][j+k].getTileNumber()];                        
-                    }
-                    else{
-                        numTileIndex[tile->planingShape[i+k][j+k].getTileNumber()]=a.size();
-                        indexSet = a.size();
-                        vector<int> s;
-                        a.push_back(s);
-                    }
-                    a[indexSet].push_back(tile->planingShape[i+k][j+k].getUnitNumber());
-                }
-                if(cleanAlignment(a)){
-                    eraseDuplicates(a);
-                    alignementVectDiag.push_back(a);
-                }
-               
-            }    
-
-
-            //antiDiagonal  
-            if(!unitChecked.contains(tile->planingShape[i][j+sizeAlignment].getUnitNumber())){
-                unitChecked.insert(tile->planingShape[i][j+sizeAlignment].getUnitNumber());  
-                numTileIndex.clear();
-                Alignment a;
-                
-                for(int k=0; k<sizeAlignment; k++){
-                    if(numTileIndex.contains(tile->planingShape[i+k][j+sizeAlignment-k].getTileNumber())){
-                        indexSet = numTileIndex[tile->planingShape[i+k][j+sizeAlignment-k].getTileNumber()];                        
-                    }
-                    else{
-                        numTileIndex[tile->planingShape[i+k][j+sizeAlignment-k].getTileNumber()]=a.size();
-                        indexSet = a.size();
-                        vector<int> s;
-
-                        a.push_back(s);
-                    }
-                    a[indexSet].push_back(tile->planingShape[i+k][j+sizeAlignment-k].getUnitNumber());
-                }
-                if(cleanAlignment(a)){
-                    eraseDuplicates(a);
-                    alignementVectAntiDiag.push_back(a);
-                }            
-            }
-        }
-
-    }
-
-    
-
-    if(!checkTileAlignment()){
-        return false;
-    }
-
-    eraseDuplicates(alignementVectAntiDiag);
-    eraseDuplicates(alignementVectDiag);
-    eraseDuplicates(alignementVectHorizontal);
-    eraseDuplicates(alignementVectVertical);
-
-    
-
-    //If the function get's here it means: it hasn't encontered a wrong alignment
-    return true;
-
-}
-
 
 bool TileAlignment::checkTileAlignment(){
-    static int countUseOfFunf =0;
-    countUseOfFunf++;
+    
 
     if(alignementVectVertical.size()==0 ||alignementVectHorizontal.size()==0 ||alignementVectDiag.size()==0 ||alignementVectAntiDiag.size()==0  ){
         return false;
@@ -355,7 +366,6 @@ bool TileAlignment::checkTileAlignment(){
     set<int> unitTakenByHorizontal, unitTakenByVertical, unitTakenByDiag, unitTakenByAntiDiag;
     map<int, int> pairOfElementTaken;
     bool unitTaken = true;
-    int count =0;
 
     while (unitTaken)
     {
@@ -363,7 +373,7 @@ bool TileAlignment::checkTileAlignment(){
         //We take every unit wich belong to alignment of two set 
         //horizontal
         for(Alignment& a: alignementVectHorizontal){
-            eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByDiag,unitTakenByAntiDiag, pairOfElementTaken);
+            this->eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByDiag,unitTakenByAntiDiag, pairOfElementTaken);
             if(a.size()==0){
                 return false;
             }
@@ -378,7 +388,7 @@ bool TileAlignment::checkTileAlignment(){
         }
         //Vertical
         for(Alignment& a: alignementVectVertical){
-            eraseElementTakenByOtherDirection(a,unitTakenByHorizontal,unitTakenByDiag,unitTakenByAntiDiag, pairOfElementTaken);
+            this->eraseElementTakenByOtherDirection(a,unitTakenByHorizontal,unitTakenByDiag,unitTakenByAntiDiag, pairOfElementTaken);
             if(a.size()==0){
                 return false;
             }
@@ -393,7 +403,7 @@ bool TileAlignment::checkTileAlignment(){
         }
         //Diagonal
         for(Alignment& a: alignementVectDiag){
-            eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByHorizontal,unitTakenByAntiDiag, pairOfElementTaken);
+            this->eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByHorizontal,unitTakenByAntiDiag, pairOfElementTaken);
             if(a.size()==0){
                 return false;
             }
@@ -408,7 +418,7 @@ bool TileAlignment::checkTileAlignment(){
         }
         //AntiDiagonal
         for(Alignment& a: alignementVectAntiDiag){
-            eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByDiag,unitTakenByHorizontal, pairOfElementTaken);
+            this->eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByDiag,unitTakenByHorizontal, pairOfElementTaken);
             if(a.size()==0){
                 return false;
             }
@@ -420,14 +430,67 @@ bool TileAlignment::checkTileAlignment(){
                     unitTaken = true;
                 }                
             } 
-        }
-        if (unitTaken)
-            count++;            
+        }           
     }
-    /*if(count>0){
-        cout<<*(this->tile)<<endl;
-        cout<<*this<<endl;
-    }*/
 
     return true;
+}
+
+
+//erase Subset inside an Alignment AND between the alignment them selves
+void TileAlignment::eraseSubsetAlignment(){
+    vector< Alignment >* tabVect[4] = {&alignementVectVertical,  &alignementVectHorizontal, &alignementVectDiag, &alignementVectAntiDiag};
+    for (int i =0; i<4; i++){
+        vector< Alignment >* vect = tabVect[i];
+         
+         for (auto it = vect->begin() ; it != vect->end() ;)
+        {    
+                    
+            for (auto it2 = vect->begin(); it2 != vect->end();)
+            {
+                if(*it2!=*it){
+                    if (includes((*it2).begin(),(*it2).end(),(*it).begin(),(*it).end())){
+                        it2 = vect->erase(it2);
+                        if(it2<it){
+                            it--;
+                        }
+                    }
+                    else{                            
+                        it2++;
+                    }
+                }  
+                else{
+                   it2++; 
+                }
+            }
+            it++;                    
+        }
+
+        for(Alignment& a: *vect){
+            for (auto it = a.begin() ; it != a.end() ;)
+            {                
+                for (auto it2 = a.begin() ; it2 != a.end() ;)
+                {
+                    if(*it2!=*it){
+                        if (includes((*it).begin(),(*it).end(),(*it2).begin(),(*it2).end())){
+                            it2 = a.erase(it2);
+                            if(it2<it){
+                                it--;
+                            }
+                        }    
+                        else{                            
+                            it2++;
+                        }
+                    }
+                    else{
+                        it2++; 
+                    }
+                   
+                        
+                }
+                it++;                    
+            }            
+        }      
+    }
+   
 }

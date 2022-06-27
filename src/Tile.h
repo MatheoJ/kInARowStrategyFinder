@@ -46,6 +46,7 @@ public:
 
     int getSize();
     int getPlaningShapeSize();
+    int getId();
 
     Unit** getBasicShape();
     Unit** getPlaningShape();
@@ -91,6 +92,7 @@ protected:
 
 //----------------------------------------------------- Attributs protégés
     BoundaryWord *boundWord;
+    int id;
     int size;
     int planingShapeSize;
     Unit**  basicShape;

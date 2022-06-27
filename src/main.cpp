@@ -8,13 +8,17 @@ using namespace std::chrono;
 
 int main(int argc, char** argv){
     
-    const int KSIZE = 7;
+    int KSIZE = 7;
     int minHPer =4;
     int maxHPer =6;
 
-    if(argc==2){
+    if(argc>1){
         minHPer=atoi(argv[1]);
         maxHPer= minHPer;
+    }
+
+    if(argc>2){
+        KSIZE=atoi(argv[2]);        
     }
 
     TileGenerator tg;
@@ -55,6 +59,20 @@ int main(int argc, char** argv){
     cout<<"Nombre de pavages gardés aprés analyse de leurs traces: "<<count<<endl;
     cout<<"________________________________________________________"<<endl;
 
-    
+/* 
+    cout<<*(ta.getVectTileAlignment()[89].getTile())<<endl;
+    cout<<(ta.getVectTileAlignment()[89])<<endl;
+
+
+    cout<<*(ta.getVectTileAlignment()[1426].getTile())<<endl;
+    cout<<(ta.getVectTileAlignment()[1426])<<endl;
+
+    cout<<*(ta.getVectTileAlignment()[694].getTile())<<endl;
+    cout<<(ta.getVectTileAlignment()[694])<<endl;
+
+    cout<<*(ta.getVectTileAlignment()[962].getTile())<<endl;
+    cout<<(ta.getVectTileAlignment()[962])<<endl;  */
+     
     
 }
+
