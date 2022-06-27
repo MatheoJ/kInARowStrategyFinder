@@ -48,6 +48,18 @@ void addElementToSet(set<int> & vectToEdit,vector<int> & vectTarget ){
         vectToEdit.insert(i);
     }
 }
+
+int oneElementIsIn(vector<int> a,set<int> &s1 ,set<int> &s2 ,set<int> &s3 ,set<int> &s4, map<int, int>pairOfElementTaken){
+    int res =0;
+    for(int i :a){
+        if( (s1.contains(i)||s2.contains(i)||s3.contains(i)) && count(a.begin(),a.end(), pairOfElementTaken[i])==0){
+            return res;
+        }
+        res++;
+    }
+
+    return -1;
+}
 //----------------------------------------------------- Méthodes publiques
 
 
@@ -258,6 +270,193 @@ bool TileAlignment::buildAlignments(int sizeAlignment){
 }
 
 
+
+template <typename T>
+void TileAlignment::eraseDuplicates(std::vector<std::vector<T>> & vecOfElements)
+{
+    std::map<std::vector<T>, bool> countMap;
+   
+    // Remove the elements from Map which has 1 frequency count
+    for (auto it = vecOfElements.begin() ; it != vecOfElements.end() ;)
+    {
+        sort((*it).begin(),(*it).end());
+        if (countMap.contains(*it))
+            it = vecOfElements.erase(it);
+        else{
+            countMap[*it]=true;
+            it++;
+        }
+            
+    }
+
+} 
+
+void TileAlignment::eraseElementTakenByOtherDirection(Alignment& a,set<int>& s1,set<int>& s2,set<int>& s3, map<int, int> pairOfElementTaken = map<int, int>()){
+    
+    set<int> elementOfPairAlreadyCheck; 
+    
+    auto it = a.begin();
+    bool toBeDeleted = false;
+    while (it != a.end())
+    {   
+        toBeDeleted = false;
+        if((*it).size()==2){
+            for(int& i : *it)
+            {
+                if(s1.contains(i)||s2.contains(i)||s3.contains(i))
+                    toBeDeleted=true;
+            }
+        }
+        // if the map pairOfElementTaken is empty it means that we are only looking to erase set of size two 
+        if((*it).size()==3 && !pairOfElementTaken.empty()){
+            int count =0;
+            elementOfPairAlreadyCheck.clear();
+            for(int& i : *it)
+            {
+                if((s1.contains(i)||s2.contains(i)||s3.contains(i))&& !elementOfPairAlreadyCheck.contains(i)){
+                    count++;
+                    elementOfPairAlreadyCheck.insert(pairOfElementTaken[i]);
+                }                    
+            }
+            if (count>=2)
+                toBeDeleted=true;
+        }
+
+
+        if(toBeDeleted){
+            it = a.erase(it);
+        } 
+        else {            
+            ++it;
+        }
+    }
+}   
+
+
+bool TileAlignment::cleanWithRule(){
+    set<int> unitTakenByHorizontal, unitTakenByVertical, unitTakenByDiag, unitTakenByAntiDiag;
+    set<vector<int>> tupleOfthreeTaken;
+    map<int, int> pairOfElementTaken;
+    bool unitTaken = true;
+
+    while (unitTaken)
+    {
+        unitTaken = false; 
+        //horizontal
+        for(Alignment& a: alignementVectHorizontal){
+            this->eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByDiag,unitTakenByAntiDiag);
+            if(a.size()==0){
+               return false;
+            }            
+            if(a.size()==1 && a[0].size()==2){
+                if(!unitTakenByHorizontal.contains(a[0][0])||!unitTakenByHorizontal.contains(a[0][1])){
+                    addElementToSet(unitTakenByHorizontal,a[0]);
+                    pairOfElementTaken[a[0][0]]=a[0][1];
+                    pairOfElementTaken[a[0][1]]=a[0][0];
+                    unitTaken = true;
+                }
+            }
+            if(a.size()==1 && a[0].size()==3 && !tupleOfthreeTaken.contains(a[0])){
+                int k = oneElementIsIn(a[0], unitTakenByHorizontal, unitTakenByVertical, unitTakenByDiag, unitTakenByAntiDiag, pairOfElementTaken);
+                if(k!= -1){
+                    vector<int> v = a[0];
+                    v.erase(v.begin()+k);
+                    pairOfElementTaken[v[0]]=v[1];
+                    pairOfElementTaken[v[1]]=v[0];
+                    addElementToSet(unitTakenByHorizontal,v);
+                    unitTaken = true;
+                    tupleOfthreeTaken.insert(a[0]);
+                }
+            } 
+        }
+        //Vertical
+        for(Alignment& a: alignementVectVertical){
+            this->eraseElementTakenByOtherDirection(a,unitTakenByHorizontal,unitTakenByDiag,unitTakenByAntiDiag);
+            if(a.size()==0){
+                return false;
+            }
+            if(a.size()==1 && a[0].size()==2){
+                if(!unitTakenByVertical.contains(a[0][0])||!unitTakenByVertical.contains(a[0][1])){
+                    addElementToSet(unitTakenByVertical,a[0]);
+                    pairOfElementTaken[a[0][0]]=a[0][1];
+                    pairOfElementTaken[a[0][1]]=a[0][0];
+                    unitTaken = true;
+                }
+            } 
+            if(a.size()==1 && a[0].size()==3&& !tupleOfthreeTaken.contains(a[0])){
+                int k = oneElementIsIn(a[0], unitTakenByHorizontal, unitTakenByVertical, unitTakenByDiag, unitTakenByAntiDiag, pairOfElementTaken);
+                if(k!= -1){
+                    vector<int> v = a[0];
+                    v.erase(v.begin()+k);
+                    pairOfElementTaken[v[0]]=v[1];
+                    pairOfElementTaken[v[1]]=v[0];
+                    addElementToSet(unitTakenByVertical,v);
+                    unitTaken = true;
+                    tupleOfthreeTaken.insert(a[0]);
+                }
+            } 
+        }
+        //Diagonal
+        for(Alignment& a: alignementVectDiag){
+            this->eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByHorizontal,unitTakenByAntiDiag);
+            if(a.size()==0){
+                return false;
+            }
+            if(a.size()==1 && a[0].size()==2){
+                if(!unitTakenByDiag.contains(a[0][0])||!unitTakenByDiag.contains(a[0][1])){
+                    addElementToSet(unitTakenByDiag,a[0]);
+                    pairOfElementTaken[a[0][0]]=a[0][1];
+                    pairOfElementTaken[a[0][1]]=a[0][0];
+                    unitTaken = true;
+                }
+            } 
+            if(a.size()==1 && a[0].size()==3 && !tupleOfthreeTaken.contains(a[0])){
+                int k = oneElementIsIn(a[0], unitTakenByHorizontal, unitTakenByVertical, unitTakenByDiag, unitTakenByAntiDiag, pairOfElementTaken);
+                if(k!= -1){
+                    vector<int> v = a[0];
+                    v.erase(v.begin()+k);
+                    pairOfElementTaken[v[0]]=v[1];
+                    pairOfElementTaken[v[1]]=v[0];
+                    addElementToSet(unitTakenByDiag,v);
+                    unitTaken = true;
+                    tupleOfthreeTaken.insert(a[0]);
+                }
+            } 
+        }
+        //AntiDiagonal
+        for(Alignment& a: alignementVectAntiDiag){
+            this->eraseElementTakenByOtherDirection(a,unitTakenByVertical,unitTakenByDiag,unitTakenByHorizontal);
+            if(a.size()==0){
+                return false;
+            }
+            if(a.size()==1 && a[0].size()==2){
+                if(!unitTakenByAntiDiag.contains(a[0][0])||!unitTakenByAntiDiag.contains(a[0][1])){
+                    addElementToSet(unitTakenByAntiDiag,a[0]);
+                    pairOfElementTaken[a[0][0]]=a[0][1];
+                    pairOfElementTaken[a[0][1]]=a[0][0];
+                    unitTaken = true;
+                }                
+            } 
+            if(a.size()==1 && a[0].size()==3 && !tupleOfthreeTaken.contains(a[0])){
+                int k = oneElementIsIn(a[0], unitTakenByHorizontal, unitTakenByVertical, unitTakenByDiag, unitTakenByAntiDiag, pairOfElementTaken);
+                if(k!= -1){
+                    vector<int> v = a[0];
+                    v.erase(v.begin()+k);
+                    pairOfElementTaken[v[0]]=v[1];
+                    pairOfElementTaken[v[1]]=v[0];
+                    addElementToSet(unitTakenByAntiDiag,v);
+                    unitTaken = true;
+                    tupleOfthreeTaken.insert(a[0]);
+                }
+            } 
+        }
+         
+    } 
+    return true;
+}
+
+
+
 //-------------------------------------------- Constructeurs - destructeur
 
 TileAlignment::TileAlignment (Tile* t){
@@ -286,69 +485,6 @@ TileAlignment::~TileAlignment ()
 } //----- Fin de ~TileAlignment
 
 
-
-
-template <typename T>
-void TileAlignment::eraseDuplicates(std::vector<std::vector<T>> & vecOfElements)
-{
-    std::map<std::vector<T>, bool> countMap;
-   
-    // Remove the elements from Map which has 1 frequency count
-    for (auto it = vecOfElements.begin() ; it != vecOfElements.end() ;)
-    {
-        sort((*it).begin(),(*it).end());
-        if (countMap.contains(*it))
-            it = vecOfElements.erase(it);
-        else{
-            countMap[*it]=true;
-            it++;
-        }
-            
-    }
-
-} 
-
-
-
-void TileAlignment::eraseElementTakenByOtherDirection(Alignment& a,set<int>& s1,set<int>& s2,set<int>& s3, map<int, int> pairOfElementTaken){
-    
-    set<int> elementOfPairAlreadyCheck; 
-    
-    auto it = a.begin();
-    bool toBeDeleted = false;
-    while (it != a.end())
-    {   
-        toBeDeleted = false;
-        if((*it).size()==2){
-            for(int& i : *it)
-            {
-                if(s1.contains(i)||s2.contains(i)||s3.contains(i))
-                    toBeDeleted=true;
-            }
-        }
-        if((*it).size()==3){
-            int count =0;
-            elementOfPairAlreadyCheck.clear();
-            for(int& i : *it)
-            {
-                if((s1.contains(i)||s2.contains(i)||s3.contains(i))&& !elementOfPairAlreadyCheck.contains(i)){
-                    count++;
-                    elementOfPairAlreadyCheck.insert(pairOfElementTaken[i]);
-                }                    
-            }
-            if (count>=2)
-                toBeDeleted=true;
-        }
-
-
-        if(toBeDeleted){
-            it = a.erase(it);
-        } 
-        else {            
-            ++it;
-        }
-    }
-}   
 
 
 //------------------------------------------------------------------ PRIVE
@@ -442,8 +578,9 @@ void TileAlignment::eraseSubsetAlignment(){
     vector< Alignment >* tabVect[4] = {&alignementVectVertical,  &alignementVectHorizontal, &alignementVectDiag, &alignementVectAntiDiag};
     for (int i =0; i<4; i++){
         vector< Alignment >* vect = tabVect[i];
-         
-         for (auto it = vect->begin() ; it != vect->end() ;)
+
+        //erase a ligne if it exist another which a subset of the first one
+        for (auto it = vect->begin() ; it != vect->end() ;)
         {    
                     
             for (auto it2 = vect->begin(); it2 != vect->end();)
@@ -466,6 +603,7 @@ void TileAlignment::eraseSubsetAlignment(){
             it++;                    
         }
 
+        //erase a set in a ligne if it is a subset of another set in the ligne
         for(Alignment& a: *vect){
             for (auto it = a.begin() ; it != a.end() ;)
             {                
@@ -490,7 +628,34 @@ void TileAlignment::eraseSubsetAlignment(){
                 }
                 it++;                    
             }            
-        }      
+        }
+
+        //erase a ligne if it has only one set and there is another line with only one set as well which is a sebset of the first one 
+        for (auto it = vect->begin() ; it != vect->end() ;)
+        {    
+            if(it->size()==1){
+                for (auto it2 = vect->begin(); it2 != vect->end();)
+                {
+                    if(*it2!=*it && it2->size()==1){
+                        if (includes((*it2)[0].begin(),(*it2)[0].end(),(*it)[0].begin(),(*it)[0].end())){
+                            it2 = vect->erase(it2);
+                            if(it2<it){
+                                it--;
+                            }
+                        }
+                        else{                            
+                            it2++;
+                        }
+                    }  
+                    else{
+                    it2++; 
+                    }
+                }                
+            }  
+            it++;                 
+        }
+
+
     }
    
 }

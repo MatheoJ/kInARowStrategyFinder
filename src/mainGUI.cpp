@@ -43,7 +43,7 @@ int main(int argc, char** argv)
     RenderWindow window2(VideoMode(WIN_OPTION_SIZE , WIN_OPTION_SIZE), "More option");
 
     TileGenerator tg;
-    TileAnalyzer ta(9);
+    TileAnalyzer ta(7);
     vector<char> vect;
     vector<Tile> tVect;
     int minHPer,maxHPer;
@@ -70,7 +70,7 @@ int main(int argc, char** argv)
             }
             tg.generateBoundWord(minHPer,maxHPer, vect);
             tg.generateTile();
-            tg.generateTilingShape(9);
+            tg.generateTilingShape(7);
             ta.analyzeTileVect(tg.getTileVect());
             for(TileAlignment& tal: ta.getVectTileAlignment()){
                 tVect.push_back(*(tal.getTile()));

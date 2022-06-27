@@ -39,6 +39,7 @@ public:
     void eraseSubsetAlignment();
     void eraseDuplicatesInAllDirection();
     bool checkTileAlignment();
+    bool cleanWithRule();
 
     Tile * getTile();
     

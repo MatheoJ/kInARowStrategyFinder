@@ -33,17 +33,15 @@ int TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile ){
             ta.eraseDuplicatesInAllDirection();
             ta.eraseSubsetAlignment();
             ta.eraseDuplicatesInAllDirection();
-            vectTileAlignment.push_back(ta);     
-
-
+            if(ta.cleanWithRule()){
+                vectTileAlignment.push_back(ta);
+            }
+                 
             if(vectTile[i].getId()==2263){
                 cout<<vectTile[i]<<endl;
                 cout<<ta<<endl;
-            }
-            
+            }            
         }
-        
-
     }
     return vectTileAlignment.size();    
 }
