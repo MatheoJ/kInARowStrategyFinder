@@ -1,6 +1,7 @@
 
 #include "TileGenerator.h"
 #include "TileAnalyzer.h"
+#include "HittingAlignment.h"
 #include <iostream>
 #include <chrono>
 using namespace std;
@@ -60,7 +61,7 @@ int main(int argc, char** argv){
     cout<<"________________________________________________________"<<endl;
 
  
-    cout<<*(ta.getVectTileAlignment()[89].getTile())<<endl;
+   /*  cout<<*(ta.getVectTileAlignment()[89].getTile())<<endl;
     cout<<(ta.getVectTileAlignment()[89])<<endl;
 
 
@@ -71,9 +72,24 @@ int main(int argc, char** argv){
     cout<<(ta.getVectTileAlignment()[694])<<endl;
 
     cout<<*(ta.getVectTileAlignment()[962].getTile())<<endl;
-    cout<<(ta.getVectTileAlignment()[962])<<endl;  
-     
+    cout<<(ta.getVectTileAlignment()[962])<<endl;  */ 
 
+    /* start = high_resolution_clock::now();
+    count = ta.buildHittingset();
+    stop = high_resolution_clock::now();
+    duration = duration_cast<microseconds>(stop - start);
+    cout<<"Génération des hittings sets :"<<duration.count()<<" ms"<<endl;
+    cout<<"Nombre de hitting sets: "<<count<<endl;
+    cout<<"________________________________________________________"<<endl; */
+    
+     
+    start = high_resolution_clock::now();
+    HittingAlignment ha(&ta.getVectTileAlignment()[89]);
+    stop = high_resolution_clock::now();
+    duration = duration_cast<microseconds>(stop - start);
+    cout<<"Génération des hittings sets :"<<duration.count()<<" ms"<<endl;
+
+    //cout<< ha;
     
     
 }

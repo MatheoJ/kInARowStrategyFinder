@@ -34,6 +34,7 @@ public:
 
     friend ostream &operator<<(ostream &stream, const TileAlignment &ta);
     friend class TileAnalyzer;
+    friend class HittingAlignment;
 //----------------------------------------------------- Méthodes publiques    
     bool buildAlignments(int sizeAlignment);    
     void eraseSubsetAlignment();

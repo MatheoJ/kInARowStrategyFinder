@@ -1,0 +1,204 @@
+/*************************************************************************
+                           HittingAlignment  -  description
+                             -------------------
+    début                : 09/06/2022
+    e-mail               : matheo.joseph@insa-lyon.fr
+*************************************************************************/
+
+//---------- Réalisation de la classe <HittingAlignment> (fichier HittingAlignment.cpp) ------------
+
+//---------------------------------------------------------------- INCLUDE
+#include "HittingAlignment.h"
+//-------------------------------------------------------- Include système
+using namespace std;
+#include <iostream>
+
+//------------------------------------------------------ Include personnel
+
+
+//------------------------------------------------------------- Constantes
+
+//----------------------------------------------------------------- PUBLIC
+
+//----------------------------------------------------- Méthodes publiques
+// type Xxx::Méthode ( liste des paramètres )
+// Algorithme :
+//
+//{
+//} //----- Fin de Méthode
+
+
+
+bool eraseTakenPair(Alignment& a, map<int,int>& pairOfElementTaken){
+    bool toBeDeleted;
+    
+    cout<<"ici taille de a : "<< a.size()<< " et a[0] : " << a[0][0] <<" "<< a[0][1]<<endl;
+
+    for (auto it = a.begin() ; it != a.end() ;)
+    {
+        
+        toBeDeleted = false;
+        if((*it).size()==2){
+            if((pairOfElementTaken.contains((*it)[0]) && !pairOfElementTaken.contains((*it)[1]))
+                || 
+                ((!pairOfElementTaken.contains( (*it)[0])) && pairOfElementTaken.contains((*it)[1])))
+            {
+                toBeDeleted=true;
+            } 
+            else if((pairOfElementTaken.contains((*it)[0]) && pairOfElementTaken.contains((*it)[1]))){
+                if(a.size()>1){
+                    a.clear();
+                    return true;
+                }
+            }
+        }        
+        if (toBeDeleted){
+            it=a.erase(it);
+            if(a.size()==0){
+                return false;
+            }
+        }            
+        else{
+            it++;
+        }            
+    }
+    return true;
+}
+
+bool hasOnlySetSizeTwo(Alignment a){
+
+     
+    for (vector<int>& v : a){
+        if(v.size()!=2){
+            return false;
+        }
+    }
+    return true;
+}
+
+ostream &operator<<(ostream &stream, const HittingAlignment &ha)
+{
+    //stream<<"MinVertical ="<<t.boundWord->getMinVertical()<<" MaxVertical ="<<t.boundWord->getMaxVertical()<<" |MinHorizontal ="<<t.boundWord->getMinHorizontal()<<" MaxHorizontal ="<<t.boundWord->getMaxHorizontal()<<endl;
+    
+   stream<<*(ha.tileAlign->getTile());
+   for (int i = 0; i < ha.hittingSetvect.size(); i++)
+   {
+        for (int j = 0; j <  (int)ha.hittingSetvect[i].size(); j++)
+        { 
+            for (int k = 0; k <  (int)ha.hittingSetvect[i][j].size(); k++)
+            {
+                // Displaying set elements            
+                for(int i :ha.hittingSetvect[i][j][k]){
+                    stream << i << " ";
+                }
+                stream<<" ||";
+            }
+            stream<<endl; 
+        }
+        stream<<endl;  
+        stream<<"------------------------"<<endl;        
+   }
+
+    stream<<"Il y a "<<ha.hittingSetvect.size()<<" Hitting sets pour ce pavage"<<endl; 
+
+   
+    return stream;
+}
+
+//-------------------------------------------- Constructeurs - destructeur
+
+HittingAlignment::HittingAlignment (TileAlignment* ta){
+   this->tileAlign = ta;   
+   buildHittingSets();
+}
+
+
+
+
+HittingAlignment::~HittingAlignment ()
+// Algorithme :
+//
+{
+#ifdef MAP
+    cout << "Appel au destructeur de <HittingAlignment>" << endl;
+#endif
+} //----- Fin de ~HittingAlignment
+
+
+//------------------------------------------------------------------ PRIVE
+
+//----------------------------------------------------- Méthodes protégées
+
+void HittingAlignment::buildHittingSets(){
+    HittingSet  hs;
+    
+    hs.insert(hs.end(), this->tileAlign->alignementVectHorizontal.begin(), this->tileAlign->alignementVectHorizontal.end());    
+    hs.insert(hs.end(), this->tileAlign->alignementVectVertical.begin(), this->tileAlign->alignementVectVertical.end());    
+    hs.insert(hs.end(), this->tileAlign->alignementVectDiag.begin(), this->tileAlign->alignementVectDiag.end());
+    hs.insert(hs.end(), this->tileAlign->alignementVectAntiDiag.begin(), this->tileAlign->alignementVectAntiDiag.end());
+
+    map<int,int> pairTaken;
+    recursiveBuildHittingSets(hs,pairTaken,0);
+
+} 
+
+void HittingAlignment::recursiveBuildHittingSets(HittingSet hs, map<int,int>& pairTaken , int indexInHS ){
+    int i = indexInHS;
+    bool finalSet = true;
+    for(auto it = hs.begin(); it!=hs.end();){
+
+        //if the alignment has been deleted
+        if(!eraseTakenPair(*it,pairTaken)){
+            return;
+        }
+        //if the alignement has been cleared because it has been validated by a taken pair
+        else if((*it).size()!=0){
+            //if the alignment has 2 or more sets and they are only of size 2
+            if(hasOnlySetSizeTwo(*it)){
+                if((*it).size()>1||!pairTaken.contains((*it)[0][0])){
+                    Alignment a = *it;
+                    finalSet = false;
+                    for(int i =0; i<a.size(); i++){
+                        (*it).clear();
+                        (*it).push_back(a[i]);
+                        pairTaken[a[i][0]]=a[i][1];
+                        pairTaken[a[i][1]]=a[i][0];
+                        recursiveBuildHittingSets(hs, pairTaken, i+1);
+                        pairTaken.erase(a[i][0]);
+                        pairTaken.erase(a[i][1]);
+                    }  
+                    return;
+                }                 
+            }
+            it++;
+            i++; 
+        } 
+        else{
+            it = hs.erase(it);
+        }
+    }
+    if(finalSet){
+        hittingSetvect.push_back(hs);
+
+        for(auto it = pairTaken.cbegin(); it != pairTaken.cend(); ++it)
+        {
+            std::cout << it->first << " " << it->second << "\n";
+        }
+        cout<<"--------------------------"<<endl;
+
+        for (int j = 0; j <  (int)hs.size(); j++)
+        { 
+            for (int k = 0; k <  (int)hs[j].size(); k++)
+            {
+                // Displaying set elements            
+                for(int i :hs[j][k]){
+                    cout << i << " ";
+                }
+                cout<<" ||";
+            }
+            cout<<endl; 
+        }
+        cout<<endl; 
+
+    }
+}

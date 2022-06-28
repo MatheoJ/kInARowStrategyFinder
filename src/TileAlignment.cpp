@@ -142,7 +142,6 @@ Tile * TileAlignment::getTile(){
     return this->tile;
 }
 
-
 bool TileAlignment::buildAlignments(int sizeAlignment){
     map<int, int> numTileIndex;
     set<int> unitChecked; 
@@ -269,8 +268,6 @@ bool TileAlignment::buildAlignments(int sizeAlignment){
 
 }
 
-
-
 template <typename T>
 void TileAlignment::eraseDuplicates(std::vector<std::vector<T>> & vecOfElements)
 {
@@ -306,6 +303,11 @@ void TileAlignment::eraseElementTakenByOtherDirection(Alignment& a,set<int>& s1,
                 if(s1.contains(i)||s2.contains(i)||s3.contains(i))
                     toBeDeleted=true;
             }
+
+            /* if((pairOfElementTaken.contains((*it)[0]) && !pairOfElementTaken.contains((*it)[0]))|| (!pairOfElementTaken.contains((*it)[0]) && pairOfElementTaken.contains((*it)[0])){
+                toBeDeleted=true;
+            } */
+
         }
         // if the map pairOfElementTaken is empty it means that we are only looking to erase set of size two 
         if((*it).size()==3 && !pairOfElementTaken.empty()){

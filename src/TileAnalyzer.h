@@ -11,6 +11,7 @@
 
 //--------------------------------------------------- Interfaces utilisées
 #include "TileAlignment.h"
+#include "HittingAlignment.h"
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -29,6 +30,7 @@ class TileAnalyzer
 public:
 //----------------------------------------------------- Méthodes publiques 
     int  analyzeTileVect(vector<Tile>& vectTile);
+    int  buildHittingset();
     vector<TileAlignment>& getVectTileAlignment();  
     
     
@@ -52,7 +54,9 @@ protected:
 
 //----------------------------------------------------- Attributs protégés
     vector<TileAlignment> vectTileAlignment;
+    vector<HittingAlignment> vectHittingAlignment;
     int sizeAlignment;
+
 
 };
 

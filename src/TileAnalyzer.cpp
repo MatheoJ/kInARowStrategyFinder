@@ -46,6 +46,15 @@ int TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile ){
     return vectTileAlignment.size();    
 }
 
+int TileAnalyzer::buildHittingset(){
+    int count = 0 ;
+    for(TileAlignment& ta : vectTileAlignment){
+        vectHittingAlignment.emplace_back(&ta);
+        count+= vectHittingAlignment.size();
+    }
+    return count;
+}
+
 vector<TileAlignment>& TileAnalyzer::getVectTileAlignment(){
     return this->vectTileAlignment;
 }
