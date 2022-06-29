@@ -12,6 +12,7 @@
 //-------------------------------------------------------- Include système
 using namespace std;
 #include <iostream>
+#include "Utils.h"
 
 //------------------------------------------------------ Include personnel
 
@@ -28,25 +29,79 @@ using namespace std;
 //} //----- Fin de Méthode
 
 
+void eraseSubsetHitting(HittingSet& hittingSet){
+   
+    //erase a ligne if it exist another which a subset of the first one
+    for (auto it = hittingSet.begin() ; it != hittingSet.end() ;)
+    {    
+                
+        for (auto it2 = hittingSet.begin(); it2 != hittingSet.end();)
+        {
+            if(*it2!=*it){
+                if (includes((*it2).begin(),(*it2).end(),(*it).begin(),(*it).end())){
+                    it2 = hittingSet.erase(it2);
+                    if(it2<it){
+                        it--;
+                    }
+                }
+                else{                            
+                    it2++;
+                }
+            }  
+            else{
+                it2++; 
+            }
+        }
+        it++;                    
+    }
+
+
+    //erase a ligne if it has only one set and there is another line with only one set as well which is a sebset of the first one 
+    for (auto it = hittingSet.begin() ; it != hittingSet.end() ;)
+    {    
+        if(it->size()==1){
+            for (auto it2 = hittingSet.begin(); it2 != hittingSet.end();)
+            {
+                if(*it2!=*it && it2->size()==1){
+                    if (includes((*it2)[0].begin(),(*it2)[0].end(),(*it)[0].begin(),(*it)[0].end())){
+                        it2 = hittingSet.erase(it2);
+                        if(it2<it){
+                            it--;
+                        }
+                    }
+                    else{                            
+                        it2++;
+                    }
+                }  
+                else{
+                it2++; 
+                }
+            }                
+        }  
+        it++;                 
+    }    
+   
+}
+
 
 bool eraseTakenPair(Alignment& a, map<int,int>& pairOfElementTaken){
     bool toBeDeleted;
-    
-    cout<<"ici taille de a : "<< a.size()<< " et a[0] : " << a[0][0] <<" "<< a[0][1]<<endl;
+    bool canHaveBeenTaken = (a.size()==1);
 
     for (auto it = a.begin() ; it != a.end() ;)
     {
         
         toBeDeleted = false;
         if((*it).size()==2){
-            if((pairOfElementTaken.contains((*it)[0]) && !pairOfElementTaken.contains((*it)[1]))
+            if((pairOfElementTaken.contains((*it)[0]) && pairOfElementTaken[(*it)[0]]!=(*it)[1])
                 || 
-                ((!pairOfElementTaken.contains( (*it)[0])) && pairOfElementTaken.contains((*it)[1])))
+                (pairOfElementTaken.contains((*it)[1]) && pairOfElementTaken[(*it)[1]]!=(*it)[0]))
             {
                 toBeDeleted=true;
             } 
-            else if((pairOfElementTaken.contains((*it)[0]) && pairOfElementTaken.contains((*it)[1]))){
-                if(a.size()>1){
+            //If the pair is identical to one of the taken pair we need to check if it can be the one which we took in order not to delete the wrong one
+            else if((pairOfElementTaken.contains((*it)[0]) && pairOfElementTaken[(*it)[0]]==(*it)[1] )){
+                if(!canHaveBeenTaken){
                     a.clear();
                     return true;
                 }
@@ -62,6 +117,56 @@ bool eraseTakenPair(Alignment& a, map<int,int>& pairOfElementTaken){
             it++;
         }            
     }
+    
+    return true;
+}
+
+bool eraseTakenSet(Alignment& a, vector<vector<int>> takenSet, map<int, int> pairOfElementTaken){
+    bool toBeDeleted;
+    bool canHaveBeenTaken = (a.size()==1);
+
+
+    for (auto it = a.begin() ; it != a.end() ;)
+    {
+        
+        toBeDeleted = false;
+        if((*it).size()==2){
+            if((pairOfElementTaken.contains((*it)[0]) && pairOfElementTaken[(*it)[0]]!=(*it)[1])
+                || 
+                (pairOfElementTaken.contains((*it)[1]) && pairOfElementTaken[(*it)[1]]!=(*it)[0]))
+            {
+                toBeDeleted=true;
+            }
+            
+        }         
+        if(!toBeDeleted  ){
+            for(vector<int>& v : takenSet){
+                if((*it) == v ){
+                    if(!canHaveBeenTaken){
+                        a.clear();
+                        return true;  
+                    }                      
+                }
+                else if(includes((*it).begin(), (*it).end(),v.begin(), v.end())){                    
+                    a.clear();
+                    return true;
+                }
+                else if(includes(v.begin(), v.end(),(*it).begin(), (*it).end())&&canHaveBeenTaken){                      
+                    v=(*it);
+                }
+            }           
+        }       
+        if (toBeDeleted){
+            it=a.erase(it);
+            if(a.size()==0){
+                return false;
+            }
+        }            
+        else{
+            it++;
+        }            
+    }
+    
     return true;
 }
 
@@ -75,6 +180,8 @@ bool hasOnlySetSizeTwo(Alignment a){
     }
     return true;
 }
+
+
 
 ostream &operator<<(ostream &stream, const HittingAlignment &ha)
 {
@@ -94,8 +201,7 @@ ostream &operator<<(ostream &stream, const HittingAlignment &ha)
                 stream<<" ||";
             }
             stream<<endl; 
-        }
-        stream<<endl;  
+        } 
         stream<<"------------------------"<<endl;        
    }
 
@@ -104,6 +210,19 @@ ostream &operator<<(ostream &stream, const HittingAlignment &ha)
    
     return stream;
 }
+
+void HittingAlignment::eraseSubSetOnHittingSets(){
+    for(HittingSet& hs: hittingSetvect){
+        eraseSubsetHitting(hs);
+    }
+}
+
+void HittingAlignment::eraseDuplicatesOnHittingSets(){
+    for(HittingSet& hs: hittingSetvect){
+        Utils::eraseDuplicates(hs);
+    }
+}
+
 
 //-------------------------------------------- Constructeurs - destructeur
 
@@ -178,27 +297,55 @@ void HittingAlignment::recursiveBuildHittingSets(HittingSet hs, map<int,int>& pa
         }
     }
     if(finalSet){
-        hittingSetvect.push_back(hs);
-
-        for(auto it = pairTaken.cbegin(); it != pairTaken.cend(); ++it)
-        {
-            std::cout << it->first << " " << it->second << "\n";
-        }
-        cout<<"--------------------------"<<endl;
-
-        for (int j = 0; j <  (int)hs.size(); j++)
-        { 
-            for (int k = 0; k <  (int)hs[j].size(); k++)
-            {
-                // Displaying set elements            
-                for(int i :hs[j][k]){
-                    cout << i << " ";
-                }
-                cout<<" ||";
-            }
-            cout<<endl; 
-        }
-        cout<<endl; 
-
+        //hittingSetvect.push_back(hs);
+        eraseSubsetHitting(hs);
+        Utils::eraseDuplicates(hs);
+        vector<vector<int>> v;
+        map<int, int> m;
+        finishRecursiveBuilding(hs, v, m);
     }
+}
+
+
+void HittingAlignment::finishRecursiveBuilding(HittingSet hs, vector<vector<int>>& takenSet, map<int, int>& pairTaken){
+    bool finalSet = true;
+    for(auto it = hs.begin(); it!=hs.end();){
+
+        //if the alignment has been deleted
+        if(!eraseTakenSet(*it,takenSet,pairTaken)){
+            return;
+        }
+        else if((*it).size()!=0){
+            //if the alignment has 2 or more sets 
+            if((*it).size()>1){
+                Alignment a = *it;
+                finalSet = false;
+                for(int i =0; i<a.size(); i++){
+                    (*it).clear();
+                    (*it).push_back(a[i]);
+                    takenSet.push_back(a[i]);
+                    if((a[i]).size()==2){
+                        pairTaken[a[i][0]]=a[i][1];
+                        pairTaken[a[i][1]]=a[i][0];
+                    }
+                    finishRecursiveBuilding(hs, takenSet, pairTaken);
+                    if((a[i]).size()==2){
+                        pairTaken.erase(a[i][0]);
+                        pairTaken.erase(a[i][1]);
+                    }
+                    takenSet.pop_back();
+                }  
+                return;    
+            }
+            it++;
+        }
+        
+        //if the alignement has been cleared because it has been validated by a taken set
+        else{
+            it = hs.erase(it);
+        }
+    }
+    if(finalSet){
+        hittingSetvect.push_back(hs);
+    }  
 }

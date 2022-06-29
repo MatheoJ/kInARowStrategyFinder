@@ -37,10 +37,11 @@ int TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile ){
                 vectTileAlignment.push_back(ta);
             }
                  
-            if(vectTile[i].getId()==2263){
+            /* if(vectTile[i].getId()==2263 ){
                 cout<<vectTile[i]<<endl;
                 cout<<ta<<endl;
-            }            
+            }  */
+                       
         }
     }
     return vectTileAlignment.size();    
@@ -48,10 +49,23 @@ int TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile ){
 
 int TileAnalyzer::buildHittingset(){
     int count = 0 ;
+    int count0 = 0;
     for(TileAlignment& ta : vectTileAlignment){
-        vectHittingAlignment.emplace_back(&ta);
-        count+= vectHittingAlignment.size();
+        vectHittingAlignment.emplace_back(&ta);        
+        //vectHittingAlignment.back().eraseSubSetOnHittingSets();
+        vectHittingAlignment.back().eraseDuplicatesOnHittingSets();
+
+        count+= vectHittingAlignment.back().hittingSetvect.size();
+        if (vectHittingAlignment.back().hittingSetvect.size()==0){
+            count0++;            
+        }
+        
+        /* if (ta.getTile()->getId()==475){
+            cout << vectHittingAlignment.back()<<endl;
+        } */
+            
     }
+    cout<<"Il y a "<< count0<< " pavages qui n'ont pas de hitting set"<<endl;
     return count;
 }
 

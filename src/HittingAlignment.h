@@ -36,10 +36,14 @@ class HittingAlignment
 
 public:
     friend ostream &operator<<(ostream &stream, const HittingAlignment &ha);
+    friend class TileAnalyzer;
 //----------------------------------------------------- Méthodes publiques    
-    
+    void eraseSubSetOnHittingSets();
+    void eraseDuplicatesOnHittingSets();
 //-------------------------------------------- Constructeurs - destructeur
     
+    
+
     HittingAlignment (TileAlignment* ta);
     
 
@@ -56,6 +60,8 @@ protected:
 
     void buildHittingSets();
     void recursiveBuildHittingSets(HittingSet hs, map<int,int>& pairTaken, int indexInHS);
+    void finishRecursiveBuilding(HittingSet hs, vector<vector<int>>& takenSet, map<int, int>& pairTaken);
+    
 //----------------------------------------------------- Attributs protégés
     TileAlignment* tileAlign ;
     vector<HittingSet> hittingSetvect;

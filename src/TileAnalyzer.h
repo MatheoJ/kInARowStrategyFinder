@@ -54,6 +54,7 @@ protected:
 
 //----------------------------------------------------- Attributs protégés
     vector<TileAlignment> vectTileAlignment;
+    
     vector<HittingAlignment> vectHittingAlignment;
     int sizeAlignment;
 
