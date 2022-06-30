@@ -121,14 +121,16 @@ bool eraseTakenPair(Alignment& a, map<int,int>& pairOfElementTaken){
     return true;
 }
 
-bool eraseTakenSet(Alignment& a, vector<vector<int>> takenSet, map<int, int> pairOfElementTaken){
+
+bool eraseTakenSet(Alignment& a, 
+                    vector<vector<int>>& takenSet,
+                    map<int, int>& pairOfElementTaken)
+{
     bool toBeDeleted;
     bool canHaveBeenTaken = (a.size()==1);
 
-
     for (auto it = a.begin() ; it != a.end() ;)
-    {
-        
+    {        
         toBeDeleted = false;
         if((*it).size()==2){
             if((pairOfElementTaken.contains((*it)[0]) && pairOfElementTaken[(*it)[0]]!=(*it)[1])
@@ -136,31 +138,30 @@ bool eraseTakenSet(Alignment& a, vector<vector<int>> takenSet, map<int, int> pai
                 (pairOfElementTaken.contains((*it)[1]) && pairOfElementTaken[(*it)[1]]!=(*it)[0]))
             {
                 toBeDeleted=true;
-            }
-            
+            }            
         }         
-        if(!toBeDeleted  ){
-            for(vector<int>& v : takenSet){
-                if((*it) == v ){
+        if(!toBeDeleted  ){             
+            for(int i = 0; i<takenSet.size(); i++){
+                if((*it) == takenSet[i] ){
                     if(!canHaveBeenTaken){
                         a.clear();
                         return true;  
                     }                      
                 }
-                else if(includes((*it).begin(), (*it).end(),v.begin(), v.end())){                    
+                else if(includes((*it).begin(), (*it).end(),takenSet[i].begin(), takenSet[i].end())){                    
                     a.clear();
                     return true;
                 }
-                else if(includes(v.begin(), v.end(),(*it).begin(), (*it).end())&&canHaveBeenTaken){                      
-                    v=(*it);
-                }
-            }           
+                /* else if(includes(takenSet[i].begin(), takenSet[i].end(),(*it).begin(), (*it).end()) && canHaveBeenTaken ){                      
+                   takenSet[i]=(*it);
+                }  */
+            }  
         }       
         if (toBeDeleted){
             it=a.erase(it);
             if(a.size()==0){
                 return false;
-            }
+            }            
         }            
         else{
             it++;
@@ -307,7 +308,8 @@ void HittingAlignment::recursiveBuildHittingSets(HittingSet hs, map<int,int>& pa
 }
 
 
-void HittingAlignment::finishRecursiveBuilding(HittingSet hs, vector<vector<int>>& takenSet, map<int, int>& pairTaken){
+void HittingAlignment::finishRecursiveBuilding(HittingSet hs, vector<vector<int>>& takenSet, map<int, int>& pairTaken )
+{
     bool finalSet = true;
     for(auto it = hs.begin(); it!=hs.end();){
 
@@ -346,6 +348,7 @@ void HittingAlignment::finishRecursiveBuilding(HittingSet hs, vector<vector<int>
         }
     }
     if(finalSet){
-        hittingSetvect.push_back(hs);
+        if(hittingSetvect.size()==0 || hittingSetvect.back()!=hs )
+            hittingSetvect.push_back(hs);
     }  
 }

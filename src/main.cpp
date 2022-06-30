@@ -26,8 +26,6 @@ int main(int argc, char** argv){
     vector<char> vect;
 
 
-
-
     auto start = high_resolution_clock::now();
     tg.generateBoundWord(minHPer,maxHPer, vect);
     auto stop = high_resolution_clock::now();
@@ -80,34 +78,34 @@ int main(int argc, char** argv){
     duration = duration_cast<microseconds>(stop - start);
     cout<<"Génération des hittings sets :"<<duration.count()<<" ms"<<endl;
     cout<<"Nombre de hitting sets: "<<count<<endl;
-    cout<<"________________________________________________________"<<endl; 
+    cout<<"________________________________________________________"<<endl;  
 
-
-    /* start = high_resolution_clock::now();
+ 
+     /* start = high_resolution_clock::now();
     HittingAlignment ha3(&ta.getVectTileAlignment()[89]);
     stop = high_resolution_clock::now();
     duration = duration_cast<microseconds>(stop - start);
     cout<<"Génération des hittings sets :"<<duration.count()<<" ms"<<endl;
-    ha3.eraseDuplicatesOnHittingSets(); */
-    //cout<< ha3; 
+    ha3.eraseDuplicatesOnHittingSets();
+    cout<< ha3; 
      
 
-   /*  start = high_resolution_clock::now();
+    start = high_resolution_clock::now();
     HittingAlignment ha(&ta.getVectTileAlignment()[794]);
     stop = high_resolution_clock::now();
     duration = duration_cast<microseconds>(stop - start);
     cout<<"Génération des hittings sets :"<<duration.count()<<" ms"<<endl;
-    ha.eraseDuplicatesOnHittingSets(); */
-    //cout<< ha; 
+    ha.eraseDuplicatesOnHittingSets();
+    cout<< ha;  */
  
 
-   /*  start = high_resolution_clock::now();
+    /* start = high_resolution_clock::now();
     HittingAlignment ha2(&ta.getVectTileAlignment()[1645]);
     stop = high_resolution_clock::now();
     duration = duration_cast<microseconds>(stop - start);
     cout<<"Génération des hittings sets :"<<duration.count()<<" ms"<<endl;
-    ha2.eraseDuplicatesOnHittingSets(); */
-    //cout<< ha2; 
+    ha2.eraseDuplicatesOnHittingSets();
+    cout<< ha2; */   
 
     
 
