@@ -72,23 +72,23 @@ int main(int argc, char** argv){
     cout<<*(ta.getVectTileAlignment()[962].getTile())<<endl;
     cout<<(ta.getVectTileAlignment()[962])<<endl;    */
 
-    start = high_resolution_clock::now();
+   /*  start = high_resolution_clock::now();
     count = ta.buildHittingset();
     stop = high_resolution_clock::now();
     duration = duration_cast<microseconds>(stop - start);
     cout<<"Génération des hittings sets :"<<duration.count()<<" ms"<<endl;
     cout<<"Nombre de hitting sets: "<<count<<endl;
-    cout<<"________________________________________________________"<<endl;  
+    cout<<"________________________________________________________"<<endl;   */
 
  
-     /* start = high_resolution_clock::now();
+      start = high_resolution_clock::now();
     HittingAlignment ha3(&ta.getVectTileAlignment()[89]);
     stop = high_resolution_clock::now();
     duration = duration_cast<microseconds>(stop - start);
     cout<<"Génération des hittings sets :"<<duration.count()<<" ms"<<endl;
     ha3.eraseDuplicatesOnHittingSets();
     cout<< ha3; 
-     
+     /*
 
     start = high_resolution_clock::now();
     HittingAlignment ha(&ta.getVectTileAlignment()[794]);
