@@ -14,7 +14,7 @@
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
-
+enum GameState {stillGoing, winMaker, winBreaker};
 //------------------------------------------------------------------------
 // Rôle de la classe <GameSolver>
 //
@@ -35,7 +35,7 @@ public:
     
    
 
-    GameSolver ();
+    GameSolver (HittingAlignment* ha);
     
 
     virtual ~GameSolver ( );
@@ -49,12 +49,14 @@ public:
 protected:
 //----------------------------------------------------- Méthodes protégées
 
-    bool solveHittingSet();
-    void makeABreakerMove();
-    void makeAMakerMove();
+    bool solveHittingSet(HittingSetFinal& hsf);
+    bool doABreakerMove(HittingSetFinal hsf, vector<int>& unitTotake, int unitTaken =-1);
+    bool doAMakerMove(HittingSetFinal hsf, vector<int>& unitTotake, int unitTaken =-1);
+    GameState eraseUnitTakenByBreaker(HittingSetFinal& hsf, int uniTaken);
+    GameState eraseUnitTakenByMaker(HittingSetFinal& hsf, int uniTaken, int& unitForcedToTake);
 
 //----------------------------------------------------- Attributs protégés
-    HittingAlignement* ha;
+    HittingAlignment* ha;
 
 };
 

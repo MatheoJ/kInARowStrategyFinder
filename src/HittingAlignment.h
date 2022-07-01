@@ -22,6 +22,7 @@
     }; */
 
     using HittingSet = std::vector< Alignment> ;
+    using HittingSetFinal = std::vector< vector<int>> ;
 
 //------------------------------------------------------------------------
 // Rôle de la classe <HittingAlignment>
@@ -37,8 +38,8 @@ class HittingAlignment
 public:
     friend ostream &operator<<(ostream &stream, const HittingAlignment &ha);
     friend class TileAnalyzer;
+    friend class GameSolver;
 //----------------------------------------------------- Méthodes publiques    
-    void eraseSubSetOnHittingSets();
     void eraseDuplicatesOnHittingSets();
 //-------------------------------------------- Constructeurs - destructeur
     
@@ -64,7 +65,7 @@ protected:
     
 //----------------------------------------------------- Attributs protégés
     TileAlignment* tileAlign ;
-    vector<HittingSet> hittingSetvect;
+    vector<HittingSetFinal> hittingSetvect;
 
 
 

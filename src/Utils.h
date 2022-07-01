@@ -17,9 +17,9 @@ class Utils
 
 public:
     template <typename T>
-    static void eraseDuplicates(std::vector<std::vector<T>> & vecOfElements)
+    static void eraseDuplicates(std::vector<T> & vecOfElements)
     {
-        std::map<std::vector<T>, bool> countMap;
+        std::map<T, bool> countMap;
     
         // Remove the elements from Map which has 1 frequency count
         for (auto it = vecOfElements.begin() ; it != vecOfElements.end() ;)

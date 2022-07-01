@@ -193,14 +193,13 @@ ostream &operator<<(ostream &stream, const HittingAlignment &ha)
    {
         for (int j = 0; j <  (int)ha.hittingSetvect[i].size(); j++)
         { 
-            for (int k = 0; k <  (int)ha.hittingSetvect[i][j].size(); k++)
-            {
-                // Displaying set elements            
-                for(int i :ha.hittingSetvect[i][j][k]){
-                    stream << i << " ";
-                }
-                stream<<" ||";
+            
+            // Displaying set elements            
+            for(int i :ha.hittingSetvect[i][j]){
+                stream << i << " ";
             }
+            stream<<" ||";
+            
             stream<<endl; 
         } 
         stream<<"------------------------"<<endl;        
@@ -212,16 +211,11 @@ ostream &operator<<(ostream &stream, const HittingAlignment &ha)
     return stream;
 }
 
-void HittingAlignment::eraseSubSetOnHittingSets(){
-    for(HittingSet& hs: hittingSetvect){
-        eraseSubsetHitting(hs);
-    }
-}
 
 void HittingAlignment::eraseDuplicatesOnHittingSets(){
-    for(HittingSet& hs: hittingSetvect){
-        Utils::eraseDuplicates(hs);
-    }
+     for(HittingSetFinal& hsf: hittingSetvect){
+        Utils::eraseDuplicates(hsf);
+    } 
 }
 
 
@@ -348,7 +342,11 @@ void HittingAlignment::finishRecursiveBuilding(HittingSet hs, vector<vector<int>
         }
     }
     if(finalSet){
-        if(hittingSetvect.size()==0 || hittingSetvect.back()!=hs )
-            hittingSetvect.push_back(hs);
+        
+        //hittingSetvect.push_back(hs);
+        hittingSetvect.emplace_back();
+        for(Alignment& a: hs)
+            hittingSetvect.back().push_back(a[0]);
+                   
     }  
 }

@@ -52,7 +52,6 @@ int TileAnalyzer::buildHittingset(){
     int count0 = 0;
     for(TileAlignment& ta : vectTileAlignment){
         vectHittingAlignment.emplace_back(&ta);        
-        //vectHittingAlignment.back().eraseSubSetOnHittingSets();
         vectHittingAlignment.back().eraseDuplicatesOnHittingSets();
 
         count+= vectHittingAlignment.back().hittingSetvect.size();

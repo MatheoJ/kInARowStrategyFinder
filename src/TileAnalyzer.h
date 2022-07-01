@@ -12,6 +12,7 @@
 //--------------------------------------------------- Interfaces utilisées
 #include "TileAlignment.h"
 #include "HittingAlignment.h"
+#include "GameSolver.h" 
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
