@@ -30,6 +30,7 @@ using namespace std;
 bool GameSolver::solveHittingAlignment(){
     bool res = false;
     int count = 0; 
+    int i=0;
     for(HittingSetFinal& hsf: ha->hittingSetvect ){
        
         bool isHittingSetVAlid = solveHittingSet(hsf);
@@ -38,6 +39,7 @@ bool GameSolver::solveHittingAlignment(){
 
         if(isHittingSetVAlid)
             count++;  
+        cout<<i++<<endl;
     }
     cout<<"Il y a "<<count<<" hitting set permettant de trouver une stratégie"<<endl;
     return res;
@@ -80,16 +82,25 @@ bool GameSolver::solveHittingSet(HittingSetFinal& hsf){
                 max = i;
         }
     }
-    map<PlayedBy[], bool> mapOfMoovDone;
-    PlayedBy  mooveDone [max+1] {noONe};
+    map<vector<PlayedBy>, bool> mapOfMoovDone;
+    vector<PlayedBy>  mooveDone (max+1);
     bool res = doAMakerMove(hsf, unitToTake, mapOfMoovDone, mooveDone);
 
     return res;
 }
 
-bool GameSolver::doAMakerMove(HittingSetFinal hsf, vector<int>& unitTotake, map<PlayedBy[], bool> mapOfMoovDone, PlayedBy mooveDone [], int unitTaken){
+bool GameSolver::doAMakerMove(HittingSetFinal hsf, vector<int>& unitTotake, 
+                            map<vector<PlayedBy>, bool>& mapOfMoovDone, vector<PlayedBy>& mooveDone, int unitTaken){
     if(unitTaken != -1){
         GameState currentState = eraseUnitTakenByBreaker(hsf, unitTaken);
+        /* if (currentState==2)
+        {
+            cout<<"state after Taken by breaker = "<<currentState<< endl;
+            for(int i=0 ; i<mooveDone.size(); i++){
+                cout<<i<< " : "<<mooveDone[i]<<" |";
+            }
+            cout<<endl;
+        } */
         if(currentState == winMaker){
             return false;
         }
@@ -105,12 +116,17 @@ bool GameSolver::doAMakerMove(HittingSetFinal hsf, vector<int>& unitTotake, map<
 
         if(res){
             unitTaken = (*it);
-            mooveDone[unitTaken]=breaker;            
-            it = unitTotake.erase(it);   
-            state =doABreakerMove(hsf,unitTotake, mapOfMoovDone,  mooveDone,unitTaken);
-            mapOfMoovDone[mooveDone]=state
-            res =  res && state;
-            unitTotake.insert(it,unitTaken );
+            mooveDone[unitTaken]=maker;
+            if(mapOfMoovDone.contains(mooveDone)){
+                state=mapOfMoovDone[mooveDone];
+            } 
+            else{
+                it = unitTotake.erase(it);   
+                state =doABreakerMove(hsf,unitTotake, mapOfMoovDone,  mooveDone,unitTaken);
+                mapOfMoovDone[mooveDone]=state;                
+                unitTotake.insert(it,unitTaken );
+            }   
+            res =  res && state;    
             mooveDone[unitTaken]=noONe;                      
         }        
     }
@@ -119,11 +135,22 @@ bool GameSolver::doAMakerMove(HittingSetFinal hsf, vector<int>& unitTotake, map<
 }
 
 
-bool GameSolver::doABreakerMove(HittingSetFinal hsf, vector<int>& unitTotake, map<PlayedBy[], bool> mapOfMoovDone, PlayedBy mooveDone [] ,int unitTaken ){
+bool GameSolver::doABreakerMove(HittingSetFinal hsf, vector<int>& unitTotake, 
+                                map<vector<PlayedBy>, bool>& mapOfMoovDone, vector<PlayedBy>& mooveDone,int unitTaken ){
     int unitForcedToTake = -1;
     if(unitTaken != -1){
 
         GameState currentState = eraseUnitTakenByMaker(hsf, unitTaken, unitForcedToTake);
+        /* if (currentState==2)
+        {
+            cout<<"state after Taken by maker = "<<currentState<< endl;
+            for(int i=0 ; i<mooveDone.size(); i++){
+                cout<<i<< " : "<<mooveDone[i]<<" |";
+            }
+            cout<<endl;
+        } */
+        
+        
         if(currentState == winMaker){
             return false;
         }
@@ -133,14 +160,22 @@ bool GameSolver::doABreakerMove(HittingSetFinal hsf, vector<int>& unitTotake, ma
     }
 
     bool res = false;
+    bool state;
     for(auto it = unitTotake.begin(); it!=unitTotake.end(); it++){
 
         if(unitForcedToTake == -1 || *it == unitForcedToTake ){
-            unitTaken = (*it);
-            it = unitTotake.erase(it);
-            mooveDone[unitTaken]=maker;
-            res =  res || doABreakerMove(hsf,unitTotake,mapOfMoovDone,  mooveDone,unitTaken);
-            unitTotake.insert(it,unitTaken );
+            unitTaken = (*it);            
+            mooveDone[unitTaken]=breaker;
+            if(mapOfMoovDone.contains(mooveDone)){
+                state=mapOfMoovDone[mooveDone];
+            } 
+            else{
+                it = unitTotake.erase(it);
+                state = doAMakerMove(hsf,unitTotake,mapOfMoovDone, mooveDone,unitTaken);    
+                mapOfMoovDone[mooveDone]=state;        
+                unitTotake.insert(it,unitTaken );
+            }
+            res =  res ||state;
             mooveDone[unitTaken]=noONe;
         }
     }

@@ -29,6 +29,7 @@ using namespace std;
 //} //----- Fin de Méthode
 
 
+
 void eraseSubsetHitting(HittingSet& hittingSet){
    
     //erase a ligne if it exist another which a subset of the first one
@@ -211,6 +212,9 @@ ostream &operator<<(ostream &stream, const HittingAlignment &ha)
     return stream;
 }
 
+vector<HittingSetFinal>& HittingAlignment::getHittingSetVect(){
+    return this->hittingSetvect;
+}
 
 void HittingAlignment::eraseDuplicatesOnHittingSets(){
      for(HittingSetFinal& hsf: hittingSetvect){
@@ -252,11 +256,13 @@ void HittingAlignment::buildHittingSets(){
     hs.insert(hs.end(), this->tileAlign->alignementVectAntiDiag.begin(), this->tileAlign->alignementVectAntiDiag.end());
 
     map<int,int> pairTaken;
-    recursiveBuildHittingSets(hs,pairTaken,0);
+    map<vector<int>,bool> allSetTaken; 
+    recursiveBuildHittingSets(hs,pairTaken,0, allSetTaken);
 
 } 
 
-void HittingAlignment::recursiveBuildHittingSets(HittingSet hs, map<int,int>& pairTaken , int indexInHS ){
+void HittingAlignment::recursiveBuildHittingSets(HittingSet hs, map<int,int>& pairTaken , int indexInHS,
+                                                 map<vector<int>,bool> allSetTaken ){
     int i = indexInHS;
     bool finalSet = true;
     for(auto it = hs.begin(); it!=hs.end();){
@@ -273,13 +279,16 @@ void HittingAlignment::recursiveBuildHittingSets(HittingSet hs, map<int,int>& pa
                     Alignment a = *it;
                     finalSet = false;
                     for(int i =0; i<a.size(); i++){
-                        (*it).clear();
-                        (*it).push_back(a[i]);
-                        pairTaken[a[i][0]]=a[i][1];
-                        pairTaken[a[i][1]]=a[i][0];
-                        recursiveBuildHittingSets(hs, pairTaken, i+1);
-                        pairTaken.erase(a[i][0]);
-                        pairTaken.erase(a[i][1]);
+                        if(/* !allSetTaken.contains(a[i]) */ true){
+                            allSetTaken[a[i]]=true;
+                            (*it).clear();
+                            (*it).push_back(a[i]);
+                            pairTaken[a[i][0]]=a[i][1];
+                            pairTaken[a[i][1]]=a[i][0];
+                            recursiveBuildHittingSets(hs, pairTaken, i+1, allSetTaken);
+                            pairTaken.erase(a[i][0]);
+                            pairTaken.erase(a[i][1]);
+                        }                        
                     }  
                     return;
                 }                 
@@ -297,12 +306,13 @@ void HittingAlignment::recursiveBuildHittingSets(HittingSet hs, map<int,int>& pa
         Utils::eraseDuplicates(hs);
         vector<vector<int>> v;
         map<int, int> m;
-        finishRecursiveBuilding(hs, v, m);
+        finishRecursiveBuilding(hs, v, m, allSetTaken );
     }
 }
 
 
-void HittingAlignment::finishRecursiveBuilding(HittingSet hs, vector<vector<int>>& takenSet, map<int, int>& pairTaken )
+void HittingAlignment::finishRecursiveBuilding(HittingSet hs, vector<vector<int>>& takenSet, map<int, int>& pairTaken,
+                                                 map<vector<int>,bool> allSetTaken )
 {
     bool finalSet = true;
     for(auto it = hs.begin(); it!=hs.end();){
@@ -317,19 +327,22 @@ void HittingAlignment::finishRecursiveBuilding(HittingSet hs, vector<vector<int>
                 Alignment a = *it;
                 finalSet = false;
                 for(int i =0; i<a.size(); i++){
-                    (*it).clear();
-                    (*it).push_back(a[i]);
-                    takenSet.push_back(a[i]);
-                    if((a[i]).size()==2){
-                        pairTaken[a[i][0]]=a[i][1];
-                        pairTaken[a[i][1]]=a[i][0];
+                    if(/* !allSetTaken.contains(a[i]) */ true){
+                        allSetTaken[a[i]]=true;
+                        (*it).clear();
+                        (*it).push_back(a[i]);
+                        takenSet.push_back(a[i]);
+                        if((a[i]).size()==2){
+                            pairTaken[a[i][0]]=a[i][1];
+                            pairTaken[a[i][1]]=a[i][0];
+                        }
+                        finishRecursiveBuilding(hs, takenSet, pairTaken, allSetTaken);
+                        if((a[i]).size()==2){
+                            pairTaken.erase(a[i][0]);
+                            pairTaken.erase(a[i][1]);
+                        }
+                        takenSet.pop_back();
                     }
-                    finishRecursiveBuilding(hs, takenSet, pairTaken);
-                    if((a[i]).size()==2){
-                        pairTaken.erase(a[i][0]);
-                        pairTaken.erase(a[i][1]);
-                    }
-                    takenSet.pop_back();
                 }  
                 return;    
             }
