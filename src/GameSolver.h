@@ -15,6 +15,7 @@
 
 //------------------------------------------------------------------ Types
 enum GameState {stillGoing, winMaker, winBreaker};
+enum PlayedBy {noONe, maker, breaker};
 //------------------------------------------------------------------------
 // Rôle de la classe <GameSolver>
 //
@@ -50,8 +51,8 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
     bool solveHittingSet(HittingSetFinal& hsf);
-    bool doABreakerMove(HittingSetFinal hsf, vector<int>& unitTotake, int unitTaken =-1);
-    bool doAMakerMove(HittingSetFinal hsf, vector<int>& unitTotake, int unitTaken =-1);
+    bool doABreakerMove(HittingSetFinal hsf, vector<int>& unitTotake, map<PlayedBy[], bool> mapOfMoovDone,PlayedBy mooveDone [],int unitTaken =-1);
+    bool doAMakerMove(HittingSetFinal hsf, vector<int>& unitTotake, map<PlayedBy[], bool> mapOfMoovDone,PlayedBy mooveDone [],int unitTaken =-1);
     GameState eraseUnitTakenByBreaker(HittingSetFinal& hsf, int uniTaken);
     GameState eraseUnitTakenByMaker(HittingSetFinal& hsf, int uniTaken, int& unitForcedToTake);
 

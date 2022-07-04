@@ -37,10 +37,11 @@ int TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile ){
                 vectTileAlignment.push_back(ta);
             }
                  
-            /* if(vectTile[i].getId()==2263 ){
+            if(vectTile[i].getId()==2263 ){
                 cout<<vectTile[i]<<endl;
                 cout<<ta<<endl;
-            }  */
+                cout<<"index dans vectTileAlignment : "<<vectTileAlignment.size()-1<<endl;
+            }  
                        
         }
     }

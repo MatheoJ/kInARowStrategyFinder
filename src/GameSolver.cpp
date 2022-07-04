@@ -69,21 +69,25 @@ GameSolver::~GameSolver ()
 bool GameSolver::solveHittingSet(HittingSetFinal& hsf){
     map<int, bool> checkedUnit;
     vector<int> unitToTake;
+    int max =0;
     for(vector<int>& v :hsf){
         for(int& i :v){
             if(checkedUnit[i]==false){
                 checkedUnit[i]=true;
                 unitToTake.push_back(i);
             }
+            if (max<i)
+                max = i;
         }
     }
-
-    bool res = doAMakerMove(hsf, unitToTake);
+    map<PlayedBy[], bool> mapOfMoovDone;
+    PlayedBy  mooveDone [max+1] {noONe};
+    bool res = doAMakerMove(hsf, unitToTake, mapOfMoovDone, mooveDone);
 
     return res;
 }
 
-bool GameSolver::doAMakerMove(HittingSetFinal hsf, vector<int>& unitTotake, int unitTaken){
+bool GameSolver::doAMakerMove(HittingSetFinal hsf, vector<int>& unitTotake, map<PlayedBy[], bool> mapOfMoovDone, PlayedBy mooveDone [], int unitTaken){
     if(unitTaken != -1){
         GameState currentState = eraseUnitTakenByBreaker(hsf, unitTaken);
         if(currentState == winMaker){
@@ -95,23 +99,27 @@ bool GameSolver::doAMakerMove(HittingSetFinal hsf, vector<int>& unitTotake, int 
     }
 
     bool res = true;
+    bool state;
 
     for(auto it = unitTotake.begin(); it!=unitTotake.end(); it++){
 
         if(res){
             unitTaken = (*it);
-            it = unitTotake.erase(it);
-            res =  res && doABreakerMove(hsf,unitTotake,unitTaken);
+            mooveDone[unitTaken]=breaker;            
+            it = unitTotake.erase(it);   
+            state =doABreakerMove(hsf,unitTotake, mapOfMoovDone,  mooveDone,unitTaken);
+            mapOfMoovDone[mooveDone]=state
+            res =  res && state;
             unitTotake.insert(it,unitTaken );
-        }
-        
+            mooveDone[unitTaken]=noONe;                      
+        }        
     }
 
     return res;
 }
 
 
-bool GameSolver::doABreakerMove(HittingSetFinal hsf, vector<int>& unitTotake, int unitTaken ){
+bool GameSolver::doABreakerMove(HittingSetFinal hsf, vector<int>& unitTotake, map<PlayedBy[], bool> mapOfMoovDone, PlayedBy mooveDone [] ,int unitTaken ){
     int unitForcedToTake = -1;
     if(unitTaken != -1){
 
@@ -130,8 +138,10 @@ bool GameSolver::doABreakerMove(HittingSetFinal hsf, vector<int>& unitTotake, in
         if(unitForcedToTake == -1 || *it == unitForcedToTake ){
             unitTaken = (*it);
             it = unitTotake.erase(it);
-            res =  res || doABreakerMove(hsf,unitTotake,unitTaken);
+            mooveDone[unitTaken]=maker;
+            res =  res || doABreakerMove(hsf,unitTotake,mapOfMoovDone,  mooveDone,unitTaken);
             unitTotake.insert(it,unitTaken );
+            mooveDone[unitTaken]=noONe;
         }
     }
 

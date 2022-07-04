@@ -81,7 +81,7 @@ int main(int argc, char** argv){
     cout<<"________________________________________________________"<<endl;   */ 
 
  
-      start = high_resolution_clock::now();
+     /*  start = high_resolution_clock::now();
     HittingAlignment ha3(&ta.getVectTileAlignment()[89]);
     stop = high_resolution_clock::now();
     duration = duration_cast<microseconds>(stop - start);
@@ -102,9 +102,9 @@ int main(int argc, char** argv){
     cout<< ha; 
  
     GameSolver gs(&ha);
-    gs.solveHittingAlignment();
+    gs.solveHittingAlignment(); */
 
-    start = high_resolution_clock::now();
+    /* start = high_resolution_clock::now();
     HittingAlignment ha2(&ta.getVectTileAlignment()[1645]);
     stop = high_resolution_clock::now();
     duration = duration_cast<microseconds>(stop - start);
@@ -114,9 +114,20 @@ int main(int argc, char** argv){
 
 
     GameSolver gs2(&ha2);
-    gs2.solveHittingAlignment();
+    gs2.solveHittingAlignment(); */
      
 
+    start = high_resolution_clock::now();
+    HittingAlignment ha3(&ta.getVectTileAlignment()[454]);
+    stop = high_resolution_clock::now();
+    duration = duration_cast<microseconds>(stop - start);
+    cout<<"Génération des hittings sets :"<<duration.count()<<" ms"<<endl;
+    ha3.eraseDuplicatesOnHittingSets();
+    cout<< ha3; 
+
+    GameSolver gs3(&ha3);
+    gs3.solveHittingAlignment();
+
    
-}
+} 
 
