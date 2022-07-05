@@ -37,7 +37,7 @@ int TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile ){
                 vectTileAlignment.push_back(ta);
             }
                  
-            if(vectTile[i].getId()==2263 ){
+            if(vectTile[i].getId()==2263 || vectTile[i].getId()==10060){
                 cout<<vectTile[i]<<endl;
                 cout<<ta<<endl;
                 cout<<"index dans vectTileAlignment : "<<vectTileAlignment.size()-1<<endl;
@@ -71,6 +71,20 @@ int TileAnalyzer::buildHittingset(){
 
 vector<TileAlignment>& TileAnalyzer::getVectTileAlignment(){
     return this->vectTileAlignment;
+}
+
+vector<HittingAlignment*>& TileAnalyzer::getValidHittingAlignment(){
+    return this->validHittingAlignment;
+}
+
+void  TileAnalyzer::solveGame(){
+    for(HittingAlignment&  ha :vectHittingAlignment ){
+        GameSolver gs(&ha);
+        if(gs.solveHittingAlignment()){
+            validHittingAlignment.push_back(&ha);
+            cout<<ha;
+        }
+    }
 }
 
 //-------------------------------------------- Constructeurs - destructeur

@@ -37,9 +37,13 @@ bool GameSolver::solveHittingAlignment(){
 
          res=res||isHittingSetVAlid;
 
-        if(isHittingSetVAlid)
-            count++;  
-        cout<<i++<<endl;
+        if(isHittingSetVAlid){
+            count++;
+            cout<<"->";
+            cout<<i++<<endl;
+        }            
+        
+        
     }
     cout<<"Il y a "<<count<<" hitting set permettant de trouver une stratégie"<<endl;
     return res;
@@ -163,7 +167,7 @@ bool GameSolver::doABreakerMove(HittingSetFinal hsf, vector<int>& unitTotake,
     bool state;
     for(auto it = unitTotake.begin(); it!=unitTotake.end(); it++){
 
-        if(unitForcedToTake == -1 || *it == unitForcedToTake ){
+        if((unitForcedToTake == -1 || *it == unitForcedToTake )&& !res){
             unitTaken = (*it);            
             mooveDone[unitTaken]=breaker;
             if(mapOfMoovDone.contains(mooveDone)){

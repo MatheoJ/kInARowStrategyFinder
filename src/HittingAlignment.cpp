@@ -279,7 +279,7 @@ void HittingAlignment::recursiveBuildHittingSets(HittingSet hs, map<int,int>& pa
                     Alignment a = *it;
                     finalSet = false;
                     for(int i =0; i<a.size(); i++){
-                        if(/* !allSetTaken.contains(a[i]) */ true){
+                        if( !allSetTaken.contains(a[i]) ){
                             allSetTaken[a[i]]=true;
                             (*it).clear();
                             (*it).push_back(a[i]);
@@ -327,7 +327,7 @@ void HittingAlignment::finishRecursiveBuilding(HittingSet hs, vector<vector<int>
                 Alignment a = *it;
                 finalSet = false;
                 for(int i =0; i<a.size(); i++){
-                    if(/* !allSetTaken.contains(a[i]) */ true){
+                    if( !allSetTaken.contains(a[i]) ){
                         allSetTaken[a[i]]=true;
                         (*it).clear();
                         (*it).push_back(a[i]);

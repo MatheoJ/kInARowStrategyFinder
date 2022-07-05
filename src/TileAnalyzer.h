@@ -32,7 +32,10 @@ public:
 //----------------------------------------------------- Méthodes publiques 
     int  analyzeTileVect(vector<Tile>& vectTile);
     int  buildHittingset();
+    void  solveGame();
+
     vector<TileAlignment>& getVectTileAlignment();  
+    vector<HittingAlignment*>& getValidHittingAlignment();
     
     
 //-------------------------------------------- Constructeurs - destructeur
@@ -55,6 +58,7 @@ protected:
 
 //----------------------------------------------------- Attributs protégés
     vector<TileAlignment> vectTileAlignment;
+    vector<HittingAlignment*> validHittingAlignment;
     
     vector<HittingAlignment> vectHittingAlignment;
     int sizeAlignment;
