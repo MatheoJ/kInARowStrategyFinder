@@ -84,7 +84,7 @@ int main(int argc, char** argv)
             
             tg.generateBoundWord(minHPer,maxHPer, vect);
             tg.generateTile();
-            tg.generateTilingShape(7);
+            tg.generateTilingShape(9);
             ta.analyzeTileVect(tg.getTileVect());
             for(TileAlignment& tal: ta.getVectTileAlignment()){
                 tVect.push_back(*(tal.getTile()));
@@ -98,13 +98,16 @@ int main(int argc, char** argv)
 
             int numTilePerPage= NB_SQUARE_ROW*NB_SQUAR_COLUMN;
             numPage = i/numTilePerPage;
+            int index; 
             for (int i=0; i<NB_SQUAR_COLUMN;i++){
                 for(int j =0; j<NB_SQUARE_ROW; j++){
-                    drawTile(window, tVect[i*NB_SQUARE_ROW+j+numTilePerPage*numPage],j*SIZE_SQUARE,i*SIZE_SQUARE,SIZE_SQUARE,shapeTile);
+                    index = i*NB_SQUARE_ROW+j+numTilePerPage*numPage;
+                    if(index <tVect.size())
+                        drawTile(window, tVect[i*NB_SQUARE_ROW+j+numTilePerPage*numPage],j*SIZE_SQUARE,i*SIZE_SQUARE,SIZE_SQUARE,shapeTile);
                 }
             }
 
-            std::cout<<tVect[i];
+            
 
             int y = (i-numPage*numTilePerPage)/NB_SQUARE_ROW;
             int x = (i-numPage*numTilePerPage)%NB_SQUARE_ROW;

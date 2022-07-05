@@ -79,11 +79,7 @@ vector<HittingAlignment*>& TileAnalyzer::getValidHittingAlignment(){
 
 void  TileAnalyzer::solveGame(){
     for(HittingAlignment&  ha :vectHittingAlignment ){
-        GameSolver gs(&ha);
-        if(gs.solveHittingAlignment()){
-            validHittingAlignment.push_back(&ha);
-            cout<<ha;
-        }
+        this->solveHitAlignment(&ha);
     }
 }
 
@@ -117,3 +113,10 @@ TileAnalyzer::~TileAnalyzer ()
 
 //----------------------------------------------------- Méthodes protégées
 
+void TileAnalyzer::solveHitAlignment(HittingAlignment* ha ){
+    GameSolver gs(ha);
+    if(gs.solveHittingAlignment()){
+        validHittingAlignment.push_back(ha);
+        cout<<*ha;
+    }
+}

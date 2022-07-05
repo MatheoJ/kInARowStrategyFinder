@@ -55,7 +55,7 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-
+    void solveHitAlignment(HittingAlignment*);
 //----------------------------------------------------- Attributs protégés
     vector<TileAlignment> vectTileAlignment;
     vector<HittingAlignment*> validHittingAlignment;
