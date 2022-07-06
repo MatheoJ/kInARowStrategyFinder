@@ -142,7 +142,7 @@ bool eraseTakenSet(Alignment& a,
             }            
         }         
         if(!toBeDeleted  ){             
-            for(int i = 0; i<takenSet.size(); i++){
+            for(int i = 0; i<(int)takenSet.size(); i++){
                 if((*it) == takenSet[i] ){
                     if(!canHaveBeenTaken){
                         a.clear();
@@ -190,7 +190,7 @@ ostream &operator<<(ostream &stream, const HittingAlignment &ha)
     //stream<<"MinVertical ="<<t.boundWord->getMinVertical()<<" MaxVertical ="<<t.boundWord->getMaxVertical()<<" |MinHorizontal ="<<t.boundWord->getMinHorizontal()<<" MaxHorizontal ="<<t.boundWord->getMaxHorizontal()<<endl;
     
    stream<<*(ha.tileAlign->getTile());
-   for (int i = 0; i < ha.hittingSetvect.size(); i++)
+   for (int i = 0; i <(int) ha.hittingSetvect.size(); i++)
    {
         for (int j = 0; j <  (int)ha.hittingSetvect[i].size(); j++)
         { 
@@ -200,9 +200,8 @@ ostream &operator<<(ostream &stream, const HittingAlignment &ha)
                 stream << i << " ";
             }
             stream<<" ||";
-            
-            stream<<endl; 
         } 
+        stream<<endl; 
         stream<<"------------------------"<<endl;        
    }
 
@@ -210,6 +209,25 @@ ostream &operator<<(ostream &stream, const HittingAlignment &ha)
 
    
     return stream;
+}
+
+void HittingAlignment::printValidHittingSet(){
+    cout<<*(this->tileAlign->getTile());
+    for (int i = 0; i <(int) this->validHittingSetVect.size(); i++)
+   {
+        for (int j = 0; j <  (int)this->validHittingSetVect[i]->size(); j++)
+        { 
+            cout<<" (";
+            // Displaying set elements            
+            for(int i :(*(this->validHittingSetVect[i]))[j]){
+                cout << i << " ";
+            }
+            cout<<") ";
+        } 
+        cout<<"||";               
+   }
+   cout<<endl; 
+   cout<<"------------------------"<<endl; 
 }
 
 vector<HittingSetFinal>& HittingAlignment::getHittingSetVect(){
@@ -278,7 +296,7 @@ void HittingAlignment::recursiveBuildHittingSets(HittingSet hs, map<int,int>& pa
                 if((*it).size()>1||!pairTaken.contains((*it)[0][0])){
                     Alignment a = *it;
                     finalSet = false;
-                    for(int i =0; i<a.size(); i++){
+                    for(int i =0; i<(int)a.size(); i++){
                         if( !allSetTaken.contains(a[i]) ){
                             allSetTaken[a[i]]=true;
                             (*it).clear();
@@ -326,7 +344,7 @@ void HittingAlignment::finishRecursiveBuilding(HittingSet hs, vector<vector<int>
             if((*it).size()>1){
                 Alignment a = *it;
                 finalSet = false;
-                for(int i =0; i<a.size(); i++){
+                for(int i =0; i<(int)a.size(); i++){
                     if( !allSetTaken.contains(a[i]) ){
                         allSetTaken[a[i]]=true;
                         (*it).clear();

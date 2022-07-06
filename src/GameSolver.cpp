@@ -29,23 +29,13 @@ using namespace std;
 
 bool GameSolver::solveHittingAlignment(){
     bool res = false;
-    int count = 0; 
-    int i=0;
     for(HittingSetFinal& hsf: ha->hittingSetvect ){
        
         bool isHittingSetVAlid = solveHittingSet(hsf);
-
-         res=res||isHittingSetVAlid;
-
-        if(isHittingSetVAlid){
-            count++;
-            cout<<"->";
-            cout<<i++<<endl;
-        }            
-        
-        
+        if (isHittingSetVAlid)
+            ha->validHittingSetVect.push_back(&hsf);
+        res=res||isHittingSetVAlid; 
     }
-    cout<<"Il y a "<<count<<" hitting set permettant de trouver une stratégie"<<endl;
     return res;
 }
 

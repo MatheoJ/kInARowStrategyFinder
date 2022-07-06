@@ -90,7 +90,7 @@ int main(int argc, char** argv)
                 tVect.push_back(*(tal.getTile()));
             }
             int i=0;
-            for(; i< tVect.size(); i++){
+            for(; i< (int)tVect.size(); i++){
                 if(tVect[i].getId()==id){
                     break;
                 }
@@ -102,7 +102,7 @@ int main(int argc, char** argv)
             for (int i=0; i<NB_SQUAR_COLUMN;i++){
                 for(int j =0; j<NB_SQUARE_ROW; j++){
                     index = i*NB_SQUARE_ROW+j+numTilePerPage*numPage;
-                    if(index <tVect.size())
+                    if(index <(int)tVect.size())
                         drawTile(window, tVect[i*NB_SQUARE_ROW+j+numTilePerPage*numPage],j*SIZE_SQUARE,i*SIZE_SQUARE,SIZE_SQUARE,shapeTile);
                 }
             }

@@ -13,6 +13,7 @@
 using namespace std;
 #include <iostream>
 
+
 //------------------------------------------------------ Include personnel
 
 
@@ -48,25 +49,20 @@ int TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile ){
     return vectTileAlignment.size();    
 }
 
-int TileAnalyzer::buildHittingset(){
-    int count = 0 ;
-    int count0 = 0;
+void TileAnalyzer::buildHittingset(ThreadPool* pool){
+    
+    int size = vectTileAlignment.size();
     for(TileAlignment& ta : vectTileAlignment){
-        vectHittingAlignment.emplace_back(&ta);        
+
+        pool->enqueue([&](TileAlignment* t) {this->makeHittingAlignement(t);}, &ta);
+       
+    
+       /*  vectHittingAlignment.emplace_back(&ta);        
         vectHittingAlignment.back().eraseDuplicatesOnHittingSets();
 
-        count+= vectHittingAlignment.back().hittingSetvect.size();
-        if (vectHittingAlignment.back().hittingSetvect.size()==0){
-            count0++;            
-        }
-        
-        /* if (ta.getTile()->getId()==475){
-            cout << vectHittingAlignment.back()<<endl;
-        } */
-            
+        countHittingSet+= vectHittingAlignment.back().hittingSetvect.size();
+        cout<<"\r"<<count++<<" / "<<size<<flush; */            
     }
-    cout<<"Il y a "<< count0<< " pavages qui n'ont pas de hitting set"<<endl;
-    return count;
 }
 
 vector<TileAlignment>& TileAnalyzer::getVectTileAlignment(){
@@ -77,10 +73,19 @@ vector<HittingAlignment*>& TileAnalyzer::getValidHittingAlignment(){
     return this->validHittingAlignment;
 }
 
-void  TileAnalyzer::solveGame(){
+void  TileAnalyzer::solveGame(ThreadPool* pool){
     for(HittingAlignment&  ha :vectHittingAlignment ){
-        this->solveHitAlignment(&ha);
+        pool->enqueue([&](HittingAlignment* h) {this->solveHitAlignment(h);}, &ha);
+        //this->solveHitAlignment(&ha);
     }
+}
+
+int TileAnalyzer::countHittingSets(){
+    int count =0;
+    for(HittingAlignment& ha: vectHittingAlignment){
+        count += ha.hittingSetvect.size();
+    }
+    return count;
 }
 
 //-------------------------------------------- Constructeurs - destructeur
@@ -113,10 +118,38 @@ TileAnalyzer::~TileAnalyzer ()
 
 //----------------------------------------------------- Méthodes protégées
 
-void TileAnalyzer::solveHitAlignment(HittingAlignment* ha ){
+void TileAnalyzer::solveHitAlignment(HittingAlignment* ha){
     GameSolver gs(ha);
+    static int count = 1;
+    static int size = vectHittingAlignment.size();
     if(gs.solveHittingAlignment()){
+        mutexValidHittingAlignment.lock();
         validHittingAlignment.push_back(ha);
-        cout<<*ha;
+        mutexValidHittingAlignment.unlock();
+        
+        mutexPrint.lock();
+        ha->printValidHittingSet();
+        mutexPrint.unlock();
     }
+    mutexPrint.lock();    
+    cout<<"\r"<<count++<<" / "<<size<<flush;
+    mutexPrint.unlock();
+}
+
+
+void TileAnalyzer::makeHittingAlignement (TileAlignment* ta){
+    static int count = 1;
+    static int size = vectTileAlignment.size();
+
+    HittingAlignment ha (ta);
+    ha.eraseDuplicatesOnHittingSets();
+    mutexHittingAlignment.lock();
+    vectHittingAlignment.push_back(ha);
+    mutexHittingAlignment.unlock();
+
+
+    mutexPrint.lock();    
+    cout<<"\r"<<count++<<" / "<<size<<flush;
+    mutexPrint.unlock();
+
 }

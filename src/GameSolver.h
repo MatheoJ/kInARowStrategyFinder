@@ -11,6 +11,7 @@
 
 //--------------------------------------------------- Interfaces utilisées
 #include "HittingAlignment.h"
+#include <thread>
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -60,7 +61,7 @@ protected:
     GameState eraseUnitTakenByMaker(HittingSetFinal& hsf, int uniTaken, int& unitForcedToTake);
 
 //----------------------------------------------------- Attributs protégés
-    HittingAlignment* ha;
+    HittingAlignment* ha; 
 
 };
 

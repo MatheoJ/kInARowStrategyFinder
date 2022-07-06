@@ -13,6 +13,8 @@
 #include "TileAlignment.h"
 #include "HittingAlignment.h"
 #include "GameSolver.h" 
+#include "../include/ThreadPool.h"
+#include <mutex>
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -31,8 +33,10 @@ class TileAnalyzer
 public:
 //----------------------------------------------------- Méthodes publiques 
     int  analyzeTileVect(vector<Tile>& vectTile);
-    int  buildHittingset();
-    void  solveGame();
+    void  buildHittingset(ThreadPool* pool);
+    void  solveGame(ThreadPool* pool);
+
+    int countHittingSets();
 
     vector<TileAlignment>& getVectTileAlignment();  
     vector<HittingAlignment*>& getValidHittingAlignment();
@@ -55,13 +59,17 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-    void solveHitAlignment(HittingAlignment*);
+    void solveHitAlignment(HittingAlignment* ha);
+    void makeHittingAlignement (TileAlignment* ta);
 //----------------------------------------------------- Attributs protégés
     vector<TileAlignment> vectTileAlignment;
-    vector<HittingAlignment*> validHittingAlignment;
-    
+    vector<HittingAlignment*> validHittingAlignment;    
     vector<HittingAlignment> vectHittingAlignment;
     int sizeAlignment;
+
+    std::mutex mutexValidHittingAlignment;
+    std::mutex mutexHittingAlignment;   
+    std::mutex mutexPrint;
 
 
 };

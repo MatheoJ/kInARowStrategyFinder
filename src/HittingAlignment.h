@@ -43,6 +43,7 @@ public:
 //----------------------------------------------------- Méthodes publiques    
     void eraseDuplicatesOnHittingSets();
     vector<HittingSetFinal>& getHittingSetVect();
+    void printValidHittingSet();
 //-------------------------------------------- Constructeurs - destructeur
     
     
@@ -68,6 +69,7 @@ protected:
 //----------------------------------------------------- Attributs protégés
     TileAlignment* tileAlign ;
     vector<HittingSetFinal> hittingSetvect;
+    vector<HittingSetFinal*> validHittingSetVect;
 
 
 
