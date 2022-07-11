@@ -4,13 +4,13 @@
 CC = g++
 
 # Flags de compilation mettre -std=c++2a si on veut utiliser c++20
-CFLAGS = -g -ansi -pedantic -Wall -std=c++2a
+CFLAGS = -g -ansi -pedantic -Wall -std=c++2a -pthread
 
 # Repertoire des fichiers sources
 SRC = ./src
 
 # Repertoire des fichiers assemblés
-OBJ = ./build/src
+OBJ = ./build
 
 # Recuperation de tous les fichiers .h et .cpp
 # du dossier des sources grâce à la fonction wildcard
