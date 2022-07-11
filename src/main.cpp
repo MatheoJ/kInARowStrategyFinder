@@ -109,10 +109,10 @@ int main(int argc, char** argv){
     stop = high_resolution_clock::now();
     duration = duration_cast<microseconds>(stop - start);
     cout<<"Vérification des hittingset Gagnants :"<<duration.count()<<" ms"<<endl;
-*/
+    */
      
 
-/*     start = high_resolution_clock::now();
+/*  start = high_resolution_clock::now();
     //cout<<ta.getVectTileAlignment()[794];
     HittingAlignment ha(&ta.getVectTileAlignment()[794]);
     stop = high_resolution_clock::now();

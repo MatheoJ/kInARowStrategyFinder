@@ -399,7 +399,6 @@ void Tile::fillTile(int countUnit){
     }
 }
 
-
 pair<int,int>  Tile::getVector1(){
 
     int y=0, x=0;

@@ -36,13 +36,15 @@ int TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile ){
             ta.eraseDuplicatesInAllDirection();
             if(ta.cleanWithRule()){
                 vectTileAlignment.push_back(ta);
-            }
-                 
-            if(vectTile[i].getId()==2263 || vectTile[i].getId()==10060){
+
+                if(vectTile[i].getId()==2263 || vectTile[i].getId()==10060){
                 cout<<vectTile[i]<<endl;
                 cout<<ta<<endl;
                 cout<<"index dans vectTileAlignment : "<<vectTileAlignment.size()-1<<endl;
-            }  
+                }
+            }
+                 
+              
                        
         }
     }
@@ -54,7 +56,7 @@ void TileAnalyzer::buildHittingset(ThreadPool* pool){
     int size = vectTileAlignment.size();
     for(TileAlignment& ta : vectTileAlignment){
 
-        pool->enqueue([&](TileAlignment* t) {this->makeHittingAlignement(t);}, &ta);
+        pool->enqueueVoid([&](TileAlignment* t) {this->makeHittingAlignement(t);}, &ta);
        
     
        /*  vectHittingAlignment.emplace_back(&ta);        
@@ -75,7 +77,7 @@ vector<HittingAlignment*>& TileAnalyzer::getValidHittingAlignment(){
 
 void  TileAnalyzer::solveGame(ThreadPool* pool){
     for(HittingAlignment&  ha :vectHittingAlignment ){
-        pool->enqueue([&](HittingAlignment* h) {this->solveHitAlignment(h);}, &ha);
+        pool->enqueueVoid([&](HittingAlignment* h) {this->solveHitAlignment(h);}, &ha);
         //this->solveHitAlignment(&ha);
     }
 }
