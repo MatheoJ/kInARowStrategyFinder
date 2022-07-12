@@ -33,10 +33,13 @@ class TileAnalyzer
 public:
 //----------------------------------------------------- Méthodes publiques 
     int  analyzeTileVect(vector<Tile>& vectTile);
+    void  analyzeTileVectMemorySave(vector<Tile>& vectTile, ThreadPool* pool);
+    void analyzeTile(Tile* t);
     void  buildHittingset(ThreadPool* pool);
     void  solveGame(ThreadPool* pool);
 
     int countHittingSets();
+    int getNumValidTile();
 
     vector<TileAlignment>& getVectTileAlignment();  
     vector<HittingAlignment*>& getValidHittingAlignment();
@@ -66,6 +69,7 @@ protected:
     vector<HittingAlignment*> validHittingAlignment;    
     vector<HittingAlignment> vectHittingAlignment;
     int sizeAlignment;
+    int numValidTile; 
 
     std::mutex mutexValidHittingAlignment;
     std::mutex mutexHittingAlignment;   

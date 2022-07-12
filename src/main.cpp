@@ -34,6 +34,7 @@ int main(int argc, char** argv){
     int maxHPer =6;
 
     const uint32_t num_threads = std::thread::hardware_concurrency(); // Max # of threads the system supports
+    cout<<"Nombre de threads utilisés : "<<num_threads<<endl;
 
     if(argc>1){
         minHPer=atoi(argv[1]);
@@ -56,17 +57,28 @@ int main(int argc, char** argv){
 
     startTimeMeasurment();
     tg.generateTile();
+    int nb = tg.getTileVect().size();
 
     cout<<"Génération des tuiles :"<<stopTimeMeasurment().count()<<" ms"<<endl;
+    cout<<"Nombre de tuiles :"<<nb<<endl;
 
-    int nb = tg.getTileVect().size();
+    
 
     startTimeMeasurment();
     tg.generateTilingShape(KSIZE);
 
     cout<<"Génération des formes de pavages :"<<stopTimeMeasurment().count()<<" ms"<<endl;
 
+    startTimeMeasurment();
+    TileAnalyzer ta(KSIZE);    
+    ThreadPool* pool = new ThreadPool(num_threads);
+    ta.analyzeTileVectMemorySave(tg.getTileVect(), pool);
+    delete pool;
+    cout<<"Analyse des tuiles :"<<stopTimeMeasurment().count()<<" ms"<<endl;
+    cout<<"Nombre de tuiles Gagnantes :"<<ta.getNumValidTile()<<endl;
+    cout<<"________________________________________________________"<<endl;
 
+    /*
     startTimeMeasurment();
     TileAnalyzer ta(KSIZE);
     int count = ta.analyzeTileVect(tg.getTileVect());
@@ -76,9 +88,7 @@ int main(int argc, char** argv){
     cout<<"Nombre pavages traités: "<<nb<<endl;
     cout<<"Nombre de pavages gardés aprés analyse de leurs traces: "<<count<<endl;
     cout<<"________________________________________________________"<<endl;
-
- 
-
+    
     startTimeMeasurment();
     ThreadPool* poolHs = new ThreadPool(num_threads);
     ta.buildHittingset(poolHs);
@@ -92,112 +102,9 @@ int main(int argc, char** argv){
     ta.solveGame(poolSolveGame);
     delete poolSolveGame;
     cout<<endl<<"Vérification des hittingset Gagnants :"<<stopTimeMeasurment().count()<<" ms"<<endl; 
-    cout<<"Nombre de tuiles Gagnantes :"<<ta.getValidHittingAlignment().size()<<endl; 
+    cout<<"Nombre de tuiles Gagnantes :"<<ta.getValidHittingAlignment().size()<<endl;  */
 
  
-    /* start = high_resolution_clock::now();
-    HittingAlignment ha3(&ta.getVectTileAlignment()[89]);
-    stop = high_resolution_clock::now();
-    duration = duration_cast<microseconds>(stop - start);
-    cout<<"Génération des hittings sets :"<<duration.count()<<" ms"<<endl;
-    ha3.eraseDuplicatesOnHittingSets();
-    //cout<< ha3;  
-
-    start = high_resolution_clock::now();
-    GameSolver gs3(&ha3);
-    gs3.solveHittingAlignment();
-    stop = high_resolution_clock::now();
-    duration = duration_cast<microseconds>(stop - start);
-    cout<<"Vérification des hittingset Gagnants :"<<duration.count()<<" ms"<<endl;
-    */
-     
-
-/*  start = high_resolution_clock::now();
-    //cout<<ta.getVectTileAlignment()[794];
-    HittingAlignment ha(&ta.getVectTileAlignment()[794]);
-    stop = high_resolution_clock::now();
-    duration = duration_cast<microseconds>(stop - start);
-    cout<<"Génération des hittings sets :"<<duration.count()<<" ms"<<endl;
-    ha.eraseDuplicatesOnHittingSets();
-    //cout<< ha; 
-    
-    start = high_resolution_clock::now();
-    GameSolver gs(&ha);
-    gs.solveHittingAlignment();
-    stop = high_resolution_clock::now();
-    duration = duration_cast<microseconds>(stop - start);
-    cout<<"Vérification des hittingset Gagnants :"<<duration.count()<<" ms"<<endl; */
-
-    //-----------------------------------------------------------------------------
-
-    /* start = high_resolution_clock::now();
-    //cout<<ta.getVectTileAlignment()[794];
-    HittingAlignment ha5(&ta.getVectTileAlignment()[894]);
-    stop = high_resolution_clock::now();
-    duration = duration_cast<microseconds>(stop - start);
-    cout<<"Génération des hittings sets :"<<duration.count()<<" ms"<<endl;
-    ha5.eraseDuplicatesOnHittingSets();
-    //cout<< ha; 
-    
-    start = high_resolution_clock::now();
-    GameSolver gs5(&ha5);
-    gs5.solveHittingAlignment();
-    stop = high_resolution_clock::now();
-    duration = duration_cast<microseconds>(stop - start);
-    cout<<"Vérification des hittingset Gagnants :"<<duration.count()<<" ms"<<endl; */
-     
-    /* start = high_resolution_clock::now();
-    //cout<<ta.getVectTileAlignment()[1645];
-    HittingAlignment ha2(&ta.getVectTileAlignment()[1645]);
-    stop = high_resolution_clock::now();
-    duration = duration_cast<microseconds>(stop - start);
-    cout<<"Génération des hittings sets :"<<duration.count()<<" ms"<<endl;
-    ha2.eraseDuplicatesOnHittingSets();
-    cout<< ha2;
-
-
-     start = high_resolution_clock::now();
-    GameSolver gs2(&ha2);
-    gs2.solveHittingAlignment();
-    stop = high_resolution_clock::now();
-    duration = duration_cast<microseconds>(stop - start);
-    cout<<"Vérification des hittingset Gagnants :"<<duration.count()<<" ms"<<endl; */
-
-     
-    ///-----------------------------------------------------TILE VALID POUR 9 --------------------------------------------------------------------------//
-
-    /* start = high_resolution_clock::now();
-    HittingAlignment ha4(&ta.getVectTileAlignment()[454]);
-    stop = high_resolution_clock::now();
-    duration = duration_cast<microseconds>(stop - start);
-    cout<<"Génération des hittings sets :"<<duration.count()<<" ms"<<endl;
-    ha4.eraseDuplicatesOnHittingSets();
-    cout<< ha4; 
-
-     start = high_resolution_clock::now();
-    GameSolver gs4(&ha4);
-    gs4.solveHittingAlignment();
-    stop = high_resolution_clock::now();
-    duration = duration_cast<microseconds>(stop - start);
-    cout<<"Vérification des hittingset Gagnants :"<<duration.count()<<" ms"<<endl;
-
-
-    start = high_resolution_clock::now();
-    HittingAlignment ha7(&ta.getVectTileAlignment()[1645]);
-    stop = high_resolution_clock::now();
-    duration = duration_cast<microseconds>(stop - start);
-    cout<<"Génération des hittings sets :"<<duration.count()<<" ms"<<endl;
-    ha4.eraseDuplicatesOnHittingSets();
-    cout<< ha7; 
-
-    start = high_resolution_clock::now();
-    GameSolver gs7(&ha7);
-    gs7.solveHittingAlignment();
-    stop = high_resolution_clock::now();
-    duration = duration_cast<microseconds>(stop - start);
-    cout<<"Vérification des hittingset Gagnants :"<<duration.count()<<" ms"<<endl;
- */
-    
    
 } 
 

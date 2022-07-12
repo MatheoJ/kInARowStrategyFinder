@@ -36,24 +36,42 @@ int TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile ){
             ta.eraseDuplicatesInAllDirection();
             if(ta.cleanWithRule()){
                 vectTileAlignment.push_back(ta);
-
-                if(vectTile[i].getId()==2263 || vectTile[i].getId()==10060){
-                cout<<vectTile[i]<<endl;
-                cout<<ta<<endl;
-                cout<<"index dans vectTileAlignment : "<<vectTileAlignment.size()-1<<endl;
-                }
-            }
-                 
-              
-                       
+            }     
         }
     }
     return vectTileAlignment.size();    
 }
 
+void TileAnalyzer::analyzeTileVectMemorySave(vector<Tile>& vectTile, ThreadPool* pool){
+    for(int i =0; i<(int)vectTile.size(); i++){
+        pool->enqueueVoid([&](Tile* t) {this->analyzeTile(t);}, &vectTile[i]);        
+    }
+}
+
+void TileAnalyzer::analyzeTile(Tile* t){
+    TileAlignment ta(t);
+    if(ta.buildAlignments(sizeAlignment)){            
+        ta.eraseDuplicatesInAllDirection();
+        ta.eraseSubsetAlignment();
+        ta.eraseDuplicatesInAllDirection();
+        if(ta.cleanWithRule()){
+            //vectTileAlignment.push_back(ta);
+            HittingAlignment ha (&ta);
+            ha.eraseDuplicatesOnHittingSets();
+            GameSolver gs(&ha);
+            if(gs.solveHittingAlignment()){                    
+                mutexPrint.lock();
+                ha.printValidHittingSet();
+                this->numValidTile++;
+                mutexPrint.unlock();
+            }
+        }     
+    }
+}
+
 void TileAnalyzer::buildHittingset(ThreadPool* pool){
     
-    int size = vectTileAlignment.size();
+    //int size = vectTileAlignment.size();
     for(TileAlignment& ta : vectTileAlignment){
 
         pool->enqueueVoid([&](TileAlignment* t) {this->makeHittingAlignement(t);}, &ta);
@@ -73,6 +91,10 @@ vector<TileAlignment>& TileAnalyzer::getVectTileAlignment(){
 
 vector<HittingAlignment*>& TileAnalyzer::getValidHittingAlignment(){
     return this->validHittingAlignment;
+}
+
+int TileAnalyzer::getNumValidTile(){
+    return this->numValidTile;
 }
 
 void  TileAnalyzer::solveGame(ThreadPool* pool){
@@ -99,6 +121,7 @@ TileAnalyzer::TileAnalyzer (int sizeAlignment)
 //
 {
     this->sizeAlignment=sizeAlignment;
+    this->numValidTile=0; 
     
 #ifdef MAP
     cout << "Appel au constructeur de <TileAnalyzer>" << endl;
