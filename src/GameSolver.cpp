@@ -105,7 +105,7 @@ bool GameSolver::doAMakerMove(HittingSetFinal hsf, vector<int>& unitTotake,
 
     bool res = true;
     bool state;
-
+    
     for(auto it = unitTotake.begin(); it!=unitTotake.end(); it++){
 
         if(res){
@@ -155,6 +155,7 @@ bool GameSolver::doABreakerMove(HittingSetFinal hsf, vector<int>& unitTotake,
 
     bool res = false;
     bool state;
+
     for(auto it = unitTotake.begin(); it!=unitTotake.end(); it++){
 
         if((unitForcedToTake == -1 || *it == unitForcedToTake )&& !res){
@@ -181,6 +182,7 @@ bool GameSolver::doABreakerMove(HittingSetFinal hsf, vector<int>& unitTotake,
 
 GameState GameSolver::eraseUnitTakenByBreaker(HittingSetFinal& hsf, int uniTaken){
     
+    map<int,int> pairInHs; 
     GameState resState = stillGoing;
 
     for(auto it = hsf.begin(); it != hsf.end(); ){
@@ -190,6 +192,18 @@ GameState GameSolver::eraseUnitTakenByBreaker(HittingSetFinal& hsf, int uniTaken
         else{
             if((*it).size()==1){
                 return winMaker;
+            }
+            else if ((*it).size()==2){
+                if((pairInHs.contains((*it)[0]) && pairInHs[(*it)[0]]!=(*it)[1])
+                || 
+                (pairInHs.contains((*it)[1]) && pairInHs[(*it)[1]]!=(*it)[0]))
+                {
+                    return winMaker;   
+                } 
+                else{
+                    pairInHs[(*it)[0]]= (*it)[1];
+                    pairInHs[(*it)[1]]= (*it)[0];
+                }
             }
             it++;
         }
