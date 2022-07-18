@@ -41,6 +41,7 @@ public:
    
 
     GameSolver (HittingAlignment* ha);
+    GameSolver ();
     
 
     virtual ~GameSolver ( );

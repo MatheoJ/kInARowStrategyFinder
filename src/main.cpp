@@ -48,8 +48,56 @@ int main(int argc, char** argv){
     TileGenerator tg;
     vector<char> vect;
 
-
     startTimeMeasurment();
+    tg.generateBoundWord(minHPer,maxHPer, vect);
+
+    cout<<"Génération des boundary word :"<<stopTimeMeasurment().count()<<" ms"<<endl;
+    cout<<"Nombre de boundary word :"<<tg.getTileWordVect().size()<<endl;
+
+    /* startTimeMeasurment();   
+    ThreadPool* pool = new ThreadPool(num_threads);
+    TileAnalyzer *ta = new TileAnalyzer (KSIZE);
+    ta->analyzeBwVectMemorySave(tg.getTileWordVect(), pool, KSIZE);
+    delete pool;   
+    cout<<"Analyse des tuiles :"<<stopTimeMeasurment().count()<<" ms"<<endl;
+    cout<<"Nombre de tuiles Gagnantes :"<<ta->getNumValidTile()<<endl;
+    cout<<"________________________________________________________"<<endl;
+    delete ta; */
+
+
+    /* ==============================Pour ne PAS STCOKER LES BOUNDARY WORD========================*/
+
+    /* startTimeMeasurment();   
+    ThreadPool* pool = new ThreadPool(num_threads);
+    TileAnalyzer *ta = new TileAnalyzer (KSIZE);
+    tg.generateAndAnalyzeBoundWord(minHPer,maxHPer, vect, pool, KSIZE, ta);
+    delete pool;    
+    cout<<"Analyse des tuiles :"<<stopTimeMeasurment().count()<<" ms"<<endl;
+    cout<<"Nombre de tuiles Gagnantes :"<<ta->getNumValidTile()<<endl;
+    cout<<"________________________________________________________"<<endl;
+    delete ta; */
+
+    /* HittingSetFinal hsf;
+    hsf.push_back(vector<int> {6, 11, 13, 16});
+    hsf.push_back(vector<int> {5, 12, 14, 15 });
+    hsf.push_back(vector<int> {0, 1 ,2, 3 });
+    hsf.push_back(vector<int> {7, 8, 9, 10});
+    hsf.push_back(vector<int> {0, 10, 11, 12 });
+    hsf.push_back(vector<int> {1, 9, 13, 14});
+    hsf.push_back(vector<int> {2, 8, 15, 16});
+    hsf.push_back(vector<int> {3, 5, 6, 7});
+    hsf.push_back(vector<int> {2, 11, 14});
+    hsf.push_back(vector<int> {13, 15});
+    hsf.push_back(vector<int> {5, 9, 16 });
+    hsf.push_back(vector<int> {1, 6, 15});
+    hsf.push_back(vector<int> {14, 16 });
+    hsf.push_back(vector<int> {8, 12, 13});
+
+    GameSolver gs;
+    cout<<"le hs est :"<<gs.solveHittingSet(hsf)<<endl; */
+
+
+    /* startTimeMeasurment();
     tg.generateBoundWord(minHPer,maxHPer, vect);
 
     cout<<"Génération des boundary word :"<<stopTimeMeasurment().count()<<" ms"<<endl;
@@ -77,7 +125,7 @@ int main(int argc, char** argv){
     cout<<"Analyse des tuiles :"<<stopTimeMeasurment().count()<<" ms"<<endl;
     cout<<"Nombre de tuiles Gagnantes :"<<ta.getNumValidTile()<<endl;
     cout<<"________________________________________________________"<<endl;
-
+ */
     /*
     startTimeMeasurment();
     TileAnalyzer ta(KSIZE);

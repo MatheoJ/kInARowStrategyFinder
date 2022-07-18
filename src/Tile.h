@@ -94,7 +94,7 @@ protected:
     BoundaryWord *boundWord;
     int id;
     int size;
-    int planingShapeSize;
+    int planingShapeSize =0;
     Unit**  basicShape;
     vector< pair<int,int> > coordBasicUnits; 
     Unit** planingShape;

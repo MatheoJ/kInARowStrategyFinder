@@ -16,6 +16,7 @@ using namespace std;
 #include <string>
 #include <map>
 #include "Tile.h"
+#include "TileAnalyzer.h"
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -32,9 +33,11 @@ class TileGenerator
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    vector<BoundaryWord>& getTileWordVect();
+    vector<BoundaryWord *>& getTileWordVect();
 
-    vector<Tile>& getTileVect();
+    vector<Tile *>& getTileVect();
+
+    void generateAndAnalyzeBoundWord(int minHalfPerimeter, int maxHalfPerimeter, vector<char>& currentHalfWord, ThreadPool *pool, int kSize, TileAnalyzer* ta);
 
     void generateBoundWord(int minHalfPerimeter, int maxHalfPerimeter, vector<char>& currentHalfWord);
     // Mode d'emploi :
@@ -69,7 +72,7 @@ public:
 
 //------------------------------------------------------------------ PRIVE
 private:
-    void generateFullWord(vector<char>& firstHalf);
+    void generateFullWord(vector<char>& firstHalf, ThreadPool *pool = NULL, int kSize = 0, TileAnalyzer* ta = NULL);
     void buildOtherHalf(vector<char>& firstHalf,vector<char>& otherHalf,int xSize,int ySize,int zSize);
     bool isSelfAvoiding(BoundaryWord& fullVector);
     void buildTile(BoundaryWord& bw);
@@ -78,8 +81,8 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-    vector<BoundaryWord>  tileWordVect;
-    vector<Tile> tileVect;
+    vector<BoundaryWord *>  tileWordVect;
+    vector<Tile *> tileVect;
 };
 
 //-------------------------------- Autres définitions dépendantes de <Xxx>

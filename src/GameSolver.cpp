@@ -45,6 +45,9 @@ GameSolver::GameSolver (HittingAlignment* ha){
     this->ha = ha;
 }
 
+GameSolver::GameSolver (){
+}
+
 
 
 
@@ -83,6 +86,11 @@ bool GameSolver::solveHittingSet(HittingSetFinal& hsf){
     return res;
 }
 
+bool compareVector(const vector<int> & a, const vector<int> & b)
+{ 
+    return a.size() < b.size(); 
+}
+
 bool GameSolver::doAMakerMove(HittingSetFinal hsf, vector<int>& unitTotake, 
                             map<vector<PlayedBy>, bool>& mapOfMoovDone, vector<PlayedBy>& mooveDone, int unitTaken){
     if(unitTaken != -1){
@@ -105,7 +113,7 @@ bool GameSolver::doAMakerMove(HittingSetFinal hsf, vector<int>& unitTotake,
 
     bool res = true;
     bool state;
-    
+
     for(auto it = unitTotake.begin(); it!=unitTotake.end(); it++){
 
         if(res){

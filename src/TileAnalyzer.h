@@ -32,9 +32,12 @@ class TileAnalyzer
 
 public:
 //----------------------------------------------------- Méthodes publiques 
-    int  analyzeTileVect(vector<Tile>& vectTile);
-    void  analyzeTileVectMemorySave(vector<Tile>& vectTile, ThreadPool* pool);
+    int  analyzeTileVect(vector<Tile *>& vectTile);
+    void  analyzeTileVectMemorySave(vector<Tile *>& vectTile, ThreadPool* pool);
+    void  analyzeBwVectMemorySave(vector<BoundaryWord *>& vectBW, ThreadPool* pool, int kSize);
+    void  analyzeBounDaryWordMemorySave(BoundaryWord * bw, ThreadPool* pool,int kSize);
     void analyzeTile(Tile* t);
+    void analyzeBoundaryWord(BoundaryWord* bw, int kSize);
     void  buildHittingset(ThreadPool* pool);
     void  solveGame(ThreadPool* pool);
 
@@ -50,6 +53,7 @@ public:
     
 
     TileAnalyzer (int sizeAnalyzing);
+    TileAnalyzer ();
     
 
     virtual ~TileAnalyzer ( );

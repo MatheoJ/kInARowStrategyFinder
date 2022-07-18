@@ -27,9 +27,9 @@ using namespace std;
 //
 //{
 //} //----- Fin de Méthode
-int TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile ){
+int TileAnalyzer::analyzeTileVect(vector<Tile *>& vectTile ){
     for(int i =0; i<(int)vectTile.size(); i++){
-        TileAlignment ta(&vectTile[i]);
+        TileAlignment ta(vectTile[i]);
         if(ta.buildAlignments(sizeAlignment)){            
             ta.eraseDuplicatesInAllDirection();
             ta.eraseSubsetAlignment();
@@ -42,10 +42,49 @@ int TileAnalyzer::analyzeTileVect(vector<Tile>& vectTile ){
     return vectTileAlignment.size();    
 }
 
-void TileAnalyzer::analyzeTileVectMemorySave(vector<Tile>& vectTile, ThreadPool* pool){
+void TileAnalyzer::analyzeTileVectMemorySave(vector<Tile *>& vectTile, ThreadPool* pool){
     for(int i =0; i<(int)vectTile.size(); i++){
-        pool->enqueueVoid([&](Tile* t) {this->analyzeTile(t);}, &vectTile[i]);        
+        pool->enqueueVoid([&](Tile* t) {this->analyzeTile(t);}, vectTile[i]);        
     }
+}
+
+void TileAnalyzer::analyzeBwVectMemorySave(vector<BoundaryWord *>& vectBW, ThreadPool* pool, int kSize){
+    for(int i =0; i<(int)vectBW.size(); i++){
+        pool->enqueueVoid([&](BoundaryWord* b) {this->analyzeBoundaryWord(b, kSize);},vectBW[i]);        
+    }
+}
+
+void  TileAnalyzer::analyzeBounDaryWordMemorySave(BoundaryWord* bw, ThreadPool* pool, int kSize){
+    pool->enqueueVoid([&](BoundaryWord* b) {this->analyzeBoundaryWord(b, kSize);}, bw);  
+}
+
+
+
+void TileAnalyzer::analyzeBoundaryWord(BoundaryWord* bw, int kSize){
+    Tile * t = new Tile(bw);
+    if(t->BuildTile()){
+        t->buildPlanningShape(kSize);
+        TileAlignment ta(t);
+        if(ta.buildAlignments(sizeAlignment)){            
+            ta.eraseDuplicatesInAllDirection();
+            ta.eraseSubsetAlignment();
+            ta.eraseDuplicatesInAllDirection();
+            if(ta.cleanWithRule()){
+                //vectTileAlignment.push_back(ta);
+                HittingAlignment ha (&ta);
+                ha.eraseDuplicatesOnHittingSets();
+                GameSolver gs(&ha);
+                if(gs.solveHittingAlignment()){                    
+                    mutexPrint.lock();
+                    ha.printValidHittingSet();
+                    this->numValidTile++;
+                    mutexPrint.unlock();
+                }
+            }     
+        }
+    }
+    delete bw;
+    delete t;
 }
 
 void TileAnalyzer::analyzeTile(Tile* t){
@@ -121,6 +160,18 @@ TileAnalyzer::TileAnalyzer (int sizeAlignment)
 //
 {
     this->sizeAlignment=sizeAlignment;
+    this->numValidTile=0; 
+    
+#ifdef MAP
+    cout << "Appel au constructeur de <TileAnalyzer>" << endl;
+#endif
+} //----- Fin de TileAnalyzer
+
+TileAnalyzer::TileAnalyzer ()
+// Algorithme :
+//
+{
+    this->sizeAlignment=0;
     this->numValidTile=0; 
     
 #ifdef MAP

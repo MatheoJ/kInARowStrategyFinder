@@ -309,11 +309,13 @@ Tile::Tile (BoundaryWord *boundWord )
 
     this->boundWord=boundWord;
     this->size= max((boundWord->maxHorizontal-boundWord->minHorizontal),(boundWord->maxVertical-boundWord->minVertical));
+
     this->basicShape = new Unit* [this->size];
     for(int i=0; i<this->size; i++){
         this->basicShape[i]= new Unit[this->size];
     }
-    this->planingShapeSize = 0;    
+    this->planingShapeSize = 0;   
+    this->planingShape = NULL; 
 #ifdef MAP
     cout << "Appel au constructeur de <Tile>" << endl;
 #endif
@@ -324,6 +326,18 @@ Tile::~Tile ( )
 // Algorithme :
 //
 {
+    for(int j=0; j<this->size; j++){
+            delete [] this->basicShape[j];
+    }
+    delete [] this->basicShape;
+
+    if(planingShapeSize!=0){
+        for(int j=0; j<this->planingShapeSize; j++){
+                delete [] this->planingShape[j];
+        }
+        delete [] this->planingShape;
+    }
+    
 #ifdef MAP
     cout << "Appel au destructeur de <Tile>" << endl;
 #endif

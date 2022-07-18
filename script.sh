@@ -7,6 +7,6 @@
 #SBATCH --licenses=sps
 
 ####################################
-module load GCC
+module load gcc
 make
 ./dist/prog 10 7 
