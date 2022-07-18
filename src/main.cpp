@@ -54,7 +54,7 @@ int main(int argc, char** argv){
     cout<<"Génération des boundary word :"<<stopTimeMeasurment().count()<<" ms"<<endl;
     cout<<"Nombre de boundary word :"<<tg.getTileWordVect().size()<<endl;
 
-    /* startTimeMeasurment();   
+    startTimeMeasurment();   
     ThreadPool* pool = new ThreadPool(num_threads);
     TileAnalyzer *ta = new TileAnalyzer (KSIZE);
     ta->analyzeBwVectMemorySave(tg.getTileWordVect(), pool, KSIZE);
@@ -62,7 +62,7 @@ int main(int argc, char** argv){
     cout<<"Analyse des tuiles :"<<stopTimeMeasurment().count()<<" ms"<<endl;
     cout<<"Nombre de tuiles Gagnantes :"<<ta->getNumValidTile()<<endl;
     cout<<"________________________________________________________"<<endl;
-    delete ta; */
+    delete ta;
 
 
     /* ==============================Pour ne PAS STCOKER LES BOUNDARY WORD========================*/
