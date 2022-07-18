@@ -49,8 +49,13 @@ void TileAnalyzer::analyzeTileVectMemorySave(vector<Tile *>& vectTile, ThreadPoo
 }
 
 void TileAnalyzer::analyzeBwVectMemorySave(vector<BoundaryWord *>& vectBW, ThreadPool* pool, int kSize){
-    for(int i =0; i<(int)vectBW.size(); i++){
+   /*  for(int i =0; i<(int)vectBW.size(); i++){
         pool->enqueueVoid([&](BoundaryWord* b) {this->analyzeBoundaryWord(b, kSize);},vectBW[i]);        
+    } */
+
+    while(vectBW.size()!=0){
+        pool->enqueueVoid([&](BoundaryWord* b) {this->analyzeBoundaryWord(b, kSize);},vectBW.back()); 
+        vectBW.pop_back();
     }
 }
 

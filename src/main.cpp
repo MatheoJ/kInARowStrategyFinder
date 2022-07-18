@@ -61,6 +61,7 @@ int main(int argc, char** argv){
     delete pool;   
     cout<<"Analyse des tuiles :"<<stopTimeMeasurment().count()<<" ms"<<endl;
     cout<<"Nombre de tuiles Gagnantes :"<<ta->getNumValidTile()<<endl;
+    cout<<"Nombre de boundary word restant:"<<tg.getTileWordVect().size()<<endl;
     cout<<"________________________________________________________"<<endl;
     delete ta;
 
