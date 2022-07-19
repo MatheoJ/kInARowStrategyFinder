@@ -88,7 +88,7 @@ void TileAnalyzer::analyzeBoundaryWord(BoundaryWord* bw, int kSize){
             }     
         }
     }
-    delete bw;
+    //delete bw;
     delete t;
 }
 
