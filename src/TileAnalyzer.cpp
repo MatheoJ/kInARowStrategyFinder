@@ -54,6 +54,7 @@ void TileAnalyzer::analyzeBwVectMemorySave(vector<BoundaryWord *>& vectBW, Threa
     } */
 
     while(vectBW.size()!=0){
+        sem_wait(&(pool->semaphore));
         pool->enqueueVoid([&](BoundaryWord* b) {this->analyzeBoundaryWord(b, kSize);},vectBW.back()); 
         vectBW.pop_back();
     }

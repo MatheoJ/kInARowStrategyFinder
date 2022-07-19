@@ -33,8 +33,8 @@ int main(int argc, char** argv){
     int minHPer =4;
     int maxHPer =6;
 
-    const uint32_t num_threads = std::thread::hardware_concurrency(); // Max # of threads the system supports
-    cout<<"Nombre de threads utilisés : "<<num_threads<<endl;
+    uint32_t num_threads = std::thread::hardware_concurrency(); // Max # of threads the system supports
+    
 
     if(argc>1){
         minHPer=atoi(argv[1]);
@@ -44,6 +44,12 @@ int main(int argc, char** argv){
     if(argc>2){
         KSIZE=atoi(argv[2]);        
     }
+
+    if(argc>3){
+        num_threads= atoi(argv[3]);        
+    }
+
+    cout<<"Nombre de threads utilisés : "<<num_threads<<endl;
 
     TileGenerator tg;
     vector<char> vect;
@@ -98,7 +104,7 @@ int main(int argc, char** argv){
     cout<<"le hs est :"<<gs.solveHittingSet(hsf)<<endl; */
 
 
-    /* startTimeMeasurment();
+ /*    startTimeMeasurment();
     tg.generateBoundWord(minHPer,maxHPer, vect);
 
     cout<<"Génération des boundary word :"<<stopTimeMeasurment().count()<<" ms"<<endl;
@@ -125,8 +131,8 @@ int main(int argc, char** argv){
     delete pool;
     cout<<"Analyse des tuiles :"<<stopTimeMeasurment().count()<<" ms"<<endl;
     cout<<"Nombre de tuiles Gagnantes :"<<ta.getNumValidTile()<<endl;
-    cout<<"________________________________________________________"<<endl;
- */
+    cout<<"________________________________________________________"<<endl; */
+
     /*
     startTimeMeasurment();
     TileAnalyzer ta(KSIZE);

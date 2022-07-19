@@ -9,4 +9,4 @@
 ####################################
 module load gcc
 make
-gdb --batch --command=test.gdb --args ./dist/prog 7 9 8 > out.txt
+gdb --batch --command=test.gdb --args ./dist/prog 10 7 32 > out.txt

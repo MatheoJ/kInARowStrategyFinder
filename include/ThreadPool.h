@@ -10,6 +10,7 @@
 #include <future>
 #include <functional>
 #include <stdexcept>
+#include <semaphore.h>
 
 class ThreadPool {
 public:
@@ -22,6 +23,7 @@ public:
     void enqueueVoid(F&& f, Args&&... args);
     
     ~ThreadPool();
+    sem_t semaphore;
 private:
     // need to keep track of threads so we can join them
     std::vector< std::thread > workers;
@@ -31,6 +33,7 @@ private:
     // synchronization
     std::mutex queue_mutex;
     std::condition_variable condition;
+   
     bool stop;
 };
  
@@ -38,6 +41,7 @@ private:
 inline ThreadPool::ThreadPool(size_t threads)
     :   stop(false)
 {
+    sem_init(&semaphore, 0, (int) threads);
     for(size_t i = 0;i<threads;++i)
         workers.emplace_back(
             [this]
@@ -53,6 +57,7 @@ inline ThreadPool::ThreadPool(size_t threads)
                         if(this->stop && this->tasks.empty())
                             return;
                         task = std::move(this->tasks.front());
+                        sem_post(&semaphore);
                         this->tasks.pop();
                     }
 
