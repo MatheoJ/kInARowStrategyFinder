@@ -1,0 +1,994 @@
+To enable execution of this file add
+	add-auto-load-safe-path /pbs/software/centos-7-x86_64/gcc/10.3.0/lib64/libstdc++.so.6.0.28-gdb.py
+line to your configuration file "/pbs/home/n/noijid/.gdbinit".
+To completely disable this security protection add
+	set auto-load safe-path /
+line to your configuration file "/pbs/home/n/noijid/.gdbinit".
+For more information about this security protection see the
+"Auto-loading safe path" section in the GDB manual.  E.g., run from the shell:
+	info "(gdb)Auto-loading safe path"
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib64/libthread_db.so.1".
+Nombre de threads utilisés : 64
+Génération des boundary word :503.006 ms
+Nombre de boundary word :5280
+This is the tile : #211
+3 3 3 0 0 3 0 1 1 2 1 2 1 2 #X =2 #Y =2 #Z =3
+5| | | |
+6|4| | |
+0|1|3| |
+ | |2| |
+--------------------
+ (0 1 3 )  (0 5 6 )  (3 4 5 )  (0 4 ) ||
+------------------------
+This is the tile : #466
+3 3 0 3 0 1 0 1 2 1 2 1 2 3 #X =1 #Y =4 #Z =2
+4| | | |
+5|3| | |
+0|6|2| |
+ |1| | |
+--------------------
+ (0 2 6 )  (0 4 5 )  (2 3 4 )  (0 3 ) || (0 2 6 )  (1 3 6 )  (2 3 4 )  (0 3 ) || (0 2 6 )  (1 3 6 )  (2 3 4 )  (1 2 ) ||
+------------------------
+This is the tile : #498
+3 3 0 1 0 1 0 1 1 2 3 2 2 3 #X =2 #Y =3 #Z =2
+ | |3| |
+5|4|2| |
+6|1| | |
+0| | | |
+--------------------
+ (2 4 5 )  (0 5 6 )  (1 5 )  (0 1 2 ) ||
+------------------------
+This is the tile : #500
+3 3 0 1 0 1 0 1 2 1 2 3 2 3 #X =1 #Y =2 #Z =4
+ |3| | |
+4|6|2| |
+5|1| | |
+0| | | |
+--------------------
+ (2 4 6 )  (0 4 5 )  (1 4 )  (0 1 2 ) || (2 4 6 )  (1 3 6 )  (1 4 )  (0 1 2 ) || (2 4 6 )  (1 3 6 )  (2 3 )  (0 1 2 ) ||
+------------------------
+This is the tile : #505
+3 3 0 1 0 0 1 1 1 2 3 2 3 2 #X =2 #Y =3 #Z =2
+ | |4| |
+ |5|3| |
+6|1|2| |
+0| | | |
+--------------------
+ (1 2 6 )  (2 3 4 )  (2 5 )  (4 5 6 ) ||
+------------------------
+This is the tile : #456
+3 3 0 3 0 3 0 1 1 1 2 2 1 2 #X =2 #Y =2 #Z =3
+6| | | |
+0|5|4| |
+ |1|3| |
+ | |2| |
+--------------------
+ (0 4 5 )  (2 3 4 )  (0 1 2 )  (1 4 ) ||
+------------------------
+This is the tile : #642
+3 2 3 3 0 1 0 0 1 1 1 2 3 2 #X =2 #Y =2 #Z =3
+ | |4| |
+ |5|3| |
+6|1|2| |
+0| | | |
+--------------------
+ (1 2 6 )  (2 3 4 )  (2 5 )  (4 5 6 ) ||
+------------------------
+This is the tile : #666
+3 2 3 2 3 0 3 0 1 0 1 1 1 2 #X =4 #Y =1 #Z =2
+ | |4| |
+ |5|3| |
+0|6|2| |
+ |1| | |
+--------------------
+ (0 2 6 )  (1 5 6 )  (0 1 )  (0 4 5 ) || (0 2 6 )  (1 5 6 )  (2 5 )  (0 4 5 ) || (0 2 6 )  (2 3 4 )  (2 5 )  (0 4 5 ) ||
+------------------------
+This is the tile : #726
+3 2 3 0 3 0 3 0 1 1 1 2 1 2 #X =2 #Y =1 #Z =4
+ |5| | |
+0|6|4| |
+ |1|3| |
+ | |2| |
+--------------------
+ (0 4 6 )  (1 5 6 )  (0 1 2 )  (0 5 ) || (0 4 6 )  (1 5 6 )  (0 1 2 )  (1 4 ) || (0 4 6 )  (2 3 4 )  (0 1 2 )  (1 4 ) ||
+------------------------
+This is the tile : #742
+3 2 3 0 0 1 0 1 0 1 2 2 2 3 #X =3 #Y =2 #Z =2
+ | | | |
+ |5|4|3|
+ |6|2| |
+0|1| | |
+--------------------
+ (3 4 5 )  (1 5 6 )  (2 5 )  (1 2 3 ) ||
+------------------------
+This is the tile : #738
+3 2 3 0 0 3 0 0 1 1 2 2 1 2 #X =2 #Y =4 #Z =1
+ | | | |
+ |6| | |
+0|1|5|4|
+ | |2|3|
+--------------------
+ (0 1 5 )  (1 6 )  (3 5 6 )  (2 4 ) ||
+------------------------
+This is the tile : #746
+3 2 3 2 3 0 0 0 1 1 0 1 2 2 #X =2 #Y =3 #Z =2
+ | | | |
+ | |5|4|
+ |6|3| |
+0|1|2| |
+--------------------
+ (0 1 2 )  (2 3 5 )  (2 6 )  (0 5 6 ) ||
+------------------------
+This is the tile : #732
+3 2 3 0 3 0 0 0 1 2 1 2 1 2 #X =2 #Y =4 #Z =1
+ | | | |
+ |5| | |
+0|6|4| |
+ |1|2|3|
+--------------------
+ (0 4 6 )  (1 5 6 )  (3 4 5 )  (0 5 ) || (0 4 6 )  (1 5 6 )  (3 4 5 )  (1 4 ) || (1 2 3 )  (1 5 6 )  (3 4 5 )  (1 4 ) ||
+------------------------
+This is the tile : #751
+3 2 3 0 0 0 1 1 0 1 2 2 3 2 #X =3 #Y =2 #Z =2
+ | | | |
+ | |5|4|
+ |6|3| |
+0|1|2| |
+--------------------
+ (0 1 2 )  (2 3 5 )  (2 6 )  (0 5 6 ) ||
+------------------------
+This is the tile : #768
+3 2 2 3 3 0 0 1 0 0 1 2 1 2 #X =4 #Y =2 #Z =1
+ | | | |
+ | |4| |
+6|5|2|3|
+0|1| | |
+--------------------
+ (2 3 5 )  (2 4 )  (1 6 )  (0 4 5 ) ||
+------------------------
+This is the tile : #721
+3 2 3 0 3 3 0 0 1 1 2 1 1 2 #X =2 #Y =1 #Z =4
+ |6| | |
+0|5| | |
+ |1|4| |
+ |2|3| |
+--------------------
+ (0 5 )  (1 5 6 )  (0 1 3 )  (2 4 ) ||
+------------------------
+This is the tile : #1074
+3 0 3 0 3 0 0 1 2 1 1 2 2 2 #X =3 #Y =2 #Z =2
+ | | | |
+0|6|5| |
+ |1|4| |
+ | |2|3|
+--------------------
+ (0 5 6 )  (2 4 5 )  (0 1 2 )  (1 5 ) ||
+------------------------
+This is the tile : #1004
+3 0 3 3 0 1 0 1 2 1 1 2 2 3 #X =1 #Y =4 #Z =2
+6|5| | |
+0|4| | |
+ |1|3| |
+ |2| | |
+--------------------
+ (1 3 )  (1 2 4 )  (3 4 6 )  (0 5 ) ||
+------------------------
+This is the tile : #1083
+3 0 3 0 1 0 1 2 1 2 1 2 3 3 #X =4 #Y =2 #Z =1
+4| | | |
+5|3| | |
+0|6|2| |
+ |1| | |
+--------------------
+ (0 2 6 )  (0 4 5 )  (2 3 4 )  (0 3 ) || (0 2 6 )  (1 3 6 )  (2 3 4 )  (0 3 ) || (0 2 6 )  (1 3 6 )  (2 3 4 )  (1 2 ) ||
+------------------------
+This is the tile : #1088
+3 0 3 0 1 0 1 1 1 2 3 2 3 2 #X =1 #Y =2 #Z =4
+ | |4| |
+ |5|3| |
+0|6|2| |
+ |1| | |
+--------------------
+ (0 2 6 )  (1 5 6 )  (0 1 )  (0 4 5 ) || (0 2 6 )  (1 5 6 )  (2 5 )  (0 4 5 ) || (0 2 6 )  (2 3 4 )  (2 5 )  (0 4 5 ) ||
+------------------------
+This is the tile : #1071
+3 0 3 0 3 0 1 1 1 2 1 2 3 2 #X =1 #Y =4 #Z =2
+ |5| | |
+0|6|4| |
+ |1|3| |
+ | |2| |
+--------------------
+ (0 4 6 )  (1 5 6 )  (0 1 2 )  (0 5 ) || (0 4 6 )  (1 5 6 )  (0 1 2 )  (1 4 ) || (0 4 6 )  (2 3 4 )  (0 1 2 )  (1 4 ) ||
+------------------------
+This is the tile : #536
+3 3 0 0 1 1 0 1 2 1 2 3 3 2 #X =1 #Y =2 #Z =4
+ |4| | |
+ |5|3| |
+6|2| | |
+0|1| | |
+--------------------
+ (3 5 )  (2 4 5 )  (1 6 )  (0 2 3 ) ||
+------------------------
+This is the tile : #1009
+3 0 3 3 0 0 1 1 2 1 1 2 3 2 #X =1 #Y =4 #Z =2
+ |6| | |
+0|5| | |
+ |1|4| |
+ |2|3| |
+--------------------
+ (0 5 )  (1 5 6 )  (0 1 3 )  (2 4 ) ||
+------------------------
+This is the tile : #669
+3 2 3 2 3 0 0 0 1 0 1 2 1 2 #X =4 #Y =2 #Z =1
+ | | | |
+ | |4| |
+ |5|6|3|
+0|1|2| |
+--------------------
+ (0 1 2 )  (2 4 6 )  (2 5 )  (0 4 5 ) || (3 5 6 )  (2 4 6 )  (2 5 )  (0 4 5 ) || (3 5 6 )  (2 4 6 )  (3 4 )  (0 4 5 ) ||
+------------------------
+This is the tile : #1110
+3 0 3 0 0 0 1 2 1 2 1 2 3 2 #X =4 #Y =1 #Z =2
+ | | | |
+ |5| | |
+0|6|4| |
+ |1|2|3|
+--------------------
+ (0 4 6 )  (1 5 6 )  (3 4 5 )  (0 5 ) || (0 4 6 )  (1 5 6 )  (3 4 5 )  (1 4 ) || (1 2 3 )  (1 5 6 )  (3 4 5 )  (1 4 ) ||
+------------------------
+This is the tile : #1146
+3 0 1 0 1 0 1 2 1 2 3 2 3 3 #X =2 #Y =4 #Z =1
+ |3| | |
+4|6|2| |
+5|1| | |
+0| | | |
+--------------------
+ (2 4 6 )  (0 4 5 )  (1 4 )  (0 1 2 ) || (2 4 6 )  (1 3 6 )  (1 4 )  (0 1 2 ) || (2 4 6 )  (1 3 6 )  (2 3 )  (0 1 2 ) ||
+------------------------
+This is the tile : #1013
+3 0 3 3 0 0 0 1 2 1 2 1 2 2 #X =3 #Y =2 #Z =2
+ | | | |
+0|6| | |
+ |1|5| |
+ |2|3|4|
+--------------------
+ (2 3 4 )  (1 2 6 )  (4 5 6 )  (2 5 ) ||
+------------------------
+This is the tile : #1192
+3 0 0 3 0 1 1 2 1 2 1 2 3 3 #X =2 #Y =3 #Z =2
+5| | | |
+6|4| | |
+0|1|3| |
+ | |2| |
+--------------------
+ (0 1 3 )  (0 5 6 )  (3 4 5 )  (0 4 ) ||
+------------------------
+This is the tile : #1196
+3 0 0 3 0 1 0 1 2 2 1 2 2 3 #X =4 #Y =1 #Z =2
+ | | | |
+6|5| | |
+0|1|4|3|
+ | |2| |
+--------------------
+ (1 3 4 )  (2 4 )  (1 2 6 )  (0 5 ) ||
+------------------------
+This is the tile : #1223
+3 0 0 1 1 0 1 2 1 2 3 3 2 3 #X =2 #Y =4 #Z =1
+ |4| | |
+ |5|3| |
+6|2| | |
+0|1| | |
+--------------------
+ (3 5 )  (2 4 5 )  (1 6 )  (0 2 3 ) ||
+------------------------
+This is the tile : #1082
+3 0 3 0 1 1 0 1 1 2 2 3 3 2 #X =1 #Y =2 #Z =4
+ |5|4| |
+ |6|3| |
+0|2| | |
+ |1| | |
+--------------------
+ (0 2 )  (1 2 6 )  (3 5 )  (0 4 6 ) ||
+------------------------
+This is the tile : #797
+3 2 2 3 0 3 0 1 0 0 1 1 2 2 #X =4 #Y =2 #Z =1
+ | | | |
+ | |5|4|
+0|6|2|3|
+ |1| | |
+--------------------
+ (0 2 6 )  (1 6 )  (3 5 )  (1 2 4 ) ||
+------------------------
+This is the tile : #1276
+3 0 0 0 1 0 1 2 1 2 3 2 3 2 #X =2 #Y =1 #Z =4
+ | | | |
+ | |4| |
+ |5|6|3|
+0|1|2| |
+--------------------
+ (0 1 2 )  (2 4 6 )  (2 5 )  (0 4 5 ) || (3 5 6 )  (2 4 6 )  (2 5 )  (0 4 5 ) || (3 5 6 )  (2 4 6 )  (3 4 )  (0 4 5 ) ||
+------------------------
+This is the tile : #1201
+3 0 0 3 0 0 1 1 2 2 1 2 3 2 #X =4 #Y =1 #Z =2
+ | | | |
+ |6| | |
+0|1|5|4|
+ | |2|3|
+--------------------
+ (0 1 5 )  (1 6 )  (3 5 6 )  (2 4 ) ||
+------------------------
+This is the tile : #1380
+2 3 3 3 0 1 0 1 0 1 1 2 3 2 #X =2 #Y =2 #Z =3
+ | |3| |
+5|4|2| |
+6|1| | |
+0| | | |
+--------------------
+ (2 4 5 )  (0 5 6 )  (1 5 )  (0 1 2 ) ||
+------------------------
+This is the tile : #1375
+2 3 3 3 0 3 0 1 0 1 2 1 2 1 #X =2 #Y =1 #Z =4
+4| | | |
+5|3| | |
+0|6|2| |
+ |1| | |
+--------------------
+ (0 2 6 )  (0 4 5 )  (2 3 4 )  (0 3 ) || (0 2 6 )  (1 3 6 )  (2 3 4 )  (0 3 ) || (0 2 6 )  (1 3 6 )  (2 3 4 )  (1 2 ) ||
+------------------------
+This is the tile : #1241
+3 0 0 1 0 0 1 2 1 2 3 2 2 3 #X =2 #Y =1 #Z =4
+ | | | |
+ | |4| |
+6|5|2|3|
+0|1| | |
+--------------------
+ (2 3 5 )  (2 4 )  (1 6 )  (0 4 5 ) ||
+------------------------
+This is the tile : #1259
+3 0 0 0 1 2 1 2 1 2 2 3 0 3 #X =2 #Y =2 #Z =3
+ | | | |
+0|6| | |
+ |1|5| |
+ |2|3|4|
+--------------------
+ (2 3 4 )  (1 2 6 )  (4 5 6 )  (2 5 ) ||
+------------------------
+This is the tile : #1399
+2 3 3 2 3 3 0 0 1 1 0 1 2 1 #X =4 #Y =1 #Z =2
+ |4| | |
+ |5|3| |
+6|2| | |
+0|1| | |
+--------------------
+ (3 5 )  (2 4 5 )  (1 6 )  (0 2 3 ) ||
+------------------------
+This is the tile : #1412
+2 3 3 2 3 0 0 1 0 1 0 1 2 2 #X =2 #Y =3 #Z =2
+ | | | |
+ |5|4|3|
+ |6|2| |
+0|1| | |
+--------------------
+ (3 4 5 )  (1 5 6 )  (2 5 )  (1 2 3 ) ||
+------------------------
+This is the tile : #1408
+2 3 3 2 3 0 3 0 1 1 0 1 1 2 #X =4 #Y =1 #Z =2
+ |5|4| |
+ |6|3| |
+0|2| | |
+ |1| | |
+--------------------
+ (0 2 )  (1 2 6 )  (3 5 )  (0 4 6 ) ||
+------------------------
+This is the tile : #1448
+2 3 3 0 3 3 0 1 0 1 2 1 1 2 #X =2 #Y =1 #Z =4
+6|5| | |
+0|4| | |
+ |1|3| |
+ |2| | |
+--------------------
+ (1 3 )  (1 2 4 )  (3 4 6 )  (0 5 ) ||
+------------------------
+This is the tile : #1467
+2 3 3 0 0 3 0 1 0 1 2 2 1 2 #X =2 #Y =4 #Z =1
+ | | | |
+6|5| | |
+0|1|4|3|
+ | |2| |
+--------------------
+ (1 3 4 )  (2 4 )  (1 2 6 )  (0 5 ) ||
+------------------------
+This is the tile : #1485
+2 3 2 3 3 3 0 1 0 1 0 1 2 1 #X =4 #Y =1 #Z =2
+ |3| | |
+4|6|2| |
+5|1| | |
+0| | | |
+--------------------
+ (2 4 6 )  (0 4 5 )  (1 4 )  (0 1 2 ) || (2 4 6 )  (1 3 6 )  (1 4 )  (0 1 2 ) || (2 4 6 )  (1 3 6 )  (2 3 )  (0 1 2 ) ||
+------------------------
+This is the tile : #1509
+2 3 2 3 2 3 3 0 1 0 0 1 1 1 #X =3 #Y =2 #Z =2
+ | |4| |
+ |5|3| |
+6|1|2| |
+0| | | |
+--------------------
+ (1 2 6 )  (2 3 4 )  (2 5 )  (4 5 6 ) ||
+------------------------
+This is the tile : #1516
+2 3 2 3 2 3 0 0 0 1 0 1 2 1 #X =1 #Y =4 #Z =2
+ | | | |
+ | |4| |
+ |5|6|3|
+0|1|2| |
+--------------------
+ (0 1 2 )  (2 4 6 )  (2 5 )  (0 4 5 ) || (3 5 6 )  (2 4 6 )  (2 5 )  (0 4 5 ) || (3 5 6 )  (2 4 6 )  (3 4 )  (0 4 5 ) ||
+------------------------
+This is the tile : #1530
+2 3 2 3 0 3 0 1 0 1 0 1 2 2 #X =4 #Y =2 #Z =1
+ | | | |
+ |5|4|3|
+0|6|2| |
+ |1| | |
+--------------------
+ (0 2 6 )  (1 5 6 )  (0 1 )  (1 2 3 ) || (0 2 6 )  (1 5 6 )  (2 5 )  (1 2 3 ) || (3 4 5 )  (1 5 6 )  (2 5 )  (1 2 3 ) ||
+------------------------
+This is the tile : #1538
+2 3 2 3 0 0 3 0 0 1 1 2 2 1 #X =1 #Y =2 #Z =4
+ | | | |
+ |6| | |
+0|1|5|4|
+ | |2|3|
+--------------------
+ (0 1 5 )  (1 6 )  (3 5 6 )  (2 4 ) ||
+------------------------
+This is the tile : #1544
+2 3 2 2 3 3 3 0 1 0 1 0 1 1 #X =3 #Y =2 #Z =2
+ | |3| |
+5|4|2| |
+6|1| | |
+0| | | |
+--------------------
+ (2 4 5 )  (0 5 6 )  (1 5 )  (0 1 2 ) ||
+------------------------
+This is the tile : #1535
+2 3 2 3 0 3 0 0 0 1 2 1 2 1 #X =1 #Y =2 #Z =4
+ | | | |
+ |5| | |
+0|6|4| |
+ |1|2|3|
+--------------------
+ (0 4 6 )  (1 5 6 )  (3 4 5 )  (0 5 ) || (0 4 6 )  (1 5 6 )  (3 4 5 )  (1 4 ) || (1 2 3 )  (1 5 6 )  (3 4 5 )  (1 4 ) ||
+------------------------
+This is the tile : #1552
+2 3 2 2 3 3 0 0 1 0 0 1 2 1 #X =1 #Y =4 #Z =2
+ | | | |
+ | |4| |
+6|5|2|3|
+0|1| | |
+--------------------
+ (2 3 5 )  (2 4 )  (1 6 )  (0 4 5 ) ||
+------------------------
+This is the tile : #1561
+2 3 2 2 3 0 3 0 1 0 0 1 1 2 #X =1 #Y =4 #Z =2
+ | | | |
+ | |5|4|
+0|6|2|3|
+ |1| | |
+--------------------
+ (0 2 6 )  (1 6 )  (3 5 )  (1 2 4 ) ||
+------------------------
+This is the tile : #1662
+2 3 0 3 0 3 0 1 0 1 2 1 2 2 #X =2 #Y =4 #Z =1
+ | | | |
+0|5|4| |
+ |1|6|3|
+ | |2| |
+--------------------
+ (0 4 5 )  (2 4 6 )  (0 1 2 )  (1 4 ) || (1 3 6 )  (2 4 6 )  (0 1 2 )  (1 4 ) || (1 3 6 )  (2 4 6 )  (0 1 2 )  (2 3 ) ||
+------------------------
+This is the tile : #1758
+2 2 3 3 0 0 3 0 1 0 1 2 2 1 #X =1 #Y =2 #Z =4
+ | | | |
+6|5| | |
+0|1|4|3|
+ | |2| |
+--------------------
+ (1 3 4 )  (2 4 )  (1 2 6 )  (0 5 ) ||
+------------------------
+This is the tile : #1778
+2 2 3 2 3 2 3 0 0 0 1 1 0 1 #X =2 #Y =2 #Z =3
+ | | | |
+ | |5|4|
+ |6|3| |
+0|1|2| |
+--------------------
+ (0 1 2 )  (2 3 5 )  (2 6 )  (0 5 6 ) ||
+------------------------
+This is the tile : #1786
+2 2 3 2 3 0 3 0 1 0 1 0 1 2 #X =1 #Y =4 #Z =2
+ | | | |
+ |5|4|3|
+0|6|2| |
+ |1| | |
+--------------------
+ (0 2 6 )  (1 5 6 )  (0 1 )  (1 2 3 ) || (0 2 6 )  (1 5 6 )  (2 5 )  (1 2 3 ) || (3 4 5 )  (1 5 6 )  (2 5 )  (1 2 3 ) ||
+------------------------
+This is the tile : #1838
+2 2 3 0 3 3 0 0 0 1 2 1 2 1 #X =2 #Y =3 #Z =2
+ | | | |
+0|6| | |
+ |1|5| |
+ |2|3|4|
+--------------------
+ (2 3 4 )  (1 2 6 )  (4 5 6 )  (2 5 ) ||
+------------------------
+This is the tile : #1843
+2 2 3 0 3 0 3 0 0 1 2 1 1 2 #X =2 #Y =3 #Z =2
+ | | | |
+0|6|5| |
+ |1|4| |
+ | |2|3|
+--------------------
+ (0 5 6 )  (2 4 5 )  (0 1 2 )  (1 5 ) ||
+------------------------
+This is the tile : #1845
+2 2 3 0 3 0 3 0 1 0 1 2 1 2 #X =1 #Y =2 #Z =4
+ | | | |
+0|5|4| |
+ |1|6|3|
+ | |2| |
+--------------------
+ (0 4 5 )  (2 4 6 )  (0 1 2 )  (1 4 ) || (1 3 6 )  (2 4 6 )  (0 1 2 )  (1 4 ) || (1 3 6 )  (2 4 6 )  (0 1 2 )  (2 3 ) ||
+------------------------
+This is the tile : #1876
+2 2 2 3 3 2 3 0 0 1 0 1 0 1 #X =2 #Y =2 #Z =3
+ | | | |
+ |5|4|3|
+ |6|2| |
+0|1| | |
+--------------------
+ (3 4 5 )  (1 5 6 )  (2 5 )  (1 2 3 ) ||
+------------------------
+This is the tile : #2283
+2 1 2 3 3 3 0 0 3 0 1 1 2 1 #X =3 #Y =2 #Z =2
+5| | | |
+6|4| | |
+0|1|3| |
+ | |2| |
+--------------------
+ (0 1 3 )  (0 5 6 )  (3 4 5 )  (0 4 ) ||
+------------------------
+This is the tile : #2287
+2 1 2 3 3 2 3 3 0 0 1 1 0 1 #X =2 #Y =4 #Z =1
+ |4| | |
+ |5|3| |
+6|2| | |
+0|1| | |
+--------------------
+ (3 5 )  (2 4 5 )  (1 6 )  (0 2 3 ) ||
+------------------------
+This is the tile : #2291
+2 1 2 3 3 0 3 0 3 0 1 1 1 2 #X =3 #Y =2 #Z =2
+6| | | |
+0|5|4| |
+ |1|3| |
+ | |2| |
+--------------------
+ (0 4 5 )  (2 3 4 )  (0 1 2 )  (1 4 ) ||
+------------------------
+This is the tile : #2300
+2 1 2 3 2 3 3 3 0 1 0 1 0 1 #X =2 #Y =4 #Z =1
+ |3| | |
+4|6|2| |
+5|1| | |
+0| | | |
+--------------------
+ (2 4 6 )  (0 4 5 )  (1 4 )  (0 1 2 ) || (2 4 6 )  (1 3 6 )  (1 4 )  (0 1 2 ) || (2 4 6 )  (1 3 6 )  (2 3 )  (0 1 2 ) ||
+------------------------
+This is the tile : #2304
+2 1 2 3 2 3 2 3 0 0 0 1 0 1 #X =2 #Y =1 #Z =4
+ | | | |
+ | |4| |
+ |5|6|3|
+0|1|2| |
+--------------------
+ (0 1 2 )  (2 4 6 )  (2 5 )  (0 4 5 ) || (3 5 6 )  (2 4 6 )  (2 5 )  (0 4 5 ) || (3 5 6 )  (2 4 6 )  (3 4 )  (0 4 5 ) ||
+------------------------
+This is the tile : #2309
+2 1 2 3 2 2 3 3 0 0 1 0 0 1 #X =2 #Y =1 #Z =4
+ | | | |
+ | |4| |
+6|5|2|3|
+0|1| | |
+--------------------
+ (2 3 5 )  (2 4 )  (1 6 )  (0 4 5 ) ||
+------------------------
+This is the tile : #2334
+2 1 2 2 3 0 3 3 0 0 0 1 2 1 #X =2 #Y =2 #Z =3
+ | | | |
+0|6| | |
+ |1|5| |
+ |2|3|4|
+--------------------
+ (2 3 4 )  (1 2 6 )  (4 5 6 )  (2 5 ) ||
+------------------------
+This is the tile : #2382
+2 1 2 1 2 3 3 3 0 0 3 0 1 1 #X =2 #Y =3 #Z =2
+5| | | |
+6|4| | |
+0|1|3| |
+ | |2| |
+--------------------
+ (0 1 3 )  (0 5 6 )  (3 4 5 )  (0 4 ) ||
+------------------------
+This is the tile : #2383
+2 1 2 1 2 3 2 3 0 3 0 0 0 1 #X =4 #Y =1 #Z =2
+ | | | |
+ |5| | |
+0|6|4| |
+ |1|2|3|
+--------------------
+ (0 4 6 )  (1 5 6 )  (3 4 5 )  (0 5 ) || (0 4 6 )  (1 5 6 )  (3 4 5 )  (1 4 ) || (1 2 3 )  (1 5 6 )  (3 4 5 )  (1 4 ) ||
+------------------------
+This is the tile : #2380
+2 1 2 1 2 3 3 3 0 3 0 1 0 1 #X =4 #Y =2 #Z =1
+4| | | |
+5|3| | |
+0|6|2| |
+ |1| | |
+--------------------
+ (0 2 6 )  (0 4 5 )  (2 3 4 )  (0 3 ) || (0 2 6 )  (1 3 6 )  (2 3 4 )  (0 3 ) || (0 2 6 )  (1 3 6 )  (2 3 4 )  (1 2 ) ||
+------------------------
+This is the tile : #2458
+2 1 1 2 2 3 3 0 3 3 0 1 0 1 #X =4 #Y =2 #Z =1
+6|5| | |
+0|4| | |
+ |1|3| |
+ |2| | |
+--------------------
+ (1 3 )  (1 2 4 )  (3 4 6 )  (0 5 ) ||
+------------------------
+This is the tile : #2453
+2 1 1 2 3 2 3 0 3 3 0 0 1 1 #X =4 #Y =2 #Z =1
+ |6| | |
+0|5| | |
+ |1|4| |
+ |2|3| |
+--------------------
+ (0 5 )  (1 5 6 )  (0 1 3 )  (2 4 ) ||
+------------------------
+This is the tile : #2657
+1 2 3 2 3 2 3 0 3 0 1 0 1 1 #X =2 #Y =4 #Z =1
+ | |4| |
+ |5|3| |
+0|6|2| |
+ |1| | |
+--------------------
+ (0 2 6 )  (1 5 6 )  (0 1 )  (0 4 5 ) || (0 2 6 )  (1 5 6 )  (2 5 )  (0 4 5 ) || (0 2 6 )  (2 3 4 )  (2 5 )  (0 4 5 ) ||
+------------------------
+This is the tile : #2684
+1 2 2 3 3 2 3 0 3 0 1 1 0 1 #X =2 #Y =4 #Z =1
+ |5|4| |
+ |6|3| |
+0|2| | |
+ |1| | |
+--------------------
+ (0 2 )  (1 2 6 )  (3 5 )  (0 4 6 ) ||
+------------------------
+This is the tile : #2703
+1 2 2 3 2 2 3 0 3 0 1 0 0 1 #X =2 #Y =1 #Z =4
+ | | | |
+ | |5|4|
+0|6|2|3|
+ |1| | |
+--------------------
+ (0 2 6 )  (1 6 )  (3 5 )  (1 2 4 ) ||
+------------------------
+This is the tile : #2732
+1 2 2 2 3 0 3 0 3 0 0 1 2 1 #X =2 #Y =2 #Z =3
+ | | | |
+0|6|5| |
+ |1|4| |
+ | |2|3|
+--------------------
+ (0 5 6 )  (2 4 5 )  (0 1 2 )  (1 5 ) ||
+------------------------
+This is the tile : #2727
+1 2 2 2 3 2 3 0 3 0 1 0 1 0 #X =2 #Y =1 #Z =4
+ | | | |
+ |5|4|3|
+0|6|2| |
+ |1| | |
+--------------------
+ (0 2 6 )  (1 5 6 )  (0 1 )  (1 2 3 ) || (0 2 6 )  (1 5 6 )  (2 5 )  (1 2 3 ) || (3 4 5 )  (1 5 6 )  (2 5 )  (1 2 3 ) ||
+------------------------
+This is the tile : #2786
+1 2 2 1 2 3 3 0 3 0 3 0 1 1 #X =2 #Y =3 #Z =2
+6| | | |
+0|5|4| |
+ |1|3| |
+ | |2| |
+--------------------
+ (0 4 5 )  (2 3 4 )  (0 1 2 )  (1 4 ) ||
+------------------------
+This is the tile : #2790
+1 2 2 1 2 3 2 3 0 0 3 0 0 1 #X =4 #Y =1 #Z =2
+ | | | |
+ |6| | |
+0|1|5|4|
+ | |2|3|
+--------------------
+ (0 1 5 )  (1 6 )  (3 5 6 )  (2 4 ) ||
+------------------------
+This is the tile : #2795
+1 2 2 1 2 2 3 3 0 0 3 0 1 0 #X =4 #Y =1 #Z =2
+ | | | |
+6|5| | |
+0|1|4|3|
+ | |2| |
+--------------------
+ (1 3 4 )  (2 4 )  (1 2 6 )  (0 5 ) ||
+------------------------
+This is the tile : #2840
+1 2 1 2 3 3 2 3 3 0 0 1 1 0 #X =1 #Y =2 #Z =4
+ |4| | |
+ |5|3| |
+6|2| | |
+0|1| | |
+--------------------
+ (3 5 )  (2 4 5 )  (1 6 )  (0 2 3 ) ||
+------------------------
+This is the tile : #2841
+1 2 1 2 3 2 3 0 3 0 3 0 1 1 #X =4 #Y =2 #Z =1
+ |5| | |
+0|6|4| |
+ |1|3| |
+ | |2| |
+--------------------
+ (0 4 6 )  (1 5 6 )  (0 1 2 )  (0 5 ) || (0 4 6 )  (1 5 6 )  (0 1 2 )  (1 4 ) || (0 4 6 )  (2 3 4 )  (0 1 2 )  (1 4 ) ||
+------------------------
+This is the tile : #2846
+1 2 1 2 3 2 3 3 3 0 1 0 1 0 #X =1 #Y =2 #Z =4
+ |3| | |
+4|6|2| |
+5|1| | |
+0| | | |
+--------------------
+ (2 4 6 )  (0 4 5 )  (1 4 )  (0 1 2 ) || (2 4 6 )  (1 3 6 )  (1 4 )  (0 1 2 ) || (2 4 6 )  (1 3 6 )  (2 3 )  (0 1 2 ) ||
+------------------------
+This is the tile : #2864
+1 2 1 2 2 2 3 0 3 0 3 0 1 0 #X =4 #Y =1 #Z =2
+ | | | |
+0|5|4| |
+ |1|6|3|
+ | |2| |
+--------------------
+ (0 4 5 )  (2 4 6 )  (0 1 2 )  (1 4 ) || (1 3 6 )  (2 4 6 )  (0 1 2 )  (1 4 ) || (1 3 6 )  (2 4 6 )  (0 1 2 )  (2 3 ) ||
+------------------------
+This is the tile : #2885
+1 2 1 2 1 2 3 3 3 0 3 0 1 0 #X =1 #Y =4 #Z =2
+4| | | |
+5|3| | |
+0|6|2| |
+ |1| | |
+--------------------
+ (0 2 6 )  (0 4 5 )  (2 3 4 )  (0 3 ) || (0 2 6 )  (1 3 6 )  (2 3 4 )  (0 3 ) || (0 2 6 )  (1 3 6 )  (2 3 4 )  (1 2 ) ||
+------------------------
+This is the tile : #2888
+1 2 1 2 1 2 2 3 0 3 3 0 0 0 #X =3 #Y =2 #Z =2
+ | | | |
+0|6| | |
+ |1|5| |
+ |2|3|4|
+--------------------
+ (2 3 4 )  (1 2 6 )  (4 5 6 )  (2 5 ) ||
+------------------------
+This is the tile : #2907
+1 2 1 1 2 3 2 3 0 3 3 0 0 1 #X =1 #Y =4 #Z =2
+ |6| | |
+0|5| | |
+ |1|4| |
+ |2|3| |
+--------------------
+ (0 5 )  (1 5 6 )  (0 1 3 )  (2 4 ) ||
+------------------------
+This is the tile : #2912
+1 2 1 1 2 2 3 3 0 3 3 0 1 0 #X =1 #Y =4 #Z =2
+6|5| | |
+0|4| | |
+ |1|3| |
+ |2| | |
+--------------------
+ (1 3 )  (1 2 4 )  (3 4 6 )  (0 5 ) ||
+------------------------
+This is the tile : #2916
+1 2 1 1 2 2 2 3 0 3 0 3 0 0 #X =3 #Y =2 #Z =2
+ | | | |
+0|6|5| |
+ |1|4| |
+ | |2|3|
+--------------------
+ (0 5 6 )  (2 4 5 )  (0 1 2 )  (1 5 ) ||
+------------------------
+This is the tile : #3014
+1 1 2 3 2 3 2 3 3 0 1 0 0 1 #X =2 #Y =3 #Z =2
+ | |4| |
+ |5|3| |
+6|1|2| |
+0| | | |
+--------------------
+ (1 2 6 )  (2 3 4 )  (2 5 )  (4 5 6 ) ||
+------------------------
+This is the tile : #3016
+1 1 2 3 2 3 2 3 0 3 0 1 0 1 #X =1 #Y =2 #Z =4
+ | |4| |
+ |5|3| |
+0|6|2| |
+ |1| | |
+--------------------
+ (0 2 6 )  (1 5 6 )  (0 1 )  (0 4 5 ) || (0 2 6 )  (1 5 6 )  (2 5 )  (0 4 5 ) || (0 2 6 )  (2 3 4 )  (2 5 )  (0 4 5 ) ||
+------------------------
+This is the tile : #3024
+1 1 2 3 2 2 3 3 3 0 1 0 1 0 #X =2 #Y =3 #Z =2
+ | |3| |
+5|4|2| |
+6|1| | |
+0| | | |
+--------------------
+ (2 4 5 )  (0 5 6 )  (1 5 )  (0 1 2 ) ||
+------------------------
+This is the tile : #3040
+1 1 2 2 3 3 2 3 0 3 0 1 1 0 #X =1 #Y =2 #Z =4
+ |5|4| |
+ |6|3| |
+0|2| | |
+ |1| | |
+--------------------
+ (0 2 )  (1 2 6 )  (3 5 )  (0 4 6 ) ||
+------------------------
+This is the tile : #3116
+1 1 2 1 2 3 2 3 0 3 0 3 0 1 #X =1 #Y =4 #Z =2
+ |5| | |
+0|6|4| |
+ |1|3| |
+ | |2| |
+--------------------
+ (0 4 6 )  (1 5 6 )  (0 1 2 )  (0 5 ) || (0 4 6 )  (1 5 6 )  (0 1 2 )  (1 4 ) || (0 4 6 )  (2 3 4 )  (0 1 2 )  (1 4 ) ||
+------------------------
+This is the tile : #3135
+1 1 2 1 2 1 2 3 3 3 0 0 3 0 #X =2 #Y =2 #Z =3
+5| | | |
+6|4| | |
+0|1|3| |
+ | |2| |
+--------------------
+ (0 1 3 )  (0 5 6 )  (3 4 5 )  (0 4 ) ||
+------------------------
+This is the tile : #3225
+1 1 1 2 2 1 2 3 3 0 3 0 3 0 #X =2 #Y =2 #Z =3
+6| | | |
+0|5|4| |
+ |1|3| |
+ | |2| |
+--------------------
+ (0 4 5 )  (2 3 4 )  (0 1 2 )  (1 4 ) ||
+------------------------
+[New Thread 0x2aaaabda1700 (LWP 3462)]
+[New Thread 0x2aaaabfa2700 (LWP 3463)]
+[New Thread 0x2aaaac1a3700 (LWP 3464)]
+[New Thread 0x2aaaac3a4700 (LWP 3465)]
+[New Thread 0x2aaaac5a5700 (LWP 3466)]
+[New Thread 0x2aaaac7a6700 (LWP 3467)]
+[New Thread 0x2aaaac9a7700 (LWP 3468)]
+[New Thread 0x2aaaacba8700 (LWP 3469)]
+[New Thread 0x2aaaacda9700 (LWP 3470)]
+[New Thread 0x2aaaacfaa700 (LWP 3471)]
+[New Thread 0x2aaaad1ab700 (LWP 3472)]
+[New Thread 0x2aaaad3ac700 (LWP 3473)]
+[New Thread 0x2aaaad5ad700 (LWP 3474)]
+[New Thread 0x2aaaad7ae700 (LWP 3475)]
+[New Thread 0x2aaaad9af700 (LWP 3476)]
+[New Thread 0x2aaaadbb0700 (LWP 3477)]
+[New Thread 0x2aaaaddb1700 (LWP 3478)]
+[New Thread 0x2aaaadfb2700 (LWP 3479)]
+[New Thread 0x2aaaae1b3700 (LWP 3480)]
+[New Thread 0x2aaaae3b4700 (LWP 3481)]
+[New Thread 0x2aaaae5b5700 (LWP 3482)]
+[New Thread 0x2aaaae7b6700 (LWP 3483)]
+[New Thread 0x2aaaae9b7700 (LWP 3484)]
+[New Thread 0x2aaaaebb8700 (LWP 3485)]
+[New Thread 0x2aaaaedb9700 (LWP 3486)]
+[New Thread 0x2aaaaefba700 (LWP 3487)]
+[New Thread 0x2aaaaf1bb700 (LWP 3488)]
+[New Thread 0x2aaaaf3bc700 (LWP 3489)]
+[New Thread 0x2aaaaf5bd700 (LWP 3490)]
+[New Thread 0x2aaaaf7be700 (LWP 3491)]
+[New Thread 0x2aaaaf9bf700 (LWP 3492)]
+[New Thread 0x2aaaafbc0700 (LWP 3493)]
+[New Thread 0x2aaaafdc1700 (LWP 3494)]
+[New Thread 0x2aaaaffc2700 (LWP 3495)]
+[New Thread 0x2aaab01c3700 (LWP 3496)]
+[New Thread 0x2aaab03c4700 (LWP 3497)]
+[New Thread 0x2aaab05c5700 (LWP 3498)]
+[New Thread 0x2aaab07c6700 (LWP 3499)]
+[New Thread 0x2aaab09c7700 (LWP 3500)]
+[New Thread 0x2aaab0bc8700 (LWP 3501)]
+[New Thread 0x2aaab0dc9700 (LWP 3502)]
+[New Thread 0x2aaab0fca700 (LWP 3503)]
+[New Thread 0x2aaab11cb700 (LWP 3504)]
+[New Thread 0x2aaab13cc700 (LWP 3505)]
+[New Thread 0x2aaab15cd700 (LWP 3506)]
+[New Thread 0x2aaab17ce700 (LWP 3507)]
+[New Thread 0x2aaab19cf700 (LWP 3508)]
+[New Thread 0x2aaab1bd0700 (LWP 3509)]
+[New Thread 0x2aaab1dd1700 (LWP 3510)]
+[New Thread 0x2aaab1fd2700 (LWP 3511)]
+[New Thread 0x2aaab21d3700 (LWP 3512)]
+[New Thread 0x2aaab23d4700 (LWP 3513)]
+[New Thread 0x2aaab25d5700 (LWP 3514)]
+[New Thread 0x2aaab27d6700 (LWP 3515)]
+[New Thread 0x2aaab29d7700 (LWP 3516)]
+[New Thread 0x2aaab2bd8700 (LWP 3517)]
+[New Thread 0x2aaab2dd9700 (LWP 3518)]
+[New Thread 0x2aaab2fda700 (LWP 3519)]
+[New Thread 0x2aaab31db700 (LWP 3520)]
+[New Thread 0x2aaab33dc700 (LWP 3521)]
+[New Thread 0x2aaab35dd700 (LWP 3522)]
+[New Thread 0x2aaab37de700 (LWP 3523)]
+[New Thread 0x2aaab39df700 (LWP 3524)]
+[New Thread 0x2aaab3be0700 (LWP 3525)]
+
+Program received signal SIGSEGV, Segmentation fault.
+[Switching to Thread 0x2aaab39df700 (LWP 3524)]
+0x0000000000421d44 in Unit::getTileNumber (this=0x65) at src/Unit.cpp:30
+30	    return tileNumber;
+#0  0x0000000000421d44 in Unit::getTileNumber (this=0x65) at src/Unit.cpp:30
+#1  0x0000000000404a09 in TileAlignment::buildAlignments (this=0x2aaab39de760, sizeAlignment=9) at src/TileAlignment.cpp:237
+#2  0x0000000000429ace in TileAnalyzer::analyzeBoundaryWord (this=0x72d720, bw=0x6b3f60, kSize=0) at src/TileAnalyzer.cpp:73
+#3  0x0000000000429946 in operator() (__closure=0x752e38, b=0x6b3f60) at src/TileAnalyzer.cpp:57
+#4  0x00000000004366e5 in std::__invoke_impl<void, TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>&, BoundaryWord*&>(std::__invoke_other, struct {...} &) (__f=...) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/bits/invoke.h:60
+#5  0x00000000004361f3 in std::__invoke<TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>&, BoundaryWord*&>(struct {...} &) (__fn=...) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/bits/invoke.h:95
+#6  0x0000000000435826 in std::_Bind<TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>(BoundaryWord*)>::__call<void, 0>(<unknown type in /pbs/home/n/noijid/7-en-ligne/kInARowStrategy2/kInARowStrategyFinder/dist/prog, CU 0x8e561, DIE 0xbe91b>, std::_Index_tuple<0>) (this=0x752e38, __args=<unknown type in /pbs/home/n/noijid/7-en-ligne/kInARowStrategy2/kInARowStrategyFinder/dist/prog, CU 0x8e561, DIE 0xbe91b>) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/functional:416
+#7  0x0000000000434bca in std::_Bind<TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>(BoundaryWord*)>::operator()<>(void) (this=0x752e38) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/functional:499
+#8  0x0000000000433e12 in std::__invoke_impl<void, std::_Bind<TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>(BoundaryWord*)>&>(std::__invoke_other, std::_Bind<TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>(BoundaryWord*)> &) (__f=...) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/bits/invoke.h:60
+#9  0x0000000000433312 in std::__invoke_r<void, std::_Bind<TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>(BoundaryWord*)>&>(std::_Bind<TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>(BoundaryWord*)> &) (__fn=...) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/bits/invoke.h:110
+#10 0x000000000043283b in operator() (this=0x752e10) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/future:1432
+#11 0x000000000043621b in std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<_Fn, _Alloc, _Res(_Args ...)>::_M_run<std::_Bind<TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>(BoundaryWord*)>, std::allocator<int>, void, {}>::<lambda()>, void>::operator()(void) const (this=0x2aaab39ded00) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/future:1373
+#12 0x000000000043588e in std::__invoke_impl<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<_Fn, _Alloc, _Res(_Args ...)>::_M_run<std::_Bind<TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>(BoundaryWord*)>, std::allocator<int>, void, {}>::<lambda()>, void>&>(std::__invoke_other, std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<_Fn, _Alloc, _Res(_Args ...)>::_M_run<std::_Bind<TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>(BoundaryWord*)>, std::allocator<int>, void, {}>::<lambda()>, void> &) (__f=...) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/bits/invoke.h:60
+#13 0x0000000000434c76 in std::__invoke_r<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<_Fn, _Alloc, _Res(_Args ...)>::_M_run<std::_Bind<TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>(BoundaryWord*)>, std::allocator<int>, void, {}>::<lambda()>, void>&>(std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<_Fn, _Alloc, _Res(_Args ...)>::_M_run<std::_Bind<TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>(BoundaryWord*)>, std::allocator<int>, void, {}>::<lambda()>, void> &) (__fn=...) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/bits/invoke.h:115
+#14 0x0000000000433e91 in std::_Function_handler<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter>(), std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<_Fn, _Alloc, _Res(_Args ...)>::_M_run<std::_Bind<TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>(BoundaryWord*)>, std::allocator<int>, void, {}>::<lambda()>, void> >::_M_invoke(const std::_Any_data &) (__functor=...) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/bits/std_function.h:292
+#15 0x0000000000437e45 in std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>::operator()() const (this=0x2aaab39ded00) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/bits/std_function.h:622
+#16 0x00000000004371ab in std::__future_base::_State_baseV2::_M_do_set(std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*) (this=0x752e10, __f=0x2aaab39ded00, __did_set=0x2aaab39dec67) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/future:572
+#17 0x000000000043a283 in std::__invoke_impl<void, void (std::__future_base::_State_baseV2::*)(std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*), std::__future_base::_State_baseV2*, std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*>(std::__invoke_memfun_deref, void (std::__future_base::_State_baseV2::*&&)(std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*), std::__future_base::_State_baseV2*&&, std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*&&, bool*&&) (__f=<unknown type in /pbs/home/n/noijid/7-en-ligne/kInARowStrategy2/kInARowStrategyFinder/dist/prog, CU 0x8e561, DIE 0xd4cc0>, __t=<unknown type in /pbs/home/n/noijid/7-en-ligne/kInARowStrategy2/kInARowStrategyFinder/dist/prog, CU 0x8e561, DIE 0xd4ccf>) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/bits/invoke.h:73
+#18 0x0000000000438bf5 in std::__invoke<void (std::__future_base::_State_baseV2::*)(std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*), std::__future_base::_State_baseV2*, std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*>(void (std::__future_base::_State_baseV2::*&&)(std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*), std::__future_base::_State_baseV2*&&, std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*&&, bool*&&) (__fn=<unknown type in /pbs/home/n/noijid/7-en-ligne/kInARowStrategy2/kInARowStrategyFinder/dist/prog, CU 0x8e561, DIE 0xd6cac>) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/bits/invoke.h:95
+#19 0x0000000000437a74 in void std::call_once<void (std::__future_base::_State_baseV2::*)(std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*), std::__future_base::_State_baseV2*, std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*>(std::once_flag&, void (std::__future_base::_State_baseV2::*&&)(std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*), std::__future_base::_State_baseV2*&&, std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*&&, bool*&&)::{lambda()#1}::operator()() const (this=0x2aaab39dec00) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/mutex:717
+#20 0x0000000000437a9f in void std::call_once<void (std::__future_base::_State_baseV2::*)(std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*), std::__future_base::_State_baseV2*, std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*>(std::once_flag&, void (std::__future_base::_State_baseV2::*&&)(std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*), std::__future_base::_State_baseV2*&&, std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*&&, bool*&&)::{lambda()#2}::operator()() const (this=0x0) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/mutex:722
+#21 0x0000000000437ab0 in void std::call_once<void (std::__future_base::_State_baseV2::*)(std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*), std::__future_base::_State_baseV2*, std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*>(std::once_flag&, void (std::__future_base::_State_baseV2::*&&)(std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*), std::__future_base::_State_baseV2*&&, std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*&&, bool*&&)::{lambda()#2}::_FUN() () at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/mutex:722
+#22 0x00002aaaab5bd20b in __pthread_once_slow () from /lib64/libpthread.so.0
+#23 0x0000000000436969 in __gthread_once (__once=0x752e28, __func=0x403620 <__once_proxy@plt>) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/x86_64-pc-linux-gnu/bits/gthr-default.h:700
+#24 0x0000000000437b3c in std::call_once<void (std::__future_base::_State_baseV2::*)(std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*), std::__future_base::_State_baseV2*, std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*>(std::once_flag&, void (std::__future_base::_State_baseV2::*&&)(std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*), std::__future_base::_State_baseV2*&&, std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*&&, bool*&&) (__once=..., __f=<unknown type in /pbs/home/n/noijid/7-en-ligne/kInARowStrategy2/kInARowStrategyFinder/dist/prog, CU 0x8e561, DIE 0xd859a>) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/mutex:729
+#25 0x0000000000436e3d in std::__future_base::_State_baseV2::_M_set_result(std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>, bool) (this=0x752e10, __res=..., __ignore_failure=false) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/future:412
+#26 0x000000000043289a in std::__future_base::_Task_state<std::_Bind<TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>(BoundaryWord*)>, std::allocator<int>, void()>::_M_run(void) (this=0x752e10) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/future:1435
+#27 0x00000000004395cb in std::packaged_task<void ()>::operator()() (this=0x752de0) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/future:1568
+#28 0x000000000042a6d4 in operator() (this=0x753000) at src/../include/ThreadPool.h:104
+#29 0x000000000042dc9e in std::__invoke_impl<void, ThreadPool::enqueueVoid<TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>, {BoundaryWord*&}>::<lambda()>&>(std::__invoke_other, struct {...} &) (__f=...) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/bits/invoke.h:60
+#30 0x000000000042d168 in std::__invoke_r<void, ThreadPool::enqueueVoid<TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>, {BoundaryWord*&}>::<lambda()>&>(struct {...} &) (__fn=...) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/bits/invoke.h:110
+#31 0x000000000042c897 in std::_Function_handler<void(), ThreadPool::enqueueVoid<TileAnalyzer::analyzeBwVectMemorySave(std::vector<BoundaryWord*>&, ThreadPool*, int)::<lambda(BoundaryWord*)>, {BoundaryWord*&}>::<lambda()> >::_M_invoke(const std::_Any_data &) (__functor=...) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/bits/std_function.h:291
+#32 0x0000000000444fb8 in std::function<void ()>::operator()() const (this=0x2aaab39dee10) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/bits/std_function.h:622
+#33 0x0000000000444964 in _ZZN10ThreadPoolC4EmENKUlvE_clEv () at src/../include/ThreadPool.h:59
+#34 0x0000000000446d64 in _ZSt13__invoke_implIvZN10ThreadPoolC4EmEUlvE_JEET_St14__invoke_otherOT0_DpOT1_ (__f=<unknown type in /pbs/home/n/noijid/7-en-ligne/kInARowStrategy2/kInARowStrategyFinder/dist/prog, CU 0xfbe21, DIE 0x108971>) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/bits/invoke.h:60
+#35 0x0000000000446d19 in _ZSt8__invokeIZN10ThreadPoolC4EmEUlvE_JEENSt15__invoke_resultIT_JDpT0_EE4typeEOS3_DpOS4_ (__fn=<unknown type in /pbs/home/n/noijid/7-en-ligne/kInARowStrategy2/kInARowStrategyFinder/dist/prog, CU 0xfbe21, DIE 0x108a33>) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/bits/invoke.h:95
+#36 0x0000000000446cc6 in _ZNSt6thread8_InvokerISt5tupleIJZN10ThreadPoolC4EmEUlvE_EEE9_M_invokeIJLm0EEEEvSt12_Index_tupleIJXspT_EEE (this=0x68a878) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/thread:264
+#37 0x0000000000446c9a in _ZNSt6thread8_InvokerISt5tupleIJZN10ThreadPoolC4EmEUlvE_EEEclEv (this=0x68a878) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/thread:271
+#38 0x0000000000446c7e in _ZNSt6thread11_State_implINS_8_InvokerISt5tupleIJZN10ThreadPoolC4EmEUlvE_EEEEE6_M_runEv (this=0x68a870) at /pbs/software/centos-7-x86_64/gcc/10.3.0/include/c++/10.3.0/thread:215
+#39 0x00002aaaaad9ce40 in execute_native_thread_routine () at ../../../../../libstdc++-v3/src/c++11/thread.cc:80
+#40 0x00002aaaab5beea5 in start_thread () from /lib64/libpthread.so.0
+#41 0x00002aaaab8d1b0d in clone () from /lib64/libc.so.6
+A debugging session is active.
+
+	Inferior 1 [process 3443] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
