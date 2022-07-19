@@ -8,6 +8,5 @@
 
 ####################################
 module load gcc
-MALLOC_ARENA_MAX=glibc.malloc.arena_max=0
 make
-gdb --batch --command=test.gdb --args ./dist/prog 7 9 > out.txt
+gdb --batch --command=test.gdb --args ./dist/prog 7 9 8 > out.txt
