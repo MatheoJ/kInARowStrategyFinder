@@ -1,0 +1,81 @@
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+* Date:                 Tue Jul 12 15:06:29 CEST 2022
+* Job name:             mulitple_jobs
+* Job id:               11269784
+* User:                 noijid
+* Account:              liris
+* Submit host:          cca001
+* Partition:            htc
+* Quality of service:   normal
+* Nodelist:             ccwslurm0026
+****************************************************************
+if [ ! -d "./build" ]; then\
+	echo "Creating objects directory";\
+	mkdir ./build;\
+fi
+if [ ! -d "dist" ]; then\
+	echo "Creating dist directory";\
+	mkdir dist;\
+fi
+rm -f -r dist/prog ./build/*
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/TileAlignment.cpp -o build/TileAlignment.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/ReducedAlignment.cpp -o build/ReducedAlignment.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/HittingAlignment.cpp -o build/HittingAlignment.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/GameSolver.cpp -o build/GameSolver.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/Unit.cpp -o build/Unit.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/Tile.cpp -o build/Tile.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/TileAnalyzer.cpp -o build/TileAnalyzer.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/BoundaryWord.cpp -o build/BoundaryWord.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/TileGenerator.cpp -o build/TileGenerator.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/main.cpp -o build/main.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread  ./build/TileAlignment.o  ./build/ReducedAlignment.o  ./build/HittingAlignment.o  ./build/GameSolver.o  ./build/Unit.o  ./build/Tile.o  ./build/TileAnalyzer.o  ./build/BoundaryWord.o  ./build/TileGenerator.o  ./build/main.o -o dist/prog 
+Nombre de threads utilisés : 64
+Génération des boundary word :8920.19 ms
+Génération des tuiles :330.153 ms
+Nombre de tuiles :24660
+Génération des formes de pavages :1887.42 ms
+This is the tile : #627
+0 0 0 0 1 2 1 1 1 2 2 2 2 3 3 3 3 0 #X =4 #Y =1 #Z =4
+ | | | | |
+10|9|8|7| |
+11|13|16|6| |
+12|14|15|5| |
+0|1|2|3|4|
+--------------------
+ (6 11 13 16 )  (5 12 14 15 )  (1 2 3 4 )  (7 8 9 10 )  (0 10 11 12 )  (1 9 13 14 )  (2 8 15 16 )  (3 5 6 7 )  (2 11 14 )  (3 13 15 )  (10 13 15 )  (5 9 16 )  (1 6 15 )  (7 14 16 )  (0 14 16 )  (8 12 13 ) || (6 11 13 16 )  (5 12 14 15 )  (0 1 2 3 4 )  (7 8 9 10 )  (0 10 11 12 )  (1 9 13 14 )  (2 8 15 16 )  (3 5 6 7 )  (2 11 14 )  (3 13 15 )  (10 13 15 )  (5 9 16 )  (1 6 15 )  (7 14 16 )  (0 14 16 )  (8 12 13 ) ||
+------------------------
+This is the tile : #524
+0 0 0 0 1 1 1 1 1 2 3 2 2 2 3 3 3 3 #X =1 #Y =4 #Z =4
+ | | |7| |
+10|9|8|6| |
+11|13|16|5| |
+12|14|15|4| |
+0|1|2|3| |
+--------------------
+ (6 8 9 10 )  (5 11 13 16 )  (4 12 14 15 )  (0 1 2 3 )  (3 4 5 6 7 )  (0 10 11 12 )  (1 9 13 14 )  (2 8 15 16 )  (2 11 14 )  (4 9 16 )  (3 13 15 )  (10 13 15 )  (1 5 15 )  (6 14 16 )  (0 14 16 )  (8 12 13 ) ||
+------------------------
+This is the tile : #1424
+0 0 0 1 1 1 1 1 2 3 2 2 2 3 3 3 3 0 #X =4 #Y =4 #Z =1
+ | | |7| |
+10|9|8|6| |
+11|13|16|5| |
+12|14|15|4| |
+0|1|2|3| |
+--------------------
+ (6 8 9 10 )  (5 11 13 16 )  (4 12 14 15 )  (0 1 2 3 )  (3 4 5 6 7 )  (0 10 11 12 )  (1 9 13 14 )  (2 8 15 16 )  (2 11 14 )  (4 9 16 )  (3 13 15 )  (10 13 15 )  (1 5 15 )  (6 14 16 )  (0 14 16 )  (8 12 13 ) ||
+------------------------
+This is the tile : #5736
+0 1 0 0 0 1 1 1 1 2 2 2 2 3 3 3 3 3 #X =1 #Y =4 #Z =4
+9|8|7|6| |
+10|13|16|5| |
+11|14|15|4| |
+12|1|2|3| |
+0| | | | |
+--------------------
+ (5 10 13 16 )  (4 11 14 15 )  (1 2 3 12 )  (6 7 8 9 )  (1 8 13 14 )  (2 7 15 16 )  (0 10 11 12 )  (3 4 5 6 )  (2 10 14 )  (4 8 16 )  (3 13 15 )  (9 13 15 )  (1 5 15 )  (7 11 13 )  (6 14 16 )  (12 14 16 ) || (5 10 13 16 )  (4 11 14 15 )  (1 2 3 12 )  (6 7 8 9 )  (0 9 10 11 12 )  (1 8 13 14 )  (2 7 15 16 )  (3 4 5 6 )  (2 10 14 )  (4 8 16 )  (3 13 15 )  (9 13 15 )  (1 5 15 )  (7 11 13 )  (6 14 16 )  (12 14 16 ) ||
+------------------------
+/var/spool/slurmd/job11269784/slurm_script: line 12: 25240 Killed                  ./dist/prog 9 8
+slurmstepd: error: Detected 1 oom-kill event(s) in StepId=11269784.batch. Some of your processes may have been killed by the cgroup out-of-memory handler.
