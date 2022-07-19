@@ -10,4 +10,4 @@
 module load gcc
 MALLOC_ARENA_MAX=glibc.malloc.arena_max=0
 make
-./dist/prog 10 7 
+./dist/prog 7 9 
