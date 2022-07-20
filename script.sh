@@ -9,4 +9,4 @@
 ####################################
 module load gcc
 make
-gdb --batch --command=test.gdb --args ./dist/prog 10 7 32 > out.txt
+valgrind --tool=massif ./dist/prog 10 7 32 
