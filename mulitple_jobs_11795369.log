@@ -1,0 +1,44 @@
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+* Date:                 Thu Jul 21 16:42:51 CEST 2022
+* Job name:             mulitple_jobs
+* Job id:               11795369
+* User:                 noijid
+* Account:              liris
+* Submit host:          cca010
+* Partition:            htc
+* Quality of service:   normal
+* Nodelist:             ccwslurm0206
+****************************************************************
+if [ ! -d "./build" ]; then\
+	echo "Creating objects directory";\
+	mkdir ./build;\
+fi
+if [ ! -d "dist" ]; then\
+	echo "Creating dist directory";\
+	mkdir dist;\
+fi
+rm -f -r dist/prog ./build/*
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/TileAlignment.cpp -o build/TileAlignment.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/ReducedAlignment.cpp -o build/ReducedAlignment.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/HittingAlignment.cpp -o build/HittingAlignment.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/GameSolver.cpp -o build/GameSolver.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/Unit.cpp -o build/Unit.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/Tile.cpp -o build/Tile.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/TileAnalyzer.cpp -o build/TileAnalyzer.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/BoundaryWord.cpp -o build/BoundaryWord.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/TileGenerator.cpp -o build/TileGenerator.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread -c src/main.cpp -o build/main.o 
+g++ -g -ansi -pedantic -Wall -std=c++2a -pthread  ./build/TileAlignment.o  ./build/ReducedAlignment.o  ./build/HittingAlignment.o  ./build/GameSolver.o  ./build/Unit.o  ./build/Tile.o  ./build/TileAnalyzer.o  ./build/BoundaryWord.o  ./build/TileGenerator.o  ./build/main.o -o dist/prog 
+==48016== Massif, a heap profiler
+==48016== Copyright (C) 2003-2017, and GNU GPL'd, by Nicholas Nethercote
+==48016== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==48016== Command: ./dist/prog 10 7 32
+==48016== 
+Nombre de threads utilisés : 32
+Génération des boundary word :238042 ms
+Nombre de boundary word :146328
+/var/spool/slurmd/job11795369/slurm_script: line 12: 48016 Killed                  valgrind --tool=massif ./dist/prog 10 7 32
+slurmstepd: error: Detected 1 oom-kill event(s) in StepId=11795369.batch. Some of your processes may have been killed by the cgroup out-of-memory handler.
